@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Books in Storage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1e3a8a;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+        .btn {
+            padding: 10px 20px;
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #1e40af;
+        }
+        .btn-danger {
+            background: #ef4444;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        pre {
+            background: #1f2937;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        .book-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+        }
+        .book-title {
+            font-weight: bold;
+            color: #1e3a8a;
+            font-size: 1.1em;
+        }
+        .empty {
+            color: #6b7280;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Books Storage Diagnostic Tool</h1>
+        
+        <div class="section">
+            <h2>Current Books in Storage</h2>
+            <div id="books-list"></div>
+            <button class="btn" onclick="loadBooks()">Refresh</button>
+            <button class="btn btn-danger" onclick="clearBooks()">Clear All Books</button>
+        </div>
+
+        <div class="section">
+            <h2>All LocalStorage Keys</h2>
+            <div id="storage-keys"></div>
+        </div>
+
+        <div class="section">
+            <h2>Raw Data (JSON)</h2>
+            <pre id="raw-data"></pre>
+        </div>
+
+        <div class="section">
+            <h2>Test Add Book</h2>
+            <button class="btn" onclick="addTestBook()">Add Test Book</button>
+            <p id="test-result"></p>
+        </div>
+    </div>
+
+    <script>
+        function loadBooks() {
+            const books = JSON.parse(localStorage.getItem('brainwave_books') || '[]');
+            const booksList = document.getElementById('books-list');
+            const rawData = document.getElementById('raw-data');
+            
+            if (books.length === 0) {
+                booksList.innerHTML = '<p class="empty">No books found in storage</p>';
+            } else {
+                booksList.innerHTML = `
+                    <p><strong>Total Books: ${books.length}</strong></p>
+                    ${books.map((book, index) => `
+                        <div class="book-item">
+                            <div class="book-title">${index + 1}. ${book.title || 'Untitled'}</div>
+                            <div><strong>Subject:</strong> ${book.subject || 'N/A'}</div>
+                            <div><strong>Class:</strong> ${book.classLevel || 'N/A'}</div>
+                            <div><strong>Description:</strong> ${book.description || 'N/A'}</div>
+                            <div><strong>Link:</strong> <a href="${book.link || '#'}" target="_blank">${book.link ? 'View' : 'N/A'}</a></div>
+                            <div><strong>ID:</strong> ${book.id}</div>
+                            <div><strong>Created:</strong> ${book.createdAt ? new Date(book.createdAt).toLocaleString() : 'N/A'}</div>
+                        </div>
+                    `).join('')}
+                `;
+            }
+            
+            rawData.textContent = JSON.stringify(books, null, 2);
+            
+            // Show all storage keys
+            const keys = Object.keys(localStorage).filter(key => key.startsWith('brainwave_'));
+            document.getElementById('storage-keys').innerHTML = keys.length > 0 
+                ? '<ul>' + keys.map(key => `<li><strong>${key}</strong>: ${localStorage.getItem(key).length} characters</li>`).join('') + '</ul>'
+                : '<p class="empty">No brainwave_ keys found</p>';
+        }
+
+        function clearBooks() {
+            if (confirm('Are you sure you want to clear all books? This cannot be undone!')) {
+                localStorage.removeItem('brainwave_books');
+                loadBooks();
+                alert('All books cleared!');
+            }
+        }
+
+        function addTestBook() {
+            const books = JSON.parse(localStorage.getItem('brainwave_books') || '[]');
+            const testBook = {
+                id: Date.now(),
+                title: 'Test Book ' + (books.length + 1),
+                description: 'This is a test book added at ' + new Date().toLocaleTimeString(),
+                classLevel: 'SS1',
+                subject: 'Mathematics',
+                link: 'https://drive.google.com/test',
+                createdAt: new Date().toISOString()
+            };
+            
+            books.push(testBook);
+            localStorage.setItem('brainwave_books', JSON.stringify(books));
+            
+            document.getElementById('test-result').innerHTML = 
+                '<p style="color: green;">✅ Test book added successfully!</p>';
+            
+            setTimeout(() => {
+                loadBooks();
+                document.getElementById('test-result').innerHTML = '';
+            }, 1000);
+        }
+
+        // Load books on page load
+        loadBooks();
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Plans - BrainWave</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header/Navbar -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" class="logo-img">
+                    <rect x="0" y="0" width="40" height="40" rx="8" ry="8" fill="#fbbf24"/>
+                    <text x="20" y="28" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#1e3a8a">B</text>
+                </svg>
+                BrainWave
+            </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="features.html">Features</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="pricing.html" class="active">Pricing</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="signup.html" class="nav-login">Sign Up</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Pricing Hero Section -->
+    <section class="pricing-hero">
+        <div class="container">
+            <div class="pricing-hero-content">
+                <h1>Choose the Plan That's Right for You</h1>
+                <p>Flexible pricing options designed for every student and family. Start your learning journey today with our comprehensive educational platform.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Individual Plans Section -->
+    <section class="individual-plans">
+        <div class="container">
+            <div class="section-header">
+                <h2>Individual Plans</h2>
+                <p>Choose between monthly flexibility or termly savings for individual students</p>
+            </div>
+            
+            <!-- Monthly Plans -->
+            <div class="plan-type-section">
+                <h3 class="plan-type-title">Monthly Plans</h3>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h4>SS1 & SS2 Monthly</h4>
+                            <div class="price">
+                                <span class="currency">₦</span>
+                                <span class="amount">3,500</span>
+                                <span class="period">/month</span>
+                            </div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>✓ Access to all subjects</li>
+                            <li>✓ Interactive quizzes</li>
+                            <li>✓ Mock exams</li>
+                            <li>✓ E-books & study materials</li>
+                            <li>✓ Video lessons</li>
+                            <li>✓ Live classes</li>
+                            <li>✓ Student progress reports</li>
+                        </ul>
+                        <button class="btn-pricing" onclick="redirectToPayment('ss1-ss2-monthly')">Get Started</button>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h4>SS3 Monthly</h4>
+                            <div class="price">
+                                <span class="currency">₦</span>
+                                <span class="amount">4,500</span>
+                                <span class="period">/month</span>
+                            </div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>✓ Access to all subjects</li>
+                            <li>✓ Interactive quizzes</li>
+                            <li>✓ Mock exams</li>
+                            <li>✓ E-books & study materials</li>
+                            <li>✓ Video lessons</li>
+                            <li>✓ Live classes</li>
+                            <li>✓ Student progress reports</li>
+                            <li>✓ WAEC/NECO prep materials</li>
+                        </ul>
+                        <button class="btn-pricing" onclick="redirectToPayment('ss3-monthly')">Get Started</button>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h4>Jambite Monthly</h4>
+                            <div class="price">
+                                <span class="currency">₦</span>
+                                <span class="amount">5,500</span>
+                                <span class="period">/month</span>
+                            </div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>✓ Access to all subjects</li>
+                            <li>✓ Interactive quizzes</li>
+                            <li>✓ Mock exams</li>
+                            <li>✓ E-books & study materials</li>
+                            <li>✓ Video lessons</li>
+                            <li>✓ Live classes</li>
+                            <li>✓ Student progress reports</li>
+                            <li>✓ JAMB prep materials</li>
+                            <li>✓ University selection guide</li>
+                        </ul>
+                        <button class="btn-pricing" onclick="redirectToPayment('jambite-monthly')">Get Started</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Termly Plans -->
+            <div class="plan-type-section">
+                <h3 class="plan-type-title">Termly Plans</h3>
+                <div class="pricing-grid">
+                    <div class="pricing-card popular">
+                        <div class="popular-badge">Best Value</div>
+                        <div class="pricing-header">
+                            <h4>SS1 & SS2 Termly</h4>
+                            <div class="price">
+                                <span class="currency">₦</span>
+                                <span class="amount">9,500</span>
+                                <span class="period">/term</span>
+                            </div>
+                            <div class="savings">Save ₦1,000</div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>✓ Access to all subjects</li>
+                            <li>✓ Interactive quizzes</li>
+                            <li>✓ Mock exams</li>
+                            <li>✓ E-books & study materials</li>
+                            <li>✓ Video lessons</li>
+                            <li>✓ Live classes</li>
+                            <li>✓ Student progress reports</li>
+                            <li>✓ Priority support</li>
+                        </ul>
+                        <button class="btn-pricing primary" onclick="redirectToPayment('ss1-ss2-termly')">Get Started</button>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h4>SS3 Termly</h4>
+                            <div class="price">
+                                <span class="currency">₦</span>
+                                <span class="amount">12,000</span>
+                                <span class="period">/term</span>
+                            </div>
+                            <div class="savings">Save ₦1,500</div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>✓ Access to all subjects</li>
+                            <li>✓ Interactive quizzes</li>
+                            <li>✓ Mock exams</li>
+                            <li>✓ E-books & study materials</li>
+                            <li>✓ Video lessons</li>
+                            <li>✓ Live classes</li>
+                            <li>✓ Student progress reports</li>
+                            <li>✓ WAEC/NECO prep materials</li>
+                            <li>✓ Priority support</li>
+                        </ul>
+                        <button class="btn-pricing" onclick="redirectToPayment('ss3-termly')">Get Started</button>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h4>Jambite Termly</h4>
+                            <div class="price">
+                                <span class="currency">₦</span>
+                                <span class="amount">15,000</span>
+                                <span class="period">/term</span>
+                            </div>
+                            <div class="savings">Save ₦1,500</div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>✓ Access to all subjects</li>
+                            <li>✓ Interactive quizzes</li>
+                            <li>✓ Mock exams</li>
+                            <li>✓ E-books & study materials</li>
+                            <li>✓ Video lessons</li>
+                            <li>✓ Live classes</li>
+                            <li>✓ Student progress reports</li>
+                            <li>✓ JAMB prep materials</li>
+                            <li>✓ University selection guide</li>
+                            <li>✓ Priority support</li>
+                        </ul>
+                        <button class="btn-pricing" onclick="redirectToPayment('jambite-termly')">Get Started</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Family Plans Section -->
+    <section class="family-plans">
+        <div class="container">
+            <div class="section-header">
+                <h2>Family Plans</h2>
+                <p>A single subscription that covers multiple students. Great value for parents with more than one child on the platform.</p>
+            </div>
+            
+            <!-- Pricing Toggle -->
+            <div class="pricing-toggle-container">
+                <button class="pricing-toggle-btn active" data-plan="monthly">Monthly</button>
+                <button class="pricing-toggle-btn" data-plan="termly">Termly</button>
+            </div>
+            
+            <!-- Monthly Plans -->
+            <div class="pricing-grid family-grid family-monthly active">
+                <div class="pricing-card family-card">
+                    <div class="pricing-header">
+                        <h4>2 Students Plan (SS1 & SS2)</h4>
+                        <div class="price">
+                            <span class="currency">₦</span>
+                            <span class="amount">5,500</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ All individual plan features</li>
+                        <li>✓ Covers 2 students (SS1 & SS2)</li>
+                        <li>✓ Parental progress tracking</li>
+                        <li>✓ Family dashboard</li>
+                        <li>✓ Shared study materials</li>
+                        <li>✓ Priority family support</li>
+                    </ul>
+                    <button class="btn-pricing primary" onclick="redirectToFamilyPayment('family-2-monthly')">Get Started</button>
+                </div>
+                
+                <div class="pricing-card family-card">
+                    <div class="pricing-header">
+                        <h4>3+ Students Plan (SS1 & SS2)</h4>
+                        <div class="price">
+                            <span class="currency">₦</span>
+                            <span class="amount">7,000</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ All individual plan features</li>
+                        <li>✓ Covers 3 or more students (SS1 & SS2)</li>
+                        <li>✓ Parental progress tracking</li>
+                        <li>✓ Family dashboard</li>
+                        <li>✓ Shared study materials</li>
+                        <li>✓ Priority family support</li>
+                        <li>✓ Bulk discount savings</li>
+                    </ul>
+                    <button class="btn-pricing primary" onclick="redirectToFamilyPayment('family-3-monthly')">Get Started</button>
+                </div>
+                
+                <div class="pricing-card family-card">
+                    <div class="pricing-header">
+                        <h4>SS3 Family Plan</h4>
+                        <div class="price">
+                            <span class="currency">₦</span>
+                            <span class="amount">6,000</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ All individual plan features</li>
+                        <li>✓ Covers multiple SS3 students</li>
+                        <li>✓ WAEC/NECO exam preparation</li>
+                        <li>✓ University admission guidance</li>
+                        <li>✓ Parental progress tracking</li>
+                        <li>✓ Family dashboard</li>
+                        <li>✓ Priority family support</li>
+                    </ul>
+                    <button class="btn-pricing primary" onclick="redirectToFamilyPayment('family-ss3-monthly')">Get Started</button>
+                </div>
+                
+                <div class="pricing-card family-card">
+                    <div class="pricing-header">
+                        <h4>Jambite Family Plan</h4>
+                        <div class="price">
+                            <span class="currency">₦</span>
+                            <span class="amount">7,500</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ All individual plan features</li>
+                        <li>✓ Covers multiple Jambite students</li>
+                        <li>✓ JAMB/UTME exam preparation</li>
+                        <li>✓ Post-UTME coaching</li>
+                        <li>✓ University selection guidance</li>
+                        <li>✓ Parental progress tracking</li>
+                        <li>✓ Family dashboard</li>
+                        <li>✓ Priority family support</li>
+                    </ul>
+                    <button class="btn-pricing primary" onclick="redirectToFamilyPayment('family-jambite-monthly')">Get Started</button>
+                </div>
+            </div>
+            
+            <!-- Termly Plans -->
+            <div class="pricing-grid family-grid family-termly">
+                <div class="pricing-card family-card">
+                    <div class="pricing-header">
+                        <h4>2 Students Plan (SS1 & SS2)</h4>
+                        <div class="price">
+                            <span class="currency">₦</span>
+                            <span class="amount">15,000</span>
+                            <span class="period">/term</span>
+                        </div>
+                        <div class="savings">Save ₦1,500</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ All individual plan features</li>
+                        <li>✓ Covers 2 students (SS1 & SS2)</li>
+                        <li>✓ Parental progress tracking</li>
+                        <li>✓ Family dashboard</li>
+                        <li>✓ Shared study materials</li>
+                        <li>✓ Priority family support</li>
+                    </ul>
+                    <button class="btn-pricing primary" onclick="redirectToFamilyPayment('family-2-termly')">Get Started</button>
+                </div>
+                
+                <div class="pricing-card family-card">
+                    <div class="pricing-header">
+                        <h4>3+ Students Plan (SS1 & SS2)</h4>
+                        <div class="price">
+                            <span class="currency">₦</span>
+                            <span class="amount">18,000</span>
+                            <span class="period">/term</span>
+                        </div>
+                        <div class="savings">Save ₦3,000</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ All individual plan features</li>
+                        <li>✓ Covers 3 or more students (SS1 & SS2)</li>
+                        <li>✓ Parental progress tracking</li>
+                        <li>✓ Family dashboard</li>
+                        <li>✓ Shared study materials</li>
+                        <li>✓ Priority family support</li>
+                        <li>✓ Bulk discount savings</li>
+                    </ul>
+                    <button class="btn-pricing primary" onclick="redirectToFamilyPayment('family-3-termly')">Get Started</button>
+                </div>
+                
+                <div class="pricing-card family-card">
+                    <div class="pricing-header">
+                        <h4>SS3 Family Plan</h4>
+                        <div class="price">
+                            <span class="currency">₦</span>
+                            <span class="amount">16,500</span>
+                            <span class="period">/term</span>
+                        </div>
+                        <div class="savings">Save ₦1,500</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ All individual plan features</li>
+                        <li>✓ Covers multiple SS3 students</li>
+                        <li>✓ WAEC/NECO exam preparation</li>
+                        <li>✓ University admission guidance</li>
+                        <li>✓ Parental progress tracking</li>
+                        <li>✓ Family dashboard</li>
+                        <li>✓ Priority family support</li>
+                    </ul>
+                    <button class="btn-pricing primary" onclick="redirectToFamilyPayment('family-ss3-termly')">Get Started</button>
+                </div>
+                
+                <div class="pricing-card family-card">
+                    <div class="pricing-header">
+                        <h4>Jambite Family Plan</h4>
+                        <div class="price">
+                            <span class="currency">₦</span>
+                            <span class="amount">20,000</span>
+                            <span class="period">/term</span>
+                        </div>
+                        <div class="savings">Save ₦2,500</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ All individual plan features</li>
+                        <li>✓ Covers multiple Jambite students</li>
+                        <li>✓ JAMB/UTME exam preparation</li>
+                        <li>✓ Post-UTME coaching</li>
+                        <li>✓ University selection guidance</li>
+                        <li>✓ Parental progress tracking</li>
+                        <li>✓ Family dashboard</li>
+                        <li>✓ Priority family support</li>
+                    </ul>
+                    <button class="btn-pricing primary" onclick="redirectToFamilyPayment('family-jambite-termly')">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="pricing-faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know about our pricing plans</p>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>Can I switch between plans?</h4>
+                    <p>Yes, you can upgrade or downgrade your plan at any time. Changes will be reflected in your next billing cycle.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>What payment methods do you accept?</h4>
+                    <p>We accept all major payment methods including bank transfers, debit cards, and mobile money payments.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Is there a free bootcamp?</h4>
+                    <p>Yes, all new users get a 7-day free bootcamp - a training and test program to assess your knowledge and ability on different subjects before choosing a plan.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Can I cancel anytime?</h4>
+                    <p>Absolutely! You can cancel your subscription at any time. Once you stop your subscription, your access will be cut off immediately.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" class="logo-img">
+                            <rect x="0" y="0" width="40" height="40" rx="8" ry="8" fill="#fbbf24"/>
+                            <text x="20" y="28" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white">B</text>
+                        </svg>
+                        <h3>BrainWave</h3>
+                    </div>
+                    <p>Empowering students for academic excellence through innovative learning solutions.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="testimonials.html">Testimonials</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: support@brainwaveedu.com.ng</p>
+                    <p>Phone: +234 706 043 6659</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025-2030 BrainWave. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Mobile Navigation Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    hamburger.classList.toggle('active');
+                });
+                
+                // Close menu when clicking on nav links
+                const navLinks = document.querySelectorAll('.nav-menu a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        navMenu.classList.remove('active');
+                        hamburger.classList.remove('active');
+                    });
+                });
+            }
+            
+            // Family Pricing Toggle
+            const toggleButtons = document.querySelectorAll('.pricing-toggle-btn');
+            const monthlyPlans = document.querySelector('.family-monthly');
+            const termlyPlans = document.querySelector('.family-termly');
+            
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const planType = this.getAttribute('data-plan');
+                    
+                    // Update active button
+                    toggleButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Toggle plan visibility
+                    if (planType === 'monthly') {
+                        monthlyPlans.classList.add('active');
+                        termlyPlans.classList.remove('active');
+                    } else {
+                        termlyPlans.classList.add('active');
+                        monthlyPlans.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Redirect to payment gateway
+        function redirectToPayment(planType) {
+            // Store selected plan in localStorage
+            localStorage.setItem('selectedPlan', planType);
+            // Redirect to signup page
+            window.location.href = `signup.html?plan=${planType}`;
+        }
+        
+        // Redirect to family payment gateway
+        function redirectToFamilyPayment(planType) {
+            // Store selected plan in localStorage
+            localStorage.setItem('selectedPlan', planType);
+            // Redirect to signup page
+            window.location.href = `signup.html?plan=${planType}`;
+        }
+    </script>
+</body>
+</html>

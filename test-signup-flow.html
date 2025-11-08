@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Signup Flow - BrainWave</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .test-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 1.5rem;
+        }
+        .test-button {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin: 1rem 0;
+            transition: transform 0.3s;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+        }
+        .info {
+            background: #eff6ff;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 4px solid #1e3a8a;
+        }
+        .status {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 10px;
+            background: #f9fafb;
+        }
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Signup Flow Test</h1>
+        
+        <div class="info">
+            <strong>Testing:</strong> This page will test if the redirect to email-confirmation.html works properly.
+        </div>
+
+        <button class="test-button" onclick="testRedirect()">
+            Test Redirect to Email Confirmation
+        </button>
+
+        <button class="test-button" onclick="testSignupFlow()">
+            Simulate Full Signup Flow
+        </button>
+
+        <button class="test-button" onclick="clearCacheAndReload()">
+            Clear LocalStorage & Reload
+        </button>
+
+        <button class="test-button" onclick="window.location.href='signup.html'">
+            Go to Signup Page
+        </button>
+
+        <div id="status" class="status" style="display: none;"></div>
+
+        <div class="info" style="margin-top: 2rem;">
+            <strong>If redirect doesn't work:</strong><br>
+            1. Press <code>Ctrl + Shift + Delete</code><br>
+            2. Clear "Cached images and files"<br>
+            3. Clear "Cookies and site data"<br>
+            4. Click "Clear data"<br>
+            5. Try again
+        </div>
+    </div>
+
+    <script>
+        function showStatus(message, isSuccess) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status ' + (isSuccess ? 'success' : 'error');
+            statusDiv.style.display = 'block';
+        }
+
+        function testRedirect() {
+            showStatus('Redirecting in 2 seconds...', true);
+            
+            // Set test data
+            localStorage.setItem('pendingUserEmail', 'test@example.com');
+            localStorage.setItem('pendingUserRole', 'student');
+            localStorage.setItem('pendingStudentCode', 'BW-TEST-123');
+            
+            setTimeout(() => {
+                window.location.href = 'email-confirmation.html';
+            }, 2000);
+        }
+
+        function testSignupFlow() {
+            showStatus('Simulating signup process...', true);
+            
+            // Simulate user data
+            const testUser = {
+                id: Date.now(),
+                name: 'Test User',
+                email: 'testuser@example.com',
+                role: 'student',
+                plan: 'bootcamp',
+                status: 'bootcamp',
+                studentCode: 'BW-' + Date.now().toString().slice(-6) + '-TEST'
+            };
+
+            // Save to localStorage
+            let users = JSON.parse(localStorage.getItem('brainwave_users')) || [];
+            users.push(testUser);
+            localStorage.setItem('brainwave_users', JSON.stringify(users));
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('currentUser', JSON.stringify(testUser));
+            
+            // Set pending data
+            localStorage.setItem('pendingUserEmail', testUser.email);
+            localStorage.setItem('pendingUserRole', testUser.role);
+            localStorage.setItem('pendingStudentCode', testUser.studentCode);
+            
+            showStatus('User created! Redirecting to confirmation page...', true);
+            
+            setTimeout(() => {
+                window.location.href = 'email-confirmation.html';
+            }, 2000);
+        }
+
+        function clearCacheAndReload() {
+            // Clear all localStorage
+            const itemsToClear = [
+                'pendingUserEmail',
+                'pendingUserRole',
+                'pendingStudentCode',
+                'currentUser'
+            ];
+            
+            itemsToClear.forEach(item => localStorage.removeItem(item));
+            
+            showStatus('LocalStorage cleared! Reloading in 2 seconds...', true);
+            
+            setTimeout(() => {
+                location.reload(true);
+            }, 2000);
+        }
+
+        // Check if email-confirmation.html exists
+        window.addEventListener('DOMContentLoaded', function() {
+            fetch('email-confirmation.html')
+                .then(response => {
+                    if (response.ok) {
+                        console.log('✅ email-confirmation.html exists');
+                    } else {
+                        showStatus('⚠️ Warning: email-confirmation.html may not exist', false);
+                    }
+                })
+                .catch(error => {
+                    showStatus('⚠️ Error checking files: ' + error.message, false);
+                });
+        });
+    </script>
+</body>
+</html>
+
+

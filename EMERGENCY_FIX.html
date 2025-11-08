@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Dashboard Fix</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 700px;
+            width: 100%;
+        }
+        h1 {
+            color: #ef4444;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .alert {
+            background: #fef2f2;
+            border: 2px solid #fecaca;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            color: #991b1b;
+        }
+        .fix-section {
+            background: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .fix-section h3 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        button {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 0.75rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .console-output {
+            background: #1f2937;
+            color: #10b981;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.875rem;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+        .console-output div {
+            margin-bottom: 0.25rem;
+        }
+        .error { color: #ef4444; }
+        .success { color: #10b981; }
+        .warning { color: #f59e0b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <span style="font-size: 2rem;">🚨</span>
+            Emergency Dashboard Fix
+        </h1>
+        
+        <div class="alert">
+            <strong>⚠️ Dashboard Initialization Error Detected</strong><br>
+            Use the buttons below to diagnose and fix the issue.
+        </div>
+
+        <div class="fix-section">
+            <h3>🔍 Step 1: Diagnose the Problem</h3>
+            <button class="btn-primary" onclick="runDiagnostics()">
+                Run Full Diagnostics
+            </button>
+        </div>
+
+        <div class="fix-section">
+            <h3>🔧 Step 2: Apply Fixes</h3>
+            <button class="btn-warning" onclick="clearCacheAndReload()">
+                Clear Cache & Reload
+            </button>
+            <button class="btn-success" onclick="manualInit()">
+                Force Initialize Dashboard
+            </button>
+            <button class="btn-primary" onclick="openDashboard()">
+                Open Admin Dashboard
+            </button>
+        </div>
+
+        <div class="fix-section">
+            <h3>📊 Console Output</h3>
+            <div id="console" class="console-output">
+                <div class="success">Ready to diagnose...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const console = document.getElementById('console');
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : '';
+            const timestamp = new Date().toLocaleTimeString();
+            console.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            console.scrollTop = console.scrollHeight;
+        }
+
+        function runDiagnostics() {
+            log('🔍 Running diagnostics...', 'info');
+            
+            // Check if admin.js is loaded
+            log('Checking if admin.js is loaded...', 'info');
+            if (typeof AdminDashboard !== 'undefined') {
+                log('✅ AdminDashboard class found', 'success');
+            } else {
+                log('❌ AdminDashboard class NOT found - admin.js not loaded', 'error');
+            }
+            
+            // Check window.adminDashboard
+            log('Checking window.adminDashboard...', 'info');
+            if (window.adminDashboard) {
+                log('✅ window.adminDashboard exists', 'success');
+                log(`   Type: ${typeof window.adminDashboard}`, 'info');
+            } else {
+                log('❌ window.adminDashboard is undefined', 'error');
+            }
+            
+            // Check for force init function
+            log('Checking for forceInitializeDashboard...', 'info');
+            if (typeof window.forceInitializeDashboard === 'function') {
+                log('✅ forceInitializeDashboard function found', 'success');
+            } else {
+                log('❌ forceInitializeDashboard function NOT found', 'error');
+            }
+            
+            // Check for openAssessmentModal
+            log('Checking for openAssessmentModal...', 'info');
+            if (typeof window.openAssessmentModal === 'function') {
+                log('✅ openAssessmentModal function found', 'success');
+            } else {
+                log('❌ openAssessmentModal function NOT found', 'error');
+            }
+            
+            // Check document state
+            log(`Document ready state: ${document.readyState}`, 'info');
+            
+            log('📋 Diagnostics complete!', 'success');
+        }
+
+        function clearCacheAndReload() {
+            log('🔄 Clearing cache and reloading...', 'warning');
+            setTimeout(() => {
+                location.reload(true);
+            }, 1000);
+        }
+
+        function manualInit() {
+            log('🔧 Attempting manual initialization...', 'warning');
+            
+            if (typeof window.forceInitializeDashboard === 'function') {
+                log('Calling forceInitializeDashboard()...', 'info');
+                const result = window.forceInitializeDashboard();
+                if (result) {
+                    log('✅ Dashboard initialized successfully!', 'success');
+                    log('You can now close this window and use the dashboard', 'success');
+                } else {
+                    log('❌ Initialization failed. Check browser console for details.', 'error');
+                }
+            } else {
+                log('❌ forceInitializeDashboard function not available', 'error');
+                log('💡 Try: Clear Cache & Reload', 'warning');
+            }
+        }
+
+        function openDashboard() {
+            log('🚀 Opening admin dashboard...', 'info');
+            window.open('admin-dashboard.html', '_blank');
+        }
+
+        // Auto-run diagnostics on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                log('🚀 Page loaded, running auto-diagnostics...', 'info');
+                runDiagnostics();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

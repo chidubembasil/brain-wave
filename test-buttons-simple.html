@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Button Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+        .test-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        button {
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .btn-quiz { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .btn-assignment { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .btn-exam { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .btn-dashboard { background: linear-gradient(135deg, #10b981, #059669); }
+        .status {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f3f4f6;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        .status-item {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .icon-success { color: #10b981; }
+        .icon-error { color: #ef4444; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-vial"></i> Button Test</h1>
+        
+        <div class="test-buttons">
+            <button class="btn-quiz" onclick="testButton('quiz')">
+                <i class="fas fa-clipboard-list"></i>
+                Test Create Quiz
+            </button>
+            
+            <button class="btn-assignment" onclick="testButton('assignment')">
+                <i class="fas fa-tasks"></i>
+                Test Create Assignment
+            </button>
+            
+            <button class="btn-exam" onclick="testButton('exam')">
+                <i class="fas fa-file-alt"></i>
+                Test Create Mock Exam
+            </button>
+            
+            <button class="btn-dashboard" onclick="openDashboard()">
+                <i class="fas fa-external-link-alt"></i>
+                Open Admin Dashboard
+            </button>
+        </div>
+        
+        <div class="status">
+            <div class="status-item">
+                <i class="fas fa-info-circle icon-success"></i>
+                <span>Click any button above to test</span>
+            </div>
+            <div class="status-item" id="status-message">
+                <i class="fas fa-clock"></i>
+                <span>Waiting for test...</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(message, isSuccess = true) {
+            const statusEl = document.getElementById('status-message');
+            const icon = isSuccess ? 'check-circle icon-success' : 'times-circle icon-error';
+            statusEl.innerHTML = `<i class="fas fa-${icon}"></i><span>${message}</span>`;
+        }
+
+        function testButton(type) {
+            console.log('Testing button for type:', type);
+            updateStatus(`Testing ${type}... Check console for details`, true);
+            
+            // Test if function exists
+            if (typeof window.openAssessmentModal === 'function') {
+                updateStatus(`✅ Function exists! Calling openAssessmentModal('${type}')`, true);
+                try {
+                    window.openAssessmentModal(type);
+                    updateStatus(`✅ Successfully called openAssessmentModal('${type}')`, true);
+                } catch (error) {
+                    updateStatus(`❌ Error: ${error.message}`, false);
+                }
+            } else {
+                updateStatus(`❌ openAssessmentModal function not found! admin.js may not be loaded.`, false);
+            }
+        }
+
+        function openDashboard() {
+            window.location.href = 'admin-dashboard.html';
+        }
+
+        // Check on load
+        window.addEventListener('load', () => {
+            console.log('Page loaded');
+            console.log('Checking for openAssessmentModal:', typeof window.openAssessmentModal);
+            console.log('Checking for adminDashboard:', typeof window.adminDashboard);
+            
+            if (typeof window.openAssessmentModal === 'function') {
+                updateStatus('✅ Functions loaded successfully!', true);
+            } else {
+                updateStatus('⚠️ Functions not loaded. This is a standalone test page.', false);
+            }
+        });
+    </script>
+</body>
+</html>

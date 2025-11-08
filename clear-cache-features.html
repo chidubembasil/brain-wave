@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Cache & Reload Features</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 500px;
+        }
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 1.5rem;
+        }
+        .instructions {
+            text-align: left;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+        .instructions h3 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+        .instructions ol {
+            margin-left: 1.5rem;
+        }
+        .instructions li {
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+        }
+        .btn {
+            background: #fbbf24;
+            color: #1e3a8a;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: #f59e0b;
+            transform: translateY(-2px);
+        }
+        .status {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+        }
+        .status.show {
+            display: block;
+        }
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Clear Cache & View Features</h1>
+        
+        <div class="instructions">
+            <h3>To see the mobile layout changes:</h3>
+            <ol>
+                <li><strong>On Mobile:</strong> Click "Clear & Open Features" below</li>
+                <li><strong>Or manually:</strong>
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Chrome/Edge: Press Ctrl+Shift+Delete (or Cmd+Shift+Delete on Mac)</li>
+                        <li>Select "Cached images and files"</li>
+                        <li>Click "Clear data"</li>
+                        <li>Then reload features.html</li>
+                    </ul>
+                </li>
+                <li><strong>Hard Reload:</strong> Press Ctrl+F5 (or Cmd+Shift+R on Mac) on features.html</li>
+            </ol>
+        </div>
+
+        <button class="btn" onclick="clearAndOpen()">🚀 Clear & Open Features</button>
+        
+        <div id="status" class="status"></div>
+    </div>
+
+    <script>
+        function clearAndOpen() {
+            const statusEl = document.getElementById('status');
+            
+            // Clear cache if possible
+            if ('caches' in window) {
+                caches.keys().then(function(names) {
+                    for (let name of names) {
+                        caches.delete(name);
+                    }
+                });
+            }
+            
+            // Show status
+            statusEl.textContent = '✅ Cache cleared! Opening features page...';
+            statusEl.className = 'status success show';
+            
+            // Open features page with cache-busting parameter
+            setTimeout(() => {
+                window.location.href = 'features.html?v=' + new Date().getTime();
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

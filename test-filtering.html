@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Content Filtering - BrainWave</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            color: #3b82f6;
+            margin: 2rem 0 1rem 0;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 0.5rem;
+        }
+
+        .info {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        button {
+            padding: 1rem;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .success {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        }
+
+        .warning {
+            background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+        }
+
+        .danger {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+        }
+
+        .result-box {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .result-item {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: white;
+            border-left: 4px solid #3b82f6;
+            border-radius: 0.25rem;
+        }
+
+        .result-item strong {
+            color: #1e3a8a;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .badge-level {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .badge-stream {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .link-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .link-button {
+            flex: 1;
+            padding: 1.5rem;
+            background: white;
+            border: 2px solid #3b82f6;
+            color: #1e3a8a;
+            text-decoration: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .link-button:hover {
+            background: #3b82f6;
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 BrainWave Content Filtering Test</h1>
+        
+        <div class="info">
+            <strong>ℹ️ Testing Instructions:</strong>
+            <p>1. First, setup test data using the buttons below</p>
+            <p>2. Create test students with different class levels and streams</p>
+            <p>3. View how content is filtered for each student</p>
+            <p>4. Test the actual signup and dashboard flow</p>
+        </div>
+
+        <h2>Step 1: Setup Test Data</h2>
+        <div class="button-group">
+            <button onclick="setupAllData()" class="success">✨ Setup All Test Data</button>
+            <button onclick="clearAllData()" class="danger">🗑️ Clear All Data</button>
+        </div>
+
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="stat-students">0</div>
+                <div class="stat-label">Students</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-subjects">0</div>
+                <div class="stat-label">Subjects</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-materials">0</div>
+                <div class="stat-label">Study Materials</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-assessments">0</div>
+                <div class="stat-label">Assessments</div>
+            </div>
+        </div>
+
+        <h2>Step 2: Test Content Filtering</h2>
+        <div class="button-group">
+            <button onclick="testFiltering('SS2', 'Science')">Test SS2 Science</button>
+            <button onclick="testFiltering('SS3', 'Humanities')">Test SS3 Humanities</button>
+            <button onclick="testFiltering('Jambite', 'Science')">Test Jambite Science</button>
+            <button onclick="testFiltering('SS1', 'Business')">Test SS1 Business</button>
+        </div>
+
+        <div id="filterResults"></div>
+
+        <h2>Step 3: Test Live Flow</h2>
+        <div class="link-group">
+            <a href="signup.html" class="link-button" target="_blank">
+                📝 Open Signup Page
+            </a>
+            <a href="student-login.html" class="link-button" target="_blank">
+                🔐 Open Student Login
+            </a>
+            <a href="student-dashboard.html" class="link-button" target="_blank">
+                📊 Open Student Dashboard
+            </a>
+            <a href="admin-dashboard.html" class="link-button" target="_blank">
+                ⚙️ Open Admin Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function generateCode() {
+            return 'BW' + Math.random().toString(36).substr(2, 6).toUpperCase();
+        }
+
+        function setupAllData() {
+            console.log('Setting up all test data...');
+            
+            // Create test students
+            const students = [
+                {
+                    id: Date.now(),
+                    name: 'Alex Science',
+                    email: 'alex.science@test.com',
+                    phone: '+234 801 111 1111',
+                    role: 'student',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    studentCode: generateCode(),
+                    plan: 'bootcamp',
+                    status: 'active',
+                    locked: false,
+                    joinDate: new Date().toISOString().split('T')[0],
+                    bootcampStartDate: new Date().toISOString().split('T')[0],
+                    planHistory: [{ from: null, to: 'bootcamp', changedAt: new Date().toISOString(), changedBy: 'system' }],
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 1,
+                    name: 'Sarah Humanities',
+                    email: 'sarah.humanities@test.com',
+                    phone: '+234 802 222 2222',
+                    role: 'student',
+                    classLevel: 'SS3',
+                    stream: 'Humanities',
+                    studentCode: generateCode(),
+                    plan: '30',
+                    status: 'active',
+                    locked: false,
+                    joinDate: new Date().toISOString().split('T')[0],
+                    expiry: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                    planHistory: [{ from: null, to: '30', changedAt: new Date().toISOString(), changedBy: 'system' }],
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 2,
+                    name: 'David Jambite',
+                    email: 'david.jambite@test.com',
+                    phone: '+234 803 333 3333',
+                    role: 'student',
+                    classLevel: 'Jambite',
+                    stream: 'Science',
+                    studentCode: generateCode(),
+                    plan: '60',
+                    status: 'active',
+                    locked: false,
+                    joinDate: new Date().toISOString().split('T')[0],
+                    expiry: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                    planHistory: [{ from: null, to: '60', changedAt: new Date().toISOString(), changedBy: 'system' }],
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            localStorage.setItem('brainwave_users', JSON.stringify(students));
+            localStorage.setItem('users', JSON.stringify(students));
+
+            // Create subjects
+            const subjects = [
+                { id: Date.now(), name: 'Mathematics', classLevel: 'SS2', stream: 'Science', createdAt: new Date().toISOString() },
+                { id: Date.now() + 1, name: 'Physics', classLevel: 'SS2', stream: 'Science', createdAt: new Date().toISOString() },
+                { id: Date.now() + 2, name: 'Chemistry', classLevel: 'SS2', stream: 'Science', createdAt: new Date().toISOString() },
+                { id: Date.now() + 3, name: 'Biology', classLevel: 'SS2', stream: 'Science', createdAt: new Date().toISOString() },
+                { id: Date.now() + 4, name: 'Literature', classLevel: 'SS3', stream: 'Humanities', createdAt: new Date().toISOString() },
+                { id: Date.now() + 5, name: 'Government', classLevel: 'SS3', stream: 'Humanities', createdAt: new Date().toISOString() },
+                { id: Date.now() + 6, name: 'History', classLevel: 'SS3', stream: 'Humanities', createdAt: new Date().toISOString() },
+                { id: Date.now() + 7, name: 'Use of English', classLevel: 'Jambite', stream: 'Science', createdAt: new Date().toISOString() },
+                { id: Date.now() + 8, name: 'Physics (JAMB)', classLevel: 'Jambite', stream: 'Science', createdAt: new Date().toISOString() },
+                { id: Date.now() + 9, name: 'English Language', classLevel: 'All Levels', stream: 'General', createdAt: new Date().toISOString() }
+            ];
+
+            localStorage.setItem('brainwave_subjects', JSON.stringify(subjects));
+
+            // Create study materials
+            const books = [
+                { id: Date.now(), title: 'Math Textbook', description: 'SS2 Mathematics', subject: 'Mathematics', classLevel: 'SS2', stream: 'Science', link: 'https://drive.google.com/sample', createdAt: new Date().toISOString() },
+                { id: Date.now() + 1, title: 'Literature Guide', description: 'SS3 Literature', subject: 'Literature', classLevel: 'SS3', stream: 'Humanities', link: 'https://drive.google.com/sample2', createdAt: new Date().toISOString() },
+                { id: Date.now() + 2, title: 'JAMB Physics', description: 'JAMB Preparation', subject: 'Physics (JAMB)', classLevel: 'Jambite', stream: 'Science', link: 'https://drive.google.com/sample3', createdAt: new Date().toISOString() }
+            ];
+
+            const videos = [
+                { id: Date.now() + 10, title: 'Calculus Tutorial', description: 'Learn calculus', subject: 'Mathematics', classLevel: 'SS2', stream: 'Science', link: 'https://www.youtube.com/watch?v=sample1', createdAt: new Date().toISOString() },
+                { id: Date.now() + 11, title: 'Poetry Analysis', description: 'Literature poetry', subject: 'Literature', classLevel: 'SS3', stream: 'Humanities', link: 'https://www.youtube.com/watch?v=sample2', createdAt: new Date().toISOString() }
+            ];
+
+            localStorage.setItem('brainwave_books', JSON.stringify(books));
+            localStorage.setItem('brainwave_videos', JSON.stringify(videos));
+
+            // Create assessments
+            const futureDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+            
+            const quizzes = [
+                { id: Date.now(), type: 'quiz', title: 'Math Quiz', subject: 'Mathematics', classLevel: 'SS2', stream: 'Science', dueDate: futureDate, duration: '30', totalMarks: 50, createdAt: new Date().toISOString() },
+                { id: Date.now() + 1, type: 'quiz', title: 'Literature Quiz', subject: 'Literature', classLevel: 'SS3', stream: 'Humanities', dueDate: futureDate, duration: '45', totalMarks: 60, createdAt: new Date().toISOString() }
+            ];
+
+            const assignments = [
+                { id: Date.now() + 10, type: 'assignment', title: 'Physics Assignment', subject: 'Physics', classLevel: 'SS2', stream: 'Science', dueDate: futureDate, duration: '60', totalMarks: 100, createdAt: new Date().toISOString() }
+            ];
+
+            const mocks = [
+                { id: Date.now() + 20, type: 'mock', title: 'JAMB Mock Exam', subject: 'Physics (JAMB)', classLevel: 'Jambite', stream: 'Science', dueDate: futureDate, duration: '120', totalMarks: 100, createdAt: new Date().toISOString() }
+            ];
+
+            localStorage.setItem('brainwave_quizs', JSON.stringify(quizzes));
+            localStorage.setItem('brainwave_assignments', JSON.stringify(assignments));
+            localStorage.setItem('brainwave_mocks', JSON.stringify(mocks));
+
+            // Create announcements
+            const announcements = [
+                { id: Date.now(), title: 'Welcome!', message: 'Welcome to BrainWave', classLevel: 'All Levels', createdAt: new Date().toISOString() },
+                { id: Date.now() + 1, title: 'SS2 Exams', message: 'SS2 exams next week', classLevel: 'SS2', createdAt: new Date().toISOString() }
+            ];
+
+            localStorage.setItem('brainwave_announcements', JSON.stringify(announcements));
+
+            alert('✅ All test data created successfully!\n\nCreated:\n- 3 Students\n- 10 Subjects\n- 5 Study Materials\n- 4 Assessments\n- 2 Announcements');
+            
+            updateStats();
+        }
+
+        function clearAllData() {
+            if (!confirm('Clear all data?')) return;
+            
+            const keys = ['brainwave_users', 'users', 'brainwave_subjects', 'brainwave_books', 'brainwave_videos', 
+                         'brainwave_quizs', 'brainwave_assignments', 'brainwave_mocks', 'brainwave_announcements',
+                         'brainwave_current_student_id'];
+            
+            keys.forEach(key => localStorage.removeItem(key));
+            
+            alert('✅ All data cleared!');
+            updateStats();
+            document.getElementById('filterResults').innerHTML = '';
+        }
+
+        function updateStats() {
+            const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            const subjects = JSON.parse(localStorage.getItem('brainwave_subjects') || '[]');
+            const books = JSON.parse(localStorage.getItem('brainwave_books') || '[]');
+            const videos = JSON.parse(localStorage.getItem('brainwave_videos') || '[]');
+            const quizzes = JSON.parse(localStorage.getItem('brainwave_quizs') || '[]');
+            const assignments = JSON.parse(localStorage.getItem('brainwave_assignments') || '[]');
+            const mocks = JSON.parse(localStorage.getItem('brainwave_mocks') || '[]');
+
+            document.getElementById('stat-students').textContent = users.filter(u => u.role === 'student').length;
+            document.getElementById('stat-subjects').textContent = subjects.length;
+            document.getElementById('stat-materials').textContent = books.length + videos.length;
+            document.getElementById('stat-assessments').textContent = quizzes.length + assignments.length + mocks.length;
+        }
+
+        function testFiltering(classLevel, stream) {
+            console.log(`Testing filtering for ${classLevel} ${stream}`);
+            
+            const subjects = JSON.parse(localStorage.getItem('brainwave_subjects') || '[]');
+            const books = JSON.parse(localStorage.getItem('brainwave_books') || '[]');
+            const videos = JSON.parse(localStorage.getItem('brainwave_videos') || '[]');
+            const quizzes = JSON.parse(localStorage.getItem('brainwave_quizs') || '[]');
+            const assignments = JSON.parse(localStorage.getItem('brainwave_assignments') || '[]');
+            const mocks = JSON.parse(localStorage.getItem('brainwave_mocks') || '[]');
+
+            // Filter function
+            const filterContent = (items) => {
+                return items.filter(item => {
+                    const classMatch = item.classLevel === classLevel || item.classLevel === 'All Levels';
+                    const streamMatch = item.stream === stream || item.stream === 'All Streams' || 
+                                       item.stream === 'General' || item.stream === 'Multi-Stream';
+                    return classMatch && streamMatch;
+                });
+            };
+
+            const filteredSubjects = filterContent(subjects);
+            const filteredBooks = filterContent(books);
+            const filteredVideos = filterContent(videos);
+            const filteredQuizzes = filterContent(quizzes);
+            const filteredAssignments = filterContent(assignments);
+            const filteredMocks = filterContent(mocks);
+
+            // Display results
+            let html = `
+                <h2>Filtered Content for ${classLevel} ${stream} Student</h2>
+                
+                <h3>Subjects (${filteredSubjects.length})</h3>
+                <div class="result-box">
+                    ${filteredSubjects.length === 0 ? '<p>No subjects found</p>' : 
+                      filteredSubjects.map(s => `
+                        <div class="result-item">
+                            <strong>${s.name}</strong>
+                            <span class="badge badge-level">${s.classLevel}</span>
+                            <span class="badge badge-stream">${s.stream}</span>
+                        </div>
+                      `).join('')}
+                </div>
+
+                <h3>Study Materials (${filteredBooks.length + filteredVideos.length})</h3>
+                <div class="result-box">
+                    ${filteredBooks.map(b => `
+                        <div class="result-item">
+                            <strong>📚 ${b.title}</strong> - ${b.subject}
+                            <span class="badge badge-level">${b.classLevel}</span>
+                            <span class="badge badge-stream">${b.stream}</span>
+                        </div>
+                    `).join('')}
+                    ${filteredVideos.map(v => `
+                        <div class="result-item">
+                            <strong>🎥 ${v.title}</strong> - ${v.subject}
+                            <span class="badge badge-level">${v.classLevel}</span>
+                            <span class="badge badge-stream">${v.stream}</span>
+                        </div>
+                    `).join('')}
+                    ${(filteredBooks.length + filteredVideos.length) === 0 ? '<p>No study materials found</p>' : ''}
+                </div>
+
+                <h3>Assessments (${filteredQuizzes.length + filteredAssignments.length + filteredMocks.length})</h3>
+                <div class="result-box">
+                    ${filteredQuizzes.map(q => `
+                        <div class="result-item">
+                            <strong>📝 ${q.title}</strong> - ${q.subject}
+                            <span class="badge badge-level">${q.classLevel}</span>
+                            <span class="badge badge-stream">${q.stream}</span>
+                        </div>
+                    `).join('')}
+                    ${filteredAssignments.map(a => `
+                        <div class="result-item">
+                            <strong>📋 ${a.title}</strong> - ${a.subject}
+                            <span class="badge badge-level">${a.classLevel}</span>
+                            <span class="badge badge-stream">${a.stream}</span>
+                        </div>
+                    `).join('')}
+                    ${filteredMocks.map(m => `
+                        <div class="result-item">
+                            <strong>📄 ${m.title}</strong> - ${m.subject}
+                            <span class="badge badge-level">${m.classLevel}</span>
+                            <span class="badge badge-stream">${m.stream}</span>
+                        </div>
+                    `).join('')}
+                    ${(filteredQuizzes.length + filteredAssignments.length + filteredMocks.length) === 0 ? '<p>No assessments found</p>' : ''}
+                </div>
+            `;
+
+            document.getElementById('filterResults').innerHTML = html;
+        }
+
+        // Initialize
+        updateStats();
+    </script>
+</body>
+</html>

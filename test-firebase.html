@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        button {
+            background: #1e3a8a;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #1e40af; }
+        #log {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥 Firebase Connection Test</h1>
+    
+    <div class="test-box">
+        <h2>Connection Status</h2>
+        <div id="status" class="status info">Testing connection...</div>
+    </div>
+
+    <div class="test-box">
+        <h2>Test Actions</h2>
+        <button onclick="testFirebaseConfig()">Test Firebase Config</button>
+        <button onclick="testEmailVerification()">Test Email Verification</button>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+
+    <div class="test-box">
+        <h2>Console Log</h2>
+        <div id="log"></div>
+    </div>
+
+    <script type="module">
+        import { auth, db, createUserWithEmailAndPassword, sendEmailVerification } from './firebase-config.js';
+
+        window.auth = auth;
+        window.db = db;
+        window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+        window.sendEmailVerification = sendEmailVerification;
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#ff4444' : type === 'success' ? '#00ff00' : '#00ccff';
+            logDiv.innerHTML += `<div style="color: ${color}">[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+
+        window.log = log;
+
+        // Test Firebase config on load
+        window.addEventListener('DOMContentLoaded', async () => {
+            log('🔄 Starting Firebase connection test...', 'info');
+            
+            try {
+                if (auth) {
+                    log('✅ Firebase Auth initialized', 'success');
+                    log(`Auth Domain: ${auth.config.authDomain}`, 'info');
+                } else {
+                    log('❌ Firebase Auth not initialized', 'error');
+                }
+
+                if (db) {
+                    log('✅ Firestore initialized', 'success');
+                } else {
+                    log('❌ Firestore not initialized', 'error');
+                }
+
+                document.getElementById('status').innerHTML = '✅ Firebase Connected Successfully';
+                document.getElementById('status').className = 'status success';
+            } catch (error) {
+                log('❌ Firebase initialization error: ' + error.message, 'error');
+                document.getElementById('status').innerHTML = '❌ Firebase Connection Failed';
+                document.getElementById('status').className = 'status error';
+            }
+        });
+
+        window.testFirebaseConfig = function() {
+            log('🔍 Testing Firebase Configuration...', 'info');
+            log(`Project ID: brainwave-1-31600`, 'info');
+            log(`Auth Domain: brainwave-1-31600.firebaseapp.com`, 'info');
+            log(`Auth object exists: ${!!auth}`, 'info');
+            log(`DB object exists: ${!!db}`, 'info');
+            log(`createUserWithEmailAndPassword exists: ${!!createUserWithEmailAndPassword}`, 'info');
+            log(`sendEmailVerification exists: ${!!sendEmailVerification}`, 'info');
+        };
+
+        window.testEmailVerification = async function() {
+            const testEmail = prompt('Enter a test email address:');
+            const testPassword = prompt('Enter a test password (min 8 characters):');
+            
+            if (!testEmail || !testPassword) {
+                log('❌ Test cancelled', 'error');
+                return;
+            }
+
+            log(`🧪 Testing signup with: ${testEmail}`, 'info');
+            
+            try {
+                log('🔐 Creating user...', 'info');
+                const userCredential = await createUserWithEmailAndPassword(auth, testEmail, testPassword);
+                log(`✅ User created: ${userCredential.user.uid}`, 'success');
+                
+                log('📧 Sending verification email...', 'info');
+                const actionCodeSettings = {
+                    url: window.location.origin + '/email-confirmation.html',
+                    handleCodeInApp: false
+                };
+                await sendEmailVerification(userCredential.user, actionCodeSettings);
+                log(`✅ Verification email sent to: ${testEmail}`, 'success');
+                
+                // Clean up test user
+                log('🧹 Cleaning up test user...', 'info');
+                await userCredential.user.delete();
+                log('✅ Test user deleted', 'success');
+                
+            } catch (error) {
+                log(`❌ Error: ${error.code} - ${error.message}`, 'error');
+                console.error('Full error:', error);
+            }
+        };
+
+        window.clearLog = function() {
+            document.getElementById('log').innerHTML = '';
+        };
+    </script>
+</body>
+</html>

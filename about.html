@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>About Us - BrainWave</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #1e3a8a;
+            --accent-yellow: #fbbf24;
+            --white: #ffffff;
+            --text-gray: #6b7280;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header/Navbar */
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--primary-blue);
+        }
+
+        .nav-login {
+            background: var(--accent-yellow);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            color: var(--primary-blue) !important;
+            font-weight: 600;
+        }
+        
+        .nav-login:hover {
+            background: #f59e0b;
+            transform: scale(1.05);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-blue);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .about-hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 150px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+        }
+
+        .about-hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .about-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .about-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        /* Story Section */
+        .story-section {
+            padding: 80px 20px;
+            background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+        }
+
+        .story-content {
+            background: white;
+            padding: 3.5rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(30, 58, 138, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .story-content:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 80px rgba(30, 58, 138, 0.15);
+        }
+
+        .story-header h2 {
+            font-size: 2.5rem;
+            color: #1e3a8a;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .story-text p {
+            font-size: 1.1rem;
+            color: #000000;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Values Section */
+        .values-section {
+            padding: 80px 20px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        }
+
+        .values-content h2 {
+            font-size: 2.5rem;
+            color: #1e3a8a;
+            margin-bottom: 3rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .value-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(30, 58, 138, 0.15);
+            border-color: rgba(30, 58, 138, 0.2);
+        }
+
+        .value-icon {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: white;
+            font-size: 2.5rem;
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.4);
+        }
+
+        .value-card h3 {
+            font-size: 1.5rem;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .value-card p {
+            color: #000000;
+            line-height: 1.7;
+        }
+
+        /* Impact Section */
+        .impact-section {
+            padding: 80px 20px;
+            background: linear-gradient(180deg, #f8fafc 0%, #e0f2fe 100%);
+        }
+
+        .impact-content h2 {
+            font-size: 2.5rem;
+            color: #1e3a8a;
+            margin-bottom: 3rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .impact-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 3rem 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6, #1e3a8a);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(30, 58, 138, 0.15);
+            border-color: rgba(30, 58, 138, 0.2);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            color: #000000;
+            font-weight: 600;
+        }
+
+        /* Mission Section */
+        .mission-section {
+            padding: 80px 20px;
+            background: linear-gradient(180deg, #e0f2fe 0%, #ffffff 100%);
+        }
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .mission-content {
+            background: white;
+            padding: 3.5rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(30, 58, 138, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .mission-content:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 80px rgba(30, 58, 138, 0.15);
+        }
+
+        .mission-content h2 {
+            font-size: 2.5rem;
+            color: #1e3a8a;
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        .mission-content p {
+            font-size: 1.1rem;
+            color: #000000;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .mission-benefits {
+            list-style: none;
+            padding: 0;
+            margin-top: 2rem;
+        }
+
+        .mission-benefits li {
+            color: #000000;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+
+        .mission-benefits li::before {
+            content: '✓';
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            border-radius: 50%;
+            margin-right: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .mission-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mission-icon-large {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 5rem;
+            box-shadow: 0 20px 60px rgba(30, 58, 138, 0.4);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Team Section */
+        .team-section {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .team-content h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .team-content > p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-section {
+            margin-top: 4rem;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-section h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 1.2rem 3rem;
+            border-radius: 12px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--accent-yellow);
+            color: var(--primary-blue);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+            background: #f59e0b;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--primary-blue);
+            transform: translateY(-3px) scale(1.05);
+            border-color: white;
+        }
+
+        /* Footer */
+        .footer {
+            background: #374151;
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3,
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: var(--accent-yellow);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-yellow);
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+
+        .social-link:hover {
+            background: var(--accent-yellow);
+            color: var(--primary-blue);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #4b5563;
+            color: white;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                padding: 1rem 0;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(6px, -6px);
+            }
+
+            .about-hero h1 {
+                font-size: 2rem;
+            }
+
+            .about-hero {
+                padding: 120px 20px 60px;
+            }
+
+            .story-content,
+            .mission-content {
+                padding: 2rem;
+            }
+
+            .mission-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .mission-visual {
+                order: -1;
+            }
+
+            .mission-icon-large {
+                width: 150px;
+                height: 150px;
+                font-size: 3.5rem;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .impact-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .team-content h2 {
+                font-size: 2rem;
+            }
+
+            .cta-section {
+                padding: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navbar -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" class="logo-img">
+                    <rect x="0" y="0" width="40" height="40" rx="8" ry="8" fill="#fbbf24"/>
+                    <text x="20" y="28" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#1e3a8a">B</text>
+                </svg>
+                BrainWave
+            </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="features.html">Features</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="signup.html" class="nav-login">Sign Up</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- About Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <div class="about-hero-content">
+                <h1>About BrainWave</h1>
+                <p>Empowering Nigerian students through comprehensive, interactive, and trackable digital learning experiences.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-content">
+                <div class="story-header">
+                    <h2>Our Story: The BrainWave Mission</h2>
+                </div>
+                <div class="story-text">
+                    <p>BrainWave exists to empower Nigerian students by providing a comprehensive, interactive, and trackable digital learning experience. We believe that access to quality education should be seamless and engaging, helping students not only to excel academically but also to build the skills and confidence needed for a brighter future.</p>
+                    
+                    <p>Our platform is designed with the unique needs of Nigerian students in mind, offering personalized learning paths that adapt to individual learning styles and pace. Through innovative technology and educational expertise, we're making quality education accessible to every student across Nigeria.</p>
+                    
+                    <p>We're committed to transforming the educational landscape by providing tools that not only improve academic performance but also foster critical thinking, creativity, and lifelong learning habits. Join us in building a brighter future for Nigerian students.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Values Section -->
+    <section class="values-section">
+        <div class="container">
+            <div class="values-content">
+                <h2>Our Core Values</h2>
+                <div class="values-grid">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>Excellence in Education</h3>
+                        <p>We are committed to providing the highest quality educational content and tools to help students achieve their academic goals.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Accessibility for All</h3>
+                        <p>Education should be available to every Nigerian student, regardless of their location or economic background.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3>Innovation & Technology</h3>
+                        <p>We leverage cutting-edge technology to create engaging and effective learning experiences.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>Student-Centered Approach</h3>
+                        <p>Every decision we make is guided by what's best for our students and their learning journey.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section class="impact-section">
+        <div class="container">
+            <div class="impact-content">
+                <h2>Our Impact</h2>
+                <div class="impact-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">10,000+</div>
+                        <div class="stat-label">Students Empowered</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-label">Improvement Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Schools Partnered</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Learning Support</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+        <div class="container">
+            <div class="mission-grid">
+                <div class="mission-content">
+                    <h2>Our Vision for Education</h2>
+                    <p>We envision a future where every Nigerian student has access to world-class educational resources and personalized learning experiences that unlock their full potential.</p>
+                    <ul class="mission-benefits">
+                        <li>Personalized learning paths for each student</li>
+                        <li>Expert Nigerian educators and tutors</li>
+                        <li>Curriculum-aligned content for all subjects</li>
+                        <li>Real-time progress tracking and analytics</li>
+                        <li>Affordable and accessible to all students</li>
+                        <li>Interactive and engaging learning tools</li>
+                    </ul>
+                </div>
+                <div class="mission-visual">
+                    <div class="mission-icon-large">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <div class="team-content">
+                <h2>Building the Future of Education</h2>
+                <p>Our dedicated team of educators, technologists, and innovators work tirelessly to create the best possible learning experience for Nigerian students. Together, we're committed to transforming education and empowering the next generation of leaders.</p>
+                
+                <div class="cta-section">
+                    <h3>Ready to Join the BrainWave Community?</h3>
+                    <p>Start your journey towards academic excellence today.</p>
+                    <div class="cta-buttons">
+                        <a href="signup.html" class="btn-primary">Get Started</a>
+                        <a href="contact.html" class="btn-secondary">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" class="logo-img">
+                            <rect x="0" y="0" width="40" height="40" rx="8" ry="8" fill="#fbbf24"/>
+                            <text x="20" y="28" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white">B</text>
+                        </svg>
+                        <h3>BrainWave</h3>
+                    </div>
+                    <p>Empowering students for academic excellence through innovative learning solutions.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="testimonials.html">Testimonials</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: support@brainwaveedu.com.ng</p>
+                    <p>Phone: +234 706 043 6659</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025-2030 BrainWave. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    hamburger.classList.toggle('active');
+                });
+                
+                // Close menu when clicking on nav links
+                const navLinks = document.querySelectorAll('.nav-menu a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        navMenu.classList.remove('active');
+                        hamburger.classList.remove('active');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

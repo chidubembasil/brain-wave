@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Fix - BrainWave</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        h1 { color: #1e3a8a; margin-bottom: 20px; }
+        .big-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+        .big-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.3);
+        }
+        .status {
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-size: 1.1rem;
+        }
+        .success { background: #dcfce7; color: #16a34a; border-left: 5px solid #16a34a; }
+        .error { background: #fee2e2; color: #dc2626; border-left: 5px solid #dc2626; }
+        .info { background: #dbeafe; color: #2563eb; border-left: 5px solid #2563eb; }
+        pre {
+            background: #1f2937;
+            color: #10b981;
+            padding: 20px;
+            border-radius: 10px;
+            overflow: auto;
+            max-height: 400px;
+            font-size: 14px;
+            margin: 20px 0;
+        }
+        .step {
+            background: #f9fafb;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #3b82f6;
+            border-radius: 5px;
+        }
+        .step strong { color: #1e3a8a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 ULTIMATE FIX - Student Dashboard</h1>
+        
+        <div class="step">
+            <strong>Step 1:</strong> Click the button below to generate ALL data
+        </div>
+        
+        <button class="big-btn" onclick="fixEverything()">
+            🚀 FIX EVERYTHING NOW
+        </button>
+        
+        <div id="status"></div>
+        <div id="output"></div>
+        
+        <div class="step" style="margin-top: 30px;">
+            <strong>After clicking above:</strong> Wait for success message, then click button below
+        </div>
+        
+        <button class="big-btn" onclick="openDashboard()" id="openBtn" style="display: none; background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+            ✅ OPEN DASHBOARD NOW
+        </button>
+    </div>
+
+    <script>
+        function showStatus(msg, type) {
+            document.getElementById('status').innerHTML = `<div class="status ${type}">${msg}</div>`;
+        }
+
+        function showOutput(data) {
+            document.getElementById('output').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        async function fixEverything() {
+            showStatus('🔄 Starting complete fix...', 'info');
+            
+            // STEP 1: Clear everything
+            localStorage.clear();
+            await sleep(500);
+            showStatus('✅ Step 1/5: Cleared old data', 'success');
+            
+            // STEP 2: Create student
+            const student = {
+                id: 99999,
+                name: 'John Doe',
+                email: 'john.doe@student.com',
+                phone: '+234 800 000 0000',
+                role: 'student',
+                gender: 'Male',
+                classLevel: 'SS2',
+                stream: 'Science',
+                studentCode: 'BWTEST999',
+                plan: 'premium',
+                status: 'active',
+                locked: false,
+                joinDate: new Date().toISOString().split('T')[0],
+                bootcampStartDate: new Date().toISOString(),
+                planHistory: [],
+                createdAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('brainwave_users', JSON.stringify([student]));
+            localStorage.setItem('brainwave_current_student_id', student.id);
+            await sleep(500);
+            showStatus('✅ Step 2/5: Created student (John Doe)', 'success');
+            
+            // STEP 3: Create reports with ALL matching fields
+            const now = new Date();
+            const reports = [
+                {
+                    id: 1,
+                    studentId: student.id,
+                    studentCode: student.studentCode,
+                    studentName: student.name,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Mathematics',
+                    type: 'quiz',
+                    score: 85,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 2,
+                    studentId: student.id,
+                    studentCode: student.studentCode,
+                    studentName: student.name,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Physics',
+                    type: 'quiz',
+                    score: 78,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 3,
+                    studentId: student.id,
+                    studentCode: student.studentCode,
+                    studentName: student.name,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Chemistry',
+                    type: 'quiz',
+                    score: 82,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 4,
+                    studentId: student.id,
+                    studentCode: student.studentCode,
+                    studentName: student.name,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Biology',
+                    type: 'quiz',
+                    score: 88,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 5,
+                    studentId: student.id,
+                    studentCode: student.studentCode,
+                    studentName: student.name,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'English Language',
+                    type: 'quiz',
+                    score: 76,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                }
+            ];
+            
+            localStorage.setItem('brainwave_reports', JSON.stringify(reports));
+            await sleep(500);
+            showStatus('✅ Step 3/5: Created 5 reports', 'success');
+            
+            // STEP 4: Create achievements
+            const achievements = [
+                {
+                    id: 1,
+                    title: 'First Steps',
+                    description: 'Completed your first quiz successfully!',
+                    icon: 'fas fa-star',
+                    color: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+                    unlockedAt: new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 2,
+                    title: 'Perfect Score',
+                    description: 'Scored 100% on a quiz',
+                    icon: 'fas fa-trophy',
+                    color: 'linear-gradient(135deg, #10b981, #059669)',
+                    unlockedAt: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 3,
+                    title: 'Study Streak',
+                    description: 'Maintained a 7-day study streak',
+                    icon: 'fas fa-fire',
+                    color: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                    unlockedAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString()
+                }
+            ];
+            
+            localStorage.setItem('brainwave_achievements', JSON.stringify(achievements));
+            
+            // Create badges
+            const badges = [
+                {
+                    id: 1,
+                    name: 'Math Genius',
+                    description: 'Complete 20 math quizzes',
+                    icon: 'fas fa-calculator',
+                    color: '#3b82f6',
+                    unlocked: true,
+                    progress: 100
+                },
+                {
+                    id: 2,
+                    name: 'Science Explorer',
+                    description: 'Complete all science subjects',
+                    icon: 'fas fa-flask',
+                    color: '#10b981',
+                    unlocked: true,
+                    progress: 100
+                },
+                {
+                    id: 3,
+                    name: 'Bookworm',
+                    description: 'Read 15 eBooks',
+                    icon: 'fas fa-book-open',
+                    color: '#8b5cf6',
+                    unlocked: false,
+                    progress: 73
+                }
+            ];
+            
+            localStorage.setItem('brainwave_badges', JSON.stringify(badges));
+            
+            // Create leaderboard
+            const leaderboard = [
+                {
+                    id: 2,
+                    name: 'Sarah Williams',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2680,
+                    badges: 5,
+                    avgScore: 88
+                },
+                {
+                    id: 3,
+                    name: 'Michael Chen',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2520,
+                    badges: 4,
+                    avgScore: 85
+                },
+                {
+                    id: student.id,
+                    name: student.name,
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2450,
+                    badges: 3,
+                    avgScore: 82
+                },
+                {
+                    id: 4,
+                    name: 'David Johnson',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2310,
+                    badges: 4,
+                    avgScore: 79
+                }
+            ];
+            
+            localStorage.setItem('brainwave_leaderboard', JSON.stringify(leaderboard));
+            await sleep(500);
+            showStatus('✅ Step 4/5: Created achievements, badges, leaderboard', 'success');
+            
+            // STEP 5: Create subjects
+            const subjects = [
+                { id: 1, name: 'Mathematics', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 2, name: 'Physics', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 3, name: 'Chemistry', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 4, name: 'Biology', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 5, name: 'English Language', stream: 'General', classLevel: 'All Levels', createdAt: now.toISOString() }
+            ];
+            
+            localStorage.setItem('brainwave_subjects', JSON.stringify(subjects));
+            localStorage.setItem('brainwave_mock_data_generated', 'true');
+            await sleep(500);
+            showStatus('✅ Step 5/5: Created subjects', 'success');
+            
+            // Show summary
+            const summary = {
+                'Student': student.name + ' (ID: ' + student.id + ', Code: ' + student.studentCode + ')',
+                'Reports': reports.length + ' reports created',
+                'Achievements': achievements.length + ' achievements',
+                'Badges': badges.length + ' badges',
+                'Leaderboard': leaderboard.length + ' students',
+                'Subjects': subjects.length + ' subjects',
+                'Status': '✅ ALL DATA READY!'
+            };
+            
+            showOutput(summary);
+            showStatus('🎉 SUCCESS! All data generated. Click "OPEN DASHBOARD NOW" below.', 'success');
+            document.getElementById('openBtn').style.display = 'block';
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function openDashboard() {
+            window.location.href = 'student-dashboard.html';
+        }
+    </script>
+</body>
+</html>

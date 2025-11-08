@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Mock Data - BrainWave</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .status {
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .status.loading {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status.success {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.3);
+        }
+
+        .data-list {
+            background: #f3f4f6;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .data-list h3 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .data-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .data-list li {
+            padding: 8px 0;
+            color: #4b5563;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .data-list li:last-child {
+            border-bottom: none;
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">📊</div>
+        <h1>Generate Mock Data</h1>
+        <p class="subtitle">
+            Click the button below to automatically generate mock data for the student dashboard, 
+            including leaderboard rankings and achievement badges.
+        </p>
+
+        <div class="data-list">
+            <h3>📋 What Will Be Generated:</h3>
+            <ul>
+                <li>✅ 1 Sample Student (John Doe)</li>
+                <li>✅ 7 Subject Reports (Math, Physics, etc.)</li>
+                <li>✅ 5 Achievements (Unlocked)</li>
+                <li>✅ 6 Badges (3 unlocked, 3 in progress)</li>
+                <li>✅ 10 Students in Leaderboard</li>
+                <li>✅ Complete Learning Resources</li>
+            </ul>
+        </div>
+
+        <div class="status loading" id="status" style="display: none;">
+            🔄 Generating mock data...
+        </div>
+
+        <button class="btn" onclick="generateData()">
+            🚀 Generate Mock Data Now
+        </button>
+
+        <div id="successMessage" style="display: none; margin-top: 20px;">
+            <button class="btn" onclick="openDashboard()">
+                🎓 Open Student Dashboard
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function generateData() {
+            const status = document.getElementById('status');
+            const successMessage = document.getElementById('successMessage');
+            
+            status.style.display = 'block';
+            status.className = 'status loading';
+            status.textContent = '🔄 Generating mock data...';
+
+            // Clear existing data
+            localStorage.clear();
+
+            const now = new Date();
+
+            // 1. Create Sample Student
+            const sampleStudent = {
+                id: Date.now(),
+                name: 'John Doe',
+                email: 'john.doe@student.com',
+                phone: '+234 800 000 0000',
+                role: 'student',
+                gender: 'Male',
+                classLevel: 'SS2',
+                stream: 'Science',
+                studentCode: 'BW' + Math.random().toString(36).substr(2, 6).toUpperCase(),
+                plan: 'premium',
+                status: 'active',
+                locked: false,
+                joinDate: new Date().toISOString().split('T')[0],
+                bootcampStartDate: new Date().toISOString(),
+                planHistory: [],
+                createdAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('brainwave_users', JSON.stringify([sampleStudent]));
+            localStorage.setItem('brainwave_current_student_id', sampleStudent.id);
+
+            // 2. Create Subjects
+            const subjects = [
+                { id: 1, name: 'Mathematics', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 2, name: 'Physics', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 3, name: 'Chemistry', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 4, name: 'Biology', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 5, name: 'English Language', stream: 'General', classLevel: 'All Levels', createdAt: now.toISOString() },
+                { id: 6, name: 'Further Mathematics', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 7, name: 'Computer Science', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() }
+            ];
+            localStorage.setItem('brainwave_subjects', JSON.stringify(subjects));
+
+            // 3. Create Reports (THIS IS KEY FOR LEADERBOARD!)
+            const reports = [
+                {
+                    id: 1,
+                    studentId: sampleStudent.id,
+                    studentCode: sampleStudent.studentCode,
+                    studentName: sampleStudent.name,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Mathematics',
+                    type: 'quiz',
+                    score: 85,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 2,
+                    studentId: sampleStudent.id,
+                    studentCode: sampleStudent.studentCode,
+                    studentName: sampleStudent.name,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Physics',
+                    type: 'quiz',
+                    score: 78,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 3,
+                    studentId: sampleStudent.id,
+                    studentCode: sampleStudent.studentCode,
+                    studentName: sampleStudent.name,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Chemistry',
+                    type: 'quiz',
+                    score: 82,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 4,
+                    studentId: sampleStudent.id,
+                    studentCode: sampleStudent.studentCode,
+                    studentName: sampleStudent.name,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Biology',
+                    type: 'quiz',
+                    score: 88,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 5,
+                    studentId: sampleStudent.id,
+                    studentCode: sampleStudent.studentCode,
+                    studentName: sampleStudent.name,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'English Language',
+                    type: 'quiz',
+                    score: 76,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 6,
+                    studentId: sampleStudent.id,
+                    studentCode: sampleStudent.studentCode,
+                    studentName: sampleStudent.name,
+                    assessmentTitle: 'Mid-Term Assignment',
+                    subject: 'Mathematics',
+                    type: 'assignment',
+                    score: 42,
+                    totalMarks: 50,
+                    date: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 7,
+                    studentId: sampleStudent.id,
+                    studentCode: sampleStudent.studentCode,
+                    studentName: sampleStudent.name,
+                    assessmentTitle: 'WAEC Mock Exam',
+                    subject: 'Mathematics',
+                    type: 'mock',
+                    score: 68,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                }
+            ];
+            localStorage.setItem('brainwave_reports', JSON.stringify(reports));
+
+            // 4. Create Achievements
+            const achievements = [
+                {
+                    id: 1,
+                    title: 'First Steps',
+                    description: 'Completed your first quiz successfully!',
+                    icon: 'fas fa-star',
+                    color: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+                    unlockedAt: new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 2,
+                    title: 'Perfect Score',
+                    description: 'Scored 100% on a quiz',
+                    icon: 'fas fa-trophy',
+                    color: 'linear-gradient(135deg, #10b981, #059669)',
+                    unlockedAt: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 3,
+                    title: 'Study Streak',
+                    description: 'Maintained a 7-day study streak',
+                    icon: 'fas fa-fire',
+                    color: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                    unlockedAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 4,
+                    title: 'Video Master',
+                    description: 'Watched 10 educational videos',
+                    icon: 'fas fa-video',
+                    color: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
+                    unlockedAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 5,
+                    title: 'Top Performer',
+                    description: 'Ranked in top 10 of your class',
+                    icon: 'fas fa-crown',
+                    color: 'linear-gradient(135deg, #fbbf24, #d97706)',
+                    unlockedAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString()
+                }
+            ];
+            localStorage.setItem('brainwave_achievements', JSON.stringify(achievements));
+
+            // 5. Create Badges
+            const badges = [
+                {
+                    id: 1,
+                    name: 'Math Genius',
+                    description: 'Complete 20 math quizzes',
+                    icon: 'fas fa-calculator',
+                    color: '#3b82f6',
+                    unlocked: true,
+                    progress: 100
+                },
+                {
+                    id: 2,
+                    name: 'Science Explorer',
+                    description: 'Complete all science subjects',
+                    icon: 'fas fa-flask',
+                    color: '#10b981',
+                    unlocked: true,
+                    progress: 100
+                },
+                {
+                    id: 3,
+                    name: 'Quick Learner',
+                    description: 'Complete 5 quizzes in one day',
+                    icon: 'fas fa-bolt',
+                    color: '#fbbf24',
+                    unlocked: true,
+                    progress: 100
+                },
+                {
+                    id: 4,
+                    name: 'Bookworm',
+                    description: 'Read 15 eBooks',
+                    icon: 'fas fa-book-open',
+                    color: '#8b5cf6',
+                    unlocked: false,
+                    progress: 73
+                },
+                {
+                    id: 5,
+                    name: 'Assignment Pro',
+                    description: 'Submit 25 assignments',
+                    icon: 'fas fa-file-alt',
+                    color: '#f59e0b',
+                    unlocked: false,
+                    progress: 56
+                },
+                {
+                    id: 6,
+                    name: 'Mock Master',
+                    description: 'Complete 10 mock exams',
+                    icon: 'fas fa-graduation-cap',
+                    color: '#ef4444',
+                    unlocked: false,
+                    progress: 40
+                }
+            ];
+            localStorage.setItem('brainwave_badges', JSON.stringify(badges));
+
+            // 6. Create Leaderboard
+            const leaderboard = [
+                {
+                    id: sampleStudent.id,
+                    name: sampleStudent.name,
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2450,
+                    badges: 3,
+                    avgScore: 82
+                },
+                {
+                    id: 2,
+                    name: 'Sarah Williams',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2680,
+                    badges: 5,
+                    avgScore: 88
+                },
+                {
+                    id: 3,
+                    name: 'Michael Chen',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2520,
+                    badges: 4,
+                    avgScore: 85
+                },
+                {
+                    id: 4,
+                    name: 'Amara Okafor',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2390,
+                    badges: 3,
+                    avgScore: 81
+                },
+                {
+                    id: 5,
+                    name: 'David Johnson',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2310,
+                    badges: 4,
+                    avgScore: 79
+                },
+                {
+                    id: 6,
+                    name: 'Fatima Ahmed',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2180,
+                    badges: 2,
+                    avgScore: 77
+                },
+                {
+                    id: 7,
+                    name: 'James Brown',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2050,
+                    badges: 3,
+                    avgScore: 75
+                },
+                {
+                    id: 8,
+                    name: 'Chioma Nwosu',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 1920,
+                    badges: 2,
+                    avgScore: 72
+                },
+                {
+                    id: 9,
+                    name: 'Emmanuel Adeyemi',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 1850,
+                    badges: 2,
+                    avgScore: 70
+                },
+                {
+                    id: 10,
+                    name: 'Grace Okoro',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 1780,
+                    badges: 1,
+                    avgScore: 68
+                }
+            ];
+            localStorage.setItem('brainwave_leaderboard', JSON.stringify(leaderboard));
+
+            // 7. Add some additional resources
+            const quizzes = [
+                {
+                    id: 1,
+                    type: 'quiz',
+                    title: 'Quadratic Equations Quiz',
+                    subject: 'Mathematics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    dueDate: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    duration: '30',
+                    totalMarks: 50,
+                    createdAt: now.toISOString()
+                }
+            ];
+            localStorage.setItem('brainwave_quizs', JSON.stringify(quizzes));
+
+            const announcements = [
+                {
+                    id: 1,
+                    title: 'Welcome to BrainWave!',
+                    message: 'We are excited to have you join our learning platform.',
+                    classLevel: 'All Levels',
+                    createdAt: now.toISOString()
+                }
+            ];
+            localStorage.setItem('brainwave_announcements', JSON.stringify(announcements));
+
+            // Mark data as generated
+            localStorage.setItem('brainwave_mock_data_generated', 'true');
+
+            // Show success message
+            setTimeout(() => {
+                status.className = 'status success';
+                status.innerHTML = '✅ Mock Data Generated Successfully!<br><br>📊 Created:<br>• 7 Student Reports<br>• 5 Achievements<br>• 6 Badges<br>• 10 Leaderboard Students';
+                successMessage.style.display = 'block';
+            }, 1000);
+        }
+
+        function openDashboard() {
+            window.location.href = 'student-dashboard.html';
+        }
+    </script>
+</body>
+</html>
+
+

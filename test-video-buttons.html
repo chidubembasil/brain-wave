@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Button Test - BrainWave</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .test-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .test-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #1e3a8a;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #3b82f6;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .test-button {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .test-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .test-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .test-button:hover {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .test-button:active {
+            transform: scale(0.95);
+        }
+
+        .btn-add-video {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-add-video:hover {
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-add-book {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-add-book:hover {
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-view {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-view:hover {
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            box-shadow: 0 2px 6px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-edit:hover {
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-delete:hover {
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        .pulse-icon {
+            animation: pulse 2s infinite;
+        }
+
+        .status {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-radius: 12px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .status-title {
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .status-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .status-list li {
+            padding: 0.5rem 0;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-list li::before {
+            content: '✓';
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .demo-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .demo-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: #ef4444;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+        }
+
+        .card-title {
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 1.1rem;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .card-btn {
+            flex: 1;
+            padding: 0.6rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            display: none;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-message" id="successMessage">
+        <i class="fas fa-check-circle"></i>
+        <span id="messageText"></span>
+    </div>
+
+    <div class="test-container">
+        <h1><i class="fas fa-vial"></i> Video Button Test</h1>
+        <p class="subtitle">Test all enhanced video section buttons and animations</p>
+
+        <!-- Add Buttons Section -->
+        <div class="test-section">
+            <h2 class="section-title">
+                <i class="fas fa-plus-circle"></i>
+                Add Content Buttons
+            </h2>
+            <div class="button-grid">
+                <button class="test-button btn-add-video" onclick="testButton('Add Video', 'video')">
+                    <i class="fas fa-plus pulse-icon"></i>
+                    Add Video
+                </button>
+                <button class="test-button btn-add-book" onclick="testButton('Add Book', 'book')">
+                    <i class="fas fa-plus pulse-icon"></i>
+                    Add Book
+                </button>
+            </div>
+        </div>
+
+        <!-- Action Buttons Section -->
+        <div class="test-section">
+            <h2 class="section-title">
+                <i class="fas fa-bolt"></i>
+                Action Buttons
+            </h2>
+            <div class="button-grid">
+                <button class="test-button btn-view" onclick="testButton('View/Watch', 'view')">
+                    <i class="fas fa-play"></i>
+                    Watch
+                </button>
+                <button class="test-button btn-edit" onclick="testButton('Edit', 'edit')">
+                    <i class="fas fa-edit"></i>
+                    Edit
+                </button>
+                <button class="test-button btn-delete" onclick="testButton('Delete', 'delete')">
+                    <i class="fas fa-trash"></i>
+                    Delete
+                </button>
+            </div>
+        </div>
+
+        <!-- Demo Card Section -->
+        <div class="test-section">
+            <h2 class="section-title">
+                <i class="fas fa-id-card"></i>
+                Demo Video Card (Hover Me!)
+            </h2>
+            <div class="demo-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="card-title">Sample Educational Video</div>
+                </div>
+                <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem;">
+                    This is a demo video card showing the hover effect and button interactions.
+                </p>
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                    <span style="background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: white; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">SS2</span>
+                    <span style="background: #e5e7eb; color: #374151; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">Mathematics</span>
+                    <span style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600;"><i class="fas fa-clock"></i> 15 min</span>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn btn-view" onclick="testButton('Watch from Card', 'watch')">
+                        <i class="fas fa-play"></i> Watch
+                    </button>
+                    <button class="card-btn btn-edit" onclick="testButton('Edit from Card', 'edit')">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="card-btn btn-delete" onclick="testButton('Delete from Card', 'delete')">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Section -->
+        <div class="status">
+            <div class="status-title">
+                <i class="fas fa-check-circle"></i>
+                Features Implemented:
+            </div>
+            <ul class="status-list">
+                <li>Pulsing animation on Add buttons</li>
+                <li>Smooth hover effects with lift and scale</li>
+                <li>Enhanced shadows on interaction</li>
+                <li>Gradient backgrounds for all buttons</li>
+                <li>Card hover effects with border color change</li>
+                <li>Ripple effect on button click</li>
+                <li>Active state with scale feedback</li>
+                <li>Global wrapper functions for reliability</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function testButton(buttonName, type) {
+            const message = document.getElementById('successMessage');
+            const messageText = document.getElementById('messageText');
+            
+            let actionMessage = '';
+            switch(type) {
+                case 'video':
+                    actionMessage = 'Add Video modal would open here!';
+                    break;
+                case 'book':
+                    actionMessage = 'Add Book modal would open here!';
+                    break;
+                case 'view':
+                case 'watch':
+                    actionMessage = 'Video/Book would open in new tab!';
+                    break;
+                case 'edit':
+                    actionMessage = 'Edit modal would open with pre-filled data!';
+                    break;
+                case 'delete':
+                    actionMessage = 'Confirmation dialog would appear!';
+                    break;
+                default:
+                    actionMessage = `${buttonName} button clicked!`;
+            }
+            
+            messageText.textContent = actionMessage;
+            message.style.display = 'flex';
+            message.style.alignItems = 'center';
+            message.style.gap = '0.5rem';
+            
+            setTimeout(() => {
+                message.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => {
+                    message.style.display = 'none';
+                    message.style.animation = 'slideIn 0.3s ease';
+                }, 300);
+            }, 3000);
+            
+            console.log(`✅ ${buttonName} button test - ${actionMessage}`);
+        }
+
+        // Log page load
+        console.log('✅ Video Button Test Page Loaded');
+        console.log('📝 All buttons are functional and styled');
+        console.log('🎨 Hover over buttons and the demo card to see animations');
+    </script>
+</body>
+</html>
+

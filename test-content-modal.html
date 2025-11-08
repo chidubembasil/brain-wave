@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Content Modal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-btn {
+            padding: 12px 24px;
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .test-btn:hover {
+            background: #1e40af;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #10b981;
+        }
+        .error {
+            border-left-color: #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <h1>Content Modal Test Page</h1>
+    
+    <div class="status">
+        <h3>Test Instructions:</h3>
+        <ol>
+            <li>Click "Open Modal" button below</li>
+            <li>Check if subjects appear in the dropdown</li>
+            <li>Try clicking the X button (top right)</li>
+            <li>Open modal again and try clicking Cancel button</li>
+            <li>Open modal again, fill the form, and try clicking Save button</li>
+        </ol>
+    </div>
+    
+    <button class="test-btn" onclick="testOpenModal()">Open Modal</button>
+    <button class="test-btn" onclick="checkStorage()">Check Storage</button>
+    <button class="test-btn" onclick="clearStorage()">Clear Storage</button>
+    
+    <div id="test-results" style="margin-top: 20px;"></div>
+    
+    <script>
+        // Load the modal HTML
+        fetch('admin-dashboard.html')
+            .then(response => response.text())
+            .then(html => {
+                // Extract just the content modal
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const modal = doc.getElementById('content-modal');
+                
+                if (modal) {
+                    document.body.appendChild(modal);
+                    console.log('✅ Modal loaded');
+                    
+                    // Setup the modal
+                    setupModal();
+                } else {
+                    console.error('❌ Modal not found in HTML');
+                }
+            });
+        
+        function setupModal() {
+            const modal = document.getElementById('content-modal');
+            const form = document.getElementById('content-form');
+            const closeBtn = document.getElementById('content-modal-close-btn');
+            const cancelBtn = document.getElementById('content-modal-cancel-btn');
+            
+            console.log('Setting up modal...');
+            console.log('Modal:', modal ? '✅' : '❌');
+            console.log('Form:', form ? '✅' : '❌');
+            console.log('Close btn:', closeBtn ? '✅' : '❌');
+            console.log('Cancel btn:', cancelBtn ? '✅' : '❌');
+            
+            if (closeBtn) {
+                closeBtn.onclick = function(e) {
+                    e.preventDefault();
+                    console.log('❌ Close clicked');
+                    closeModal();
+                };
+            }
+            
+            if (cancelBtn) {
+                cancelBtn.onclick = function(e) {
+                    e.preventDefault();
+                    console.log('🚫 Cancel clicked');
+                    closeModal();
+                };
+            }
+            
+            if (form) {
+                form.onsubmit = function(e) {
+                    e.preventDefault();
+                    console.log('💾 Save clicked');
+                    saveTestContent();
+                    return false;
+                };
+            }
+            
+            // Populate subjects
+            populateSubjects();
+        }
+        
+        function populateSubjects() {
+            const subjectSelect = document.getElementById('content-subject');
+            if (!subjectSelect) {
+                console.error('❌ Subject dropdown not found');
+                return;
+            }
+            
+            // Clear existing
+            subjectSelect.innerHTML = '<option value="">Select Subject</option>';
+            
+            // Add default subjects
+            const subjects = [
+                { group: 'General Subjects', items: ['Mathematics', 'English Language', 'Citizenship and Heritage Studies'] },
+                { group: 'Science Stream', items: ['Physics', 'Chemistry', 'Biology'] },
+                { group: 'Humanities Stream', items: ['Literature-in-English', 'Government', 'CRS'] },
+                { group: 'Business Stream', items: ['Commerce', 'Accounts', 'Economics'] }
+            ];
+            
+            subjects.forEach(group => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = group.group;
+                
+                group.items.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject;
+                    option.textContent = subject;
+                    optgroup.appendChild(option);
+                });
+                
+                subjectSelect.appendChild(optgroup);
+            });
+            
+            console.log('✅ Subjects populated');
+        }
+        
+        function testOpenModal() {
+            const modal = document.getElementById('content-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                console.log('✅ Modal opened');
+                showResult('Modal opened successfully!', 'success');
+            } else {
+                console.error('❌ Modal not found');
+                showResult('Error: Modal not found', 'error');
+            }
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('content-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                const form = document.getElementById('content-form');
+                if (form) form.reset();
+                console.log('✅ Modal closed');
+                showResult('Modal closed successfully!', 'success');
+            }
+        }
+        
+        function saveTestContent() {
+            const title = document.getElementById('content-title').value;
+            const description = document.getElementById('content-description').value;
+            const classLevel = document.getElementById('content-class').value;
+            const subject = document.getElementById('content-subject').value;
+            const type = document.getElementById('content-type').value;
+            
+            if (!title || !description || !classLevel || !subject) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            const link = type === 'book' ? 
+                document.getElementById('book-link').value : 
+                document.getElementById('video-link').value;
+            
+            if (!link) {
+                alert('Please provide a link');
+                return;
+            }
+            
+            const data = {
+                id: Date.now(),
+                title,
+                description,
+                classLevel,
+                subject,
+                link,
+                type,
+                createdAt: new Date().toISOString()
+            };
+            
+            const storageKey = type === 'book' ? 'brainwave_books' : 'brainwave_videos';
+            const items = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            items.push(data);
+            localStorage.setItem(storageKey, JSON.stringify(items));
+            
+            console.log('✅ Content saved:', data);
+            showResult(`${type === 'book' ? 'Book' : 'Video'} saved successfully!`, 'success');
+            closeModal();
+        }
+        
+        function checkStorage() {
+            const books = JSON.parse(localStorage.getItem('brainwave_books') || '[]');
+            const videos = JSON.parse(localStorage.getItem('brainwave_videos') || '[]');
+            
+            let html = '<div class="status">';
+            html += `<h3>Storage Contents:</h3>`;
+            html += `<p><strong>Books:</strong> ${books.length} items</p>`;
+            html += `<p><strong>Videos:</strong> ${videos.length} items</p>`;
+            
+            if (books.length > 0) {
+                html += '<h4>Books:</h4><ul>';
+                books.forEach(book => {
+                    html += `<li>${book.title} (${book.subject}, ${book.classLevel})</li>`;
+                });
+                html += '</ul>';
+            }
+            
+            if (videos.length > 0) {
+                html += '<h4>Videos:</h4><ul>';
+                videos.forEach(video => {
+                    html += `<li>${video.title} (${video.subject}, ${video.classLevel})</li>`;
+                });
+                html += '</ul>';
+            }
+            
+            html += '</div>';
+            document.getElementById('test-results').innerHTML = html;
+        }
+        
+        function clearStorage() {
+            if (confirm('Clear all books and videos from storage?')) {
+                localStorage.removeItem('brainwave_books');
+                localStorage.removeItem('brainwave_videos');
+                showResult('Storage cleared!', 'success');
+                checkStorage();
+            }
+        }
+        
+        function showResult(message, type) {
+            const div = document.createElement('div');
+            div.className = 'status' + (type === 'error' ? ' error' : '');
+            div.textContent = message;
+            document.getElementById('test-results').innerHTML = '';
+            document.getElementById('test-results').appendChild(div);
+            
+            setTimeout(() => {
+                div.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

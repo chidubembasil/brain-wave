@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Session - BrainWave</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #1e3a8a;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .status {
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .success {
+            color: #10b981;
+            font-weight: 600;
+            margin-top: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Session Manager</h1>
+        
+        <div class="info-box">
+            <p><strong>Current Session Data:</strong></p>
+            <div id="sessionData" class="status">Loading...</div>
+        </div>
+
+        <button class="btn btn-danger" onclick="clearAllData()">
+            🗑️ Clear All Session Data
+        </button>
+
+        <button class="btn btn-primary" onclick="window.location.href='email-confirmation.html?v=' + Date.now()">
+            📧 Go to Email Confirmation
+        </button>
+
+        <button class="btn btn-primary" onclick="window.location.href='signup.html'">
+            🔙 Back to Signup
+        </button>
+
+        <div id="message"></div>
+    </div>
+
+    <script>
+        // Display current session data
+        function displaySessionData() {
+            const data = {
+                currentUser: localStorage.getItem('currentUser'),
+                pendingUserEmail: localStorage.getItem('pendingUserEmail'),
+                pendingUserRole: localStorage.getItem('pendingUserRole'),
+                pendingStudentCode: localStorage.getItem('pendingStudentCode'),
+                brainwave_current_student_id: localStorage.getItem('brainwave_current_student_id'),
+                sessionStorage: sessionStorage.getItem('userData')
+            };
+
+            let html = '';
+            for (const [key, value] of Object.entries(data)) {
+                if (value) {
+                    html += `<strong>${key}:</strong> ${value}<br><br>`;
+                }
+            }
+
+            if (!html) {
+                html = '<em>No session data found</em>';
+            }
+
+            document.getElementById('sessionData').innerHTML = html;
+        }
+
+        // Clear all session data
+        function clearAllData() {
+            if (!confirm('Are you sure you want to clear all session data?')) {
+                return;
+            }
+
+            // Clear specific keys
+            const keysToRemove = [
+                'currentUser',
+                'pendingUserEmail',
+                'pendingUserRole',
+                'pendingStudentCode',
+                'brainwave_current_student_id',
+                'userData'
+            ];
+
+            keysToRemove.forEach(key => {
+                localStorage.removeItem(key);
+                sessionStorage.removeItem(key);
+            });
+
+            // Show success message
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = '<p class="success">✅ All session data cleared successfully!</p>';
+            
+            // Refresh the display
+            setTimeout(() => {
+                displaySessionData();
+                messageDiv.innerHTML = '';
+            }, 2000);
+        }
+
+        // Load data on page load
+        window.addEventListener('DOMContentLoaded', displaySessionData);
+    </script>
+</body>
+</html>
+

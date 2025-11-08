@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Parent Dummy Account...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .loader-container {
+            text-align: center;
+        }
+
+        .logo-box {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1e3a8a;
+            margin-bottom: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 1rem;
+        }
+
+        .details {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            opacity: 0.8;
+        }
+
+        .detail-value {
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="loader-container">
+        <div class="logo-box">B</div>
+        <h1>Setting Up Parent Account</h1>
+        <div class="spinner"></div>
+        <p class="status" id="status">Initializing...</p>
+        
+        <div class="details">
+            <div class="detail-item">
+                <span class="detail-label">Parent Name:</span>
+                <span class="detail-value">Sarah Johnson</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value">sarah@parent.com</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Plan:</span>
+                <span class="detail-value">Family Plan</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Children:</span>
+                <span class="detail-value">Emma (SS1), Michael (SS3), Olivia (SS2)</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Reports:</span>
+                <span class="detail-value">18 Subjects</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        const statusEl = document.getElementById('status');
+        
+        function updateStatus(message) {
+            statusEl.textContent = message;
+        }
+
+        function getGrade(percentage) {
+            if (percentage >= 90) return 'A+';
+            if (percentage >= 80) return 'A';
+            if (percentage >= 70) return 'B';
+            if (percentage >= 60) return 'C';
+            if (percentage >= 50) return 'D';
+            if (percentage >= 40) return 'E';
+            return 'F';
+        }
+
+        async function setupDummyAccount() {
+            // Step 1: Clear existing data
+            updateStatus('Clearing old data...');
+            await sleep(300);
+
+            // Generate unique IDs
+            const timestamp = Date.now();
+            const parentId = 'parent_' + timestamp;
+            const child1Id = 'student_' + timestamp + '_1';
+            const child2Id = 'student_' + timestamp + '_2';
+            const child3Id = 'student_' + timestamp + '_3';
+
+            // Step 2: Create parent account
+            updateStatus('Creating parent account...');
+            await sleep(300);
+
+            const parent = {
+                id: parentId,
+                name: 'Sarah Johnson',
+                email: 'sarah@parent.com',
+                role: 'parent',
+                planType: 'family',
+                status: 'active',
+                expiry: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
+                createdAt: new Date().toISOString()
+            };
+
+            // Step 3: Create children accounts
+            updateStatus('Creating children accounts...');
+            await sleep(300);
+
+            const children = [
+                {
+                    id: child1Id,
+                    name: 'Emma Johnson',
+                    email: 'emma.johnson@student.com',
+                    role: 'student',
+                    parentId: parentId,
+                    classLevel: 'SS1',
+                    stream: 'Science',
+                    status: 'active',
+                    accountLocked: false,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: child2Id,
+                    name: 'Michael Johnson',
+                    email: 'michael.johnson@student.com',
+                    role: 'student',
+                    parentId: parentId,
+                    classLevel: 'SS3',
+                    stream: 'Humanities',
+                    status: 'active',
+                    accountLocked: false,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: child3Id,
+                    name: 'Olivia Johnson',
+                    email: 'olivia.johnson@student.com',
+                    role: 'student',
+                    parentId: parentId,
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    status: 'active',
+                    accountLocked: false,
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            // Step 4: Generate academic reports
+            updateStatus('Generating academic reports...');
+            await sleep(400);
+
+            const reports = [];
+            const subjectsByStream = {
+                'Science': ['Mathematics', 'English', 'Kiswahili', 'Chemistry', 'Physics', 'Biology'],
+                'Humanities': ['Mathematics', 'English', 'Kiswahili', 'History', 'Geography', 'CRE']
+            };
+
+            children.forEach(child => {
+                const subjects = subjectsByStream[child.stream] || subjectsByStream['Science'];
+                
+                subjects.forEach(subject => {
+                    // Generate realistic scores based on class level
+                    let baseScore = 65;
+                    if (child.classLevel === 'SS1') baseScore = 75;
+                    if (child.classLevel === 'SS2') baseScore = 70;
+                    if (child.classLevel === 'SS3') baseScore = 68;
+                    
+                    const variance = Math.floor(Math.random() * 25) - 5; // -5 to +20
+                    const score = Math.min(100, Math.max(50, baseScore + variance));
+                    
+                    reports.push({
+                        id: 'report_' + timestamp + '_' + Math.random().toString(36).substr(2, 9),
+                        studentId: child.id,
+                        studentName: child.name,
+                        subject: subject,
+                        score: score,
+                        totalMarks: 100,
+                        percentage: score,
+                        grade: getGrade(score),
+                        term: 'Term 1',
+                        year: new Date().getFullYear(),
+                        createdAt: new Date().toISOString()
+                    });
+                });
+            });
+
+            // Step 5: Save to localStorage
+            updateStatus('Saving data...');
+            await sleep(300);
+
+            let users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            
+            // Remove existing dummy accounts
+            users = users.filter(u => 
+                u.email !== 'sarah@parent.com' && 
+                !u.email?.includes('johnson@student.com')
+            );
+            
+            // Add new accounts
+            users.push(parent);
+            users.push(...children);
+
+            localStorage.setItem('brainwave_users', JSON.stringify(users));
+            localStorage.setItem('brainwave_reports', JSON.stringify(reports));
+            localStorage.setItem('currentUser', JSON.stringify(parent));
+
+            // Step 6: Redirect
+            updateStatus('Redirecting to dashboard...');
+            await sleep(500);
+
+            console.log('✅ Dummy account created successfully!');
+            console.log('Parent:', parent);
+            console.log('Children:', children.length);
+            console.log('Reports:', reports.length);
+
+            window.location.href = 'parent-dashboard.html';
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Auto-start on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(setupDummyAccount, 500);
+        });
+    </script>
+</body>
+</html>

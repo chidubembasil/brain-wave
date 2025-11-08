@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Add Book Functionality</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-result {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #4338ca;
+        }
+        .storage-content {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Add Book Functionality Test</h1>
+    <p>This page tests if the add book functionality in admin.js works correctly.</p>
+
+    <div id="test-results"></div>
+
+    <button onclick="runTests()">Run Tests</button>
+    <button onclick="clearStorage()">Clear Storage</button>
+    <button onclick="addTestBook()">Add Test Book</button>
+    <button onclick="viewStorage()">View Storage</button>
+
+    <div id="storage-display"></div>
+
+    <script src="admin.js"></script>
+    <script>
+        const results = document.getElementById('test-results');
+        const storageDisplay = document.getElementById('storage-display');
+
+        function addResult(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.textContent = message;
+            results.appendChild(div);
+        }
+
+        function runTests() {
+            results.innerHTML = '';
+            addResult('Starting tests...', 'info');
+
+            // Test 1: Check if AdminDashboard class exists
+            if (typeof AdminDashboard !== 'undefined') {
+                addResult('✓ AdminDashboard class found', 'success');
+            } else {
+                addResult('✗ AdminDashboard class not found', 'error');
+                return;
+            }
+
+            // Test 2: Check if window.adminDashboard is initialized
+            if (window.adminDashboard) {
+                addResult('✓ adminDashboard instance exists', 'success');
+            } else {
+                addResult('✗ adminDashboard instance not initialized', 'error');
+                return;
+            }
+
+            // Test 3: Check if addBook method exists
+            if (typeof window.adminDashboard.addBook === 'function') {
+                addResult('✓ addBook method exists', 'success');
+            } else {
+                addResult('✗ addBook method not found', 'error');
+                return;
+            }
+
+            // Test 4: Check if openContentModal method exists
+            if (typeof window.adminDashboard.openContentModal === 'function') {
+                addResult('✓ openContentModal method exists', 'success');
+            } else {
+                addResult('✗ openContentModal method not found', 'error');
+                return;
+            }
+
+            // Test 5: Check if saveContent method exists
+            if (typeof window.adminDashboard.saveContent === 'function') {
+                addResult('✓ saveContent method exists', 'success');
+            } else {
+                addResult('✗ saveContent method not found', 'error');
+                return;
+            }
+
+            addResult('All tests passed! ✓', 'success');
+        }
+
+        function addTestBook() {
+            results.innerHTML = '';
+            const testBook = {
+                title: 'Test Mathematics Book',
+                description: 'A test book for SS3 Mathematics',
+                classLevel: 'SS3',
+                subject: 'Mathematics',
+                link: 'https://drive.google.com/file/d/test123'
+            };
+
+            try {
+                window.adminDashboard.addBook(testBook);
+                addResult('✓ Test book added successfully!', 'success');
+                viewStorage();
+            } catch (error) {
+                addResult('✗ Error adding test book: ' + error.message, 'error');
+            }
+        }
+
+        function viewStorage() {
+            const books = localStorage.getItem('brainwave_books');
+            storageDisplay.innerHTML = '<h3>Current Books in Storage:</h3>';
+            
+            if (books) {
+                const booksData = JSON.parse(books);
+                const div = document.createElement('div');
+                div.className = 'storage-content';
+                div.textContent = JSON.stringify(booksData, null, 2);
+                storageDisplay.appendChild(div);
+                addResult(`Found ${booksData.length} book(s) in storage`, 'info');
+            } else {
+                storageDisplay.innerHTML += '<p>No books in storage yet.</p>';
+                addResult('No books in storage', 'info');
+            }
+        }
+
+        function clearStorage() {
+            localStorage.removeItem('brainwave_books');
+            results.innerHTML = '';
+            addResult('Storage cleared!', 'success');
+            storageDisplay.innerHTML = '';
+        }
+
+        // Auto-run tests on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                runTests();
+                viewStorage();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
+
+

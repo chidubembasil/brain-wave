@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject - BrainWave</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="subject-header">
+        <div class="container">
+            <h1 id="subjectTitle">Loading Subject...</h1>
+            <p id="subjectDescription">Explore quizzes, mock exams, and live classes</p>
+            <button onclick="goBack()" class="btn-secondary">← Back to Dashboard</button>
+        </div>
+    </div>
+
+    <div class="subject-content">
+        <div class="container">
+            <!-- Content Navigation Tabs -->
+            <div class="content-tabs">
+                <button class="tab-btn active" onclick="showTab('quizzes')">📝 Quizzes</button>
+                <button class="tab-btn" onclick="showTab('content')">📚 Content</button>
+                <button class="tab-btn" onclick="showTab('mockexams')">🎯 Mock Exams</button>
+                <button class="tab-btn" onclick="showTab('liveclasses')">🎥 Live Classes</button>
+            </div>
+
+            <!-- Quizzes Section -->
+            <div id="quizzes" class="content-section active">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>📝 Available Quizzes</h3>
+                        <span id="quizCount">0 quizzes</span>
+                    </div>
+                    <div class="content-grid" id="quizzesGrid">
+                        <!-- Quizzes will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Section -->
+            <div id="content" class="content-section">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>📚 Study Materials</h3>
+                        <span id="contentCount">0 materials</span>
+                    </div>
+                    <div class="content-grid" id="contentGrid">
+                        <!-- Content will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mock Exams Section -->
+            <div id="mockexams" class="content-section">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>🎯 Mock Examinations</h3>
+                        <span id="mockExamCount">0 exams</span>
+                    </div>
+                    <div class="content-grid" id="mockExamsGrid">
+                        <!-- Mock exams will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Classes Section -->
+            <div id="liveclasses" class="content-section">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>🎥 Live Classes</h3>
+                        <span id="liveClassCount">0 classes</span>
+                    </div>
+                    <div class="content-grid" id="liveClassesGrid">
+                        <!-- Live classes will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <span class="close" onclick="closeQuizModal()">&times;</span>
+            <div id="quizContent">
+                <!-- Quiz content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Mock Exam Modal -->
+    <div id="mockExamModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <span class="close" onclick="closeMockExamModal()">&times;</span>
+            <div id="mockExamContent">
+                <!-- Mock exam content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSubject = '';
+        let userData = null;
+
+        // Initialize page
+        function initializePage() {
+            // Check authentication
+            userData = checkAuth();
+            if (!userData) return;
+
+            // Get subject from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            currentSubject = urlParams.get('subject') || 'Unknown Subject';
+            
+            // Update page title and header
+            document.getElementById('subjectTitle').textContent = currentSubject;
+            document.title = `${currentSubject} - BrainWave`;
+
+            // Load content for all sections
+            loadQuizzes();
+            loadContent();
+            loadMockExams();
+            loadLiveClasses();
+        }
+
+        function checkAuth() {
+            const userData = sessionStorage.getItem('userData');
+            if (!userData) {
+                window.location.href = 'login.html';
+                return null;
+            }
+            return JSON.parse(userData);
+        }
+
+        // Tab Navigation
+        function showTab(tabName) {
+            // Hide all content sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected section and activate tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Load Quizzes
+        function loadQuizzes() {
+            // Sample quiz data - in real app, this would come from database
+            const quizzes = [
+                {
+                    id: 1,
+                    title: `${currentSubject} - Chapter 1 Quiz`,
+                    description: 'Test your understanding of basic concepts',
+                    questions: 10,
+                    duration: 15,
+                    difficulty: 'Easy',
+                    attempts: 2,
+                    bestScore: 85
+                },
+                {
+                    id: 2,
+                    title: `${currentSubject} - Chapter 2 Quiz`,
+                    description: 'Advanced concepts and problem solving',
+                    questions: 15,
+                    duration: 20,
+                    difficulty: 'Medium',
+                    attempts: 1,
+                    bestScore: 78
+                },
+                {
+                    id: 3,
+                    title: `${currentSubject} - Practice Test`,
+                    description: 'Comprehensive practice test',
+                    questions: 25,
+                    duration: 30,
+                    difficulty: 'Hard',
+                    attempts: 0,
+                    bestScore: null
+                }
+            ];
+
+            const container = document.getElementById('quizzesGrid');
+            container.innerHTML = '';
+            document.getElementById('quizCount').textContent = `${quizzes.length} quizzes`;
+
+            quizzes.forEach(quiz => {
+                const quizCard = document.createElement('div');
+                quizCard.className = 'content-item';
+                quizCard.onclick = () => startQuiz(quiz);
+                
+                const scoreDisplay = quiz.bestScore ? `Best Score: ${quiz.bestScore}%` : 'Not attempted';
+                const difficultyColor = quiz.difficulty === 'Easy' ? '#10b981' : 
+                                      quiz.difficulty === 'Medium' ? '#f59e0b' : '#ef4444';
+
+                quizCard.innerHTML = `
+                    <h4>${quiz.title}</h4>
+                    <p>${quiz.description}</p>
+                    <div class="content-meta">
+                        <span>${quiz.questions} questions • ${quiz.duration} min</span>
+                        <span style="color: ${difficultyColor}; font-weight: 500;">${quiz.difficulty}</span>
+                    </div>
+                    <div style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-gray);">
+                        ${scoreDisplay} • ${quiz.attempts} attempts
+                    </div>
+                `;
+                container.appendChild(quizCard);
+            });
+        }
+
+        // Load Content/Study Materials
+        function loadContent() {
+            const materials = [
+                {
+                    id: 1,
+                    title: `${currentSubject} - Chapter 1 Notes`,
+                    description: 'Comprehensive study notes and examples',
+                    type: 'PDF',
+                    size: '2.5 MB',
+                    downloads: 45
+                },
+                {
+                    id: 2,
+                    title: `${currentSubject} - Video Lectures`,
+                    description: 'Complete video series covering all topics',
+                    type: 'Video',
+                    size: '1.2 GB',
+                    downloads: 32
+                },
+                {
+                    id: 3,
+                    title: `${currentSubject} - Practice Problems`,
+                    description: 'Additional practice problems with solutions',
+                    type: 'PDF',
+                    size: '1.8 MB',
+                    downloads: 28
+                }
+            ];
+
+            const container = document.getElementById('contentGrid');
+            container.innerHTML = '';
+            document.getElementById('contentCount').textContent = `${materials.length} materials`;
+
+            materials.forEach(material => {
+                const materialCard = document.createElement('div');
+                materialCard.className = 'content-item';
+                materialCard.onclick = () => openMaterial(material);
+
+                const typeIcon = material.type === 'PDF' ? '📄' : 
+                               material.type === 'Video' ? '🎥' : '📚';
+
+                materialCard.innerHTML = `
+                    <h4>${typeIcon} ${material.title}</h4>
+                    <p>${material.description}</p>
+                    <div class="content-meta">
+                        <span>${material.type} • ${material.size}</span>
+                        <span>${material.downloads} downloads</span>
+                    </div>
+                `;
+                container.appendChild(materialCard);
+            });
+        }
+
+        // Load Mock Exams
+        function loadMockExams() {
+            const mockExams = [
+                {
+                    id: 1,
+                    title: `${currentSubject} - Mid-term Mock Exam`,
+                    description: 'Comprehensive mid-term examination',
+                    questions: 50,
+                    duration: 90,
+                    totalMarks: 100,
+                    attempts: 1,
+                    bestScore: 82
+                },
+                {
+                    id: 2,
+                    title: `${currentSubject} - Final Mock Exam`,
+                    description: 'Complete syllabus mock examination',
+                    questions: 75,
+                    duration: 120,
+                    totalMarks: 150,
+                    attempts: 0,
+                    bestScore: null
+                }
+            ];
+
+            const container = document.getElementById('mockExamsGrid');
+            container.innerHTML = '';
+            document.getElementById('mockExamCount').textContent = `${mockExams.length} exams`;
+
+            mockExams.forEach(exam => {
+                const examCard = document.createElement('div');
+                examCard.className = 'content-item';
+                examCard.onclick = () => startMockExam(exam);
+
+                const scoreDisplay = exam.bestScore ? `Best Score: ${exam.bestScore}%` : 'Not attempted';
+
+                examCard.innerHTML = `
+                    <h4>${exam.title}</h4>
+                    <p>${exam.description}</p>
+                    <div class="content-meta">
+                        <span>${exam.questions} questions • ${exam.duration} min</span>
+                        <span>${exam.totalMarks} marks</span>
+                    </div>
+                    <div style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-gray);">
+                        ${scoreDisplay} • ${exam.attempts} attempts
+                    </div>
+                `;
+                container.appendChild(examCard);
+            });
+        }
+
+        // Load Live Classes
+        function loadLiveClasses() {
+            const liveClasses = [
+                {
+                    id: 1,
+                    title: `${currentSubject} - Weekly Review Session`,
+                    description: 'Interactive review of weekly topics',
+                    instructor: 'Dr. Smith',
+                    date: '2024-01-15',
+                    time: '10:00 AM',
+                    duration: 60,
+                    status: 'upcoming'
+                },
+                {
+                    id: 2,
+                    title: `${currentSubject} - Doubt Clearing Session`,
+                    description: 'Q&A session for student doubts',
+                    instructor: 'Prof. Johnson',
+                    date: '2024-01-12',
+                    time: '2:00 PM',
+                    duration: 45,
+                    status: 'completed'
+                },
+                {
+                    id: 3,
+                    title: `${currentSubject} - Exam Preparation`,
+                    description: 'Special session for exam preparation',
+                    instructor: 'Dr. Smith',
+                    date: '2024-01-20',
+                    time: '11:00 AM',
+                    duration: 90,
+                    status: 'upcoming'
+                }
+            ];
+
+            const container = document.getElementById('liveClassesGrid');
+            container.innerHTML = '';
+            document.getElementById('liveClassCount').textContent = `${liveClasses.length} classes`;
+
+            liveClasses.forEach(liveClass => {
+                const classCard = document.createElement('div');
+                classCard.className = 'content-item';
+                classCard.onclick = () => joinLiveClass(liveClass);
+
+                const statusColor = liveClass.status === 'upcoming' ? '#10b981' : '#6b7280';
+                const statusText = liveClass.status === 'upcoming' ? 'Upcoming' : 'Completed';
+
+                classCard.innerHTML = `
+                    <h4>${liveClass.title}</h4>
+                    <p>${liveClass.description}</p>
+                    <div style="margin: 0.5rem 0; font-size: 0.9rem; color: var(--text-gray);">
+                        Instructor: ${liveClass.instructor}
+                    </div>
+                    <div class="content-meta">
+                        <span>${liveClass.date} • ${liveClass.time}</span>
+                        <span style="color: ${statusColor}; font-weight: 500;">${statusText}</span>
+                    </div>
+                `;
+                container.appendChild(classCard);
+            });
+        }
+
+        // Action Functions
+        function startQuiz(quiz) {
+            document.getElementById('quizModal').style.display = 'block';
+            document.getElementById('quizContent').innerHTML = `
+                <h2>${quiz.title}</h2>
+                <div style="margin: 1rem 0; padding: 1rem; background: var(--light-blue); border-radius: 10px;">
+                    <p><strong>Questions:</strong> ${quiz.questions}</p>
+                    <p><strong>Duration:</strong> ${quiz.duration} minutes</p>
+                    <p><strong>Difficulty:</strong> ${quiz.difficulty}</p>
+                    ${quiz.bestScore ? `<p><strong>Your Best Score:</strong> ${quiz.bestScore}%</p>` : ''}
+                </div>
+                <p>${quiz.description}</p>
+                <div style="margin-top: 2rem; text-align: center;">
+                    <button class="btn-primary large" onclick="beginQuiz(${quiz.id})">Start Quiz</button>
+                    <button class="btn-secondary" onclick="closeQuizModal()" style="margin-left: 1rem;">Cancel</button>
+                </div>
+            `;
+        }
+
+        function startMockExam(exam) {
+            document.getElementById('mockExamModal').style.display = 'block';
+            document.getElementById('mockExamContent').innerHTML = `
+                <h2>${exam.title}</h2>
+                <div style="margin: 1rem 0; padding: 1rem; background: var(--light-blue); border-radius: 10px;">
+                    <p><strong>Questions:</strong> ${exam.questions}</p>
+                    <p><strong>Duration:</strong> ${exam.duration} minutes</p>
+                    <p><strong>Total Marks:</strong> ${exam.totalMarks}</p>
+                    ${exam.bestScore ? `<p><strong>Your Best Score:</strong> ${exam.bestScore}%</p>` : ''}
+                </div>
+                <p>${exam.description}</p>
+                <div style="margin-top: 2rem; text-align: center;">
+                    <button class="btn-primary large" onclick="beginMockExam(${exam.id})">Start Mock Exam</button>
+                    <button class="btn-secondary" onclick="closeMockExamModal()" style="margin-left: 1rem;">Cancel</button>
+                </div>
+            `;
+        }
+
+        function openMaterial(material) {
+            alert(`Opening ${material.title}. In a real application, this would download or open the material.`);
+        }
+
+        function joinLiveClass(liveClass) {
+            if (liveClass.status === 'upcoming') {
+                alert(`Joining ${liveClass.title}. In a real application, this would open the live class interface.`);
+            } else {
+                alert(`This class has already been completed. You can access the recording from your dashboard.`);
+            }
+        }
+
+        function beginQuiz(quizId) {
+            alert(`Starting quiz ${quizId}. In a real application, this would load the quiz interface.`);
+            closeQuizModal();
+        }
+
+        function beginMockExam(examId) {
+            alert(`Starting mock exam ${examId}. In a real application, this would load the exam interface.`);
+            closeMockExamModal();
+        }
+
+        // Modal Functions
+        function closeQuizModal() {
+            document.getElementById('quizModal').style.display = 'none';
+        }
+
+        function closeMockExamModal() {
+            document.getElementById('mockExamModal').style.display = 'none';
+        }
+
+        // Navigation
+        function goBack() {
+            window.location.href = 'dashboard.html';
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const quizModal = document.getElementById('quizModal');
+            const mockExamModal = document.getElementById('mockExamModal');
+            
+            if (event.target === quizModal) {
+                quizModal.style.display = 'none';
+            }
+            if (event.target === mockExamModal) {
+                mockExamModal.style.display = 'none';
+            }
+        }
+
+        // Initialize page when loaded
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>

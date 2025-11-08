@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Due Date Functionality Test - BrainWave</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f9fafb;
+            color: #111827;
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .test-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f9fafb;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.875rem;
+        }
+        
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background: white;
+            border: 2px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-calendar-check"></i> Due Date Functionality Test</h1>
+            <p>Test the new due date and time features for assessments</p>
+        </div>
+
+        <div class="test-section">
+            <h3><i class="fas fa-clock"></i> Test Due Date Validation</h3>
+            <p>This test simulates the due date validation that happens when creating assessments.</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label>Due Date</label>
+                    <input type="date" id="test-due-date" required>
+                </div>
+                <div class="form-group">
+                    <label>Due Time</label>
+                    <input type="time" id="test-due-time" required>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="testDueDateValidation()">
+                <i class="fas fa-check"></i> Test Validation
+            </button>
+            
+            <div id="validation-result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3><i class="fas fa-eye"></i> Test Due Date Display</h3>
+            <p>This test shows how due dates will appear in assessment cards and modals.</p>
+            
+            <button class="btn btn-primary" onclick="testDueDateDisplay('future')">
+                <i class="fas fa-calendar-plus"></i> Test Future Due Date
+            </button>
+            
+            <button class="btn btn-primary" onclick="testDueDateDisplay('soon')">
+                <i class="fas fa-clock"></i> Test Due Soon
+            </button>
+            
+            <button class="btn btn-primary" onclick="testDueDateDisplay('overdue')">
+                <i class="fas fa-exclamation-triangle"></i> Test Overdue
+            </button>
+            
+            <div id="display-result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3><i class="fas fa-info-circle"></i> Test Instructions</h3>
+            <ol>
+                <li><strong>Due Date Validation:</strong> Enter a date and time, then click "Test Validation" to see if it passes validation.</li>
+                <li><strong>Due Date Display:</strong> Click the different buttons to see how due dates appear in different states.</li>
+                <li><strong>Integration Test:</strong> Open the admin dashboard and create a new assessment with a due date to test the full functionality.</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Set default values for testing
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            document.getElementById('test-due-date').value = tomorrow.toISOString().split('T')[0];
+            document.getElementById('test-due-time').value = '23:59';
+        });
+
+        function testDueDateValidation() {
+            const dueDate = document.getElementById('test-due-date').value;
+            const dueTime = document.getElementById('test-due-time').value;
+            const resultDiv = document.getElementById('validation-result');
+            
+            resultDiv.style.display = 'block';
+            
+            if (!dueDate || !dueTime) {
+                resultDiv.innerHTML = `
+                    <div style="color: #ef4444; font-weight: 600;">
+                        <i class="fas fa-times-circle"></i> Validation Failed: Please fill in all required fields including due date and time
+                    </div>
+                `;
+                return;
+            }
+            
+            // Validate due date is in the future
+            const dueDateTimeString = `${dueDate}T${dueTime}`;
+            const dueDateTime = new Date(dueDateTimeString);
+            const currentDateTime = new Date();
+            
+            if (dueDateTime <= currentDateTime) {
+                resultDiv.innerHTML = `
+                    <div style="color: #ef4444; font-weight: 600;">
+                        <i class="fas fa-times-circle"></i> Validation Failed: Due date and time must be in the future
+                    </div>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 0.875rem; color: #6b7280;">
+                        Current time: ${currentDateTime.toLocaleString()}<br>
+                        Selected time: ${dueDateTime.toLocaleString()}
+                    </p>
+                `;
+                return;
+            }
+            
+            resultDiv.innerHTML = `
+                <div style="color: #10b981; font-weight: 600;">
+                    <i class="fas fa-check-circle"></i> Validation Passed: Due date and time are valid
+                </div>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.875rem; color: #6b7280;">
+                    Due: ${dueDateTime.toLocaleString()}
+                </p>
+            `;
+        }
+
+        function testDueDateDisplay(type) {
+            const resultDiv = document.getElementById('display-result');
+            resultDiv.style.display = 'block';
+            
+            let assessment;
+            const now = new Date();
+            
+            switch(type) {
+                case 'future':
+                    const futureDate = new Date(now.getTime() + (5 * 24 * 60 * 60 * 1000)); // 5 days from now
+                    assessment = {
+                        dueDate: futureDate.toISOString().split('T')[0],
+                        dueTime: '14:30'
+                    };
+                    break;
+                case 'soon':
+                    const soonDate = new Date(now.getTime() + (2 * 60 * 60 * 1000)); // 2 hours from now
+                    assessment = {
+                        dueDate: soonDate.toISOString().split('T')[0],
+                        dueTime: soonDate.toTimeString().slice(0, 5)
+                    };
+                    break;
+                case 'overdue':
+                    const overdueDate = new Date(now.getTime() - (2 * 24 * 60 * 60 * 1000)); // 2 days ago
+                    assessment = {
+                        dueDate: overdueDate.toISOString().split('T')[0],
+                        dueTime: '10:00'
+                    };
+                    break;
+            }
+            
+            resultDiv.innerHTML = renderDueDateInfo(assessment);
+        }
+
+        function renderDueDateInfo(assessment) {
+            // Handle assessments that might not have due date (backward compatibility)
+            if (!assessment.dueDate || !assessment.dueTime) {
+                return '<div style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.75rem;"><i class="fas fa-calendar-times"></i> No due date set</div>';
+            }
+
+            const dueDateTime = new Date(`${assessment.dueDate}T${assessment.dueTime}`);
+            const currentDateTime = new Date();
+            const isOverdue = dueDateTime < currentDateTime;
+            const timeDiff = dueDateTime.getTime() - currentDateTime.getTime();
+            
+            // Format the due date and time
+            const dueDateFormatted = new Date(assessment.dueDate).toLocaleDateString('en-US', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+            
+            const dueTimeFormatted = assessment.dueTime;
+            
+            // Calculate time remaining or overdue
+            let timeStatus = '';
+            let statusColor = '#6b7280';
+            
+            if (isOverdue) {
+                const overdueDays = Math.floor(Math.abs(timeDiff) / (1000 * 60 * 60 * 24));
+                const overdueHours = Math.floor((Math.abs(timeDiff) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                
+                if (overdueDays > 0) {
+                    timeStatus = `Overdue by ${overdueDays} day${overdueDays > 1 ? 's' : ''}`;
+                } else if (overdueHours > 0) {
+                    timeStatus = `Overdue by ${overdueHours} hour${overdueHours > 1 ? 's' : ''}`;
+                } else {
+                    timeStatus = 'Overdue';
+                }
+                statusColor = '#ef4444';
+            } else {
+                const remainingDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                const remainingHours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                
+                if (remainingDays > 0) {
+                    timeStatus = `${remainingDays} day${remainingDays > 1 ? 's' : ''} remaining`;
+                    statusColor = remainingDays <= 1 ? '#f59e0b' : '#10b981';
+                } else if (remainingHours > 0) {
+                    timeStatus = `${remainingHours} hour${remainingHours > 1 ? 's' : ''} remaining`;
+                    statusColor = '#f59e0b';
+                } else {
+                    timeStatus = 'Due soon';
+                    statusColor = '#ef4444';
+                }
+            }
+
+            return `
+                <div style="background: #f9fafb; border-radius: 8px; padding: 0.75rem; margin-bottom: 0.75rem; border-left: 4px solid ${statusColor};">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                        <i class="fas fa-calendar-alt" style="color: ${statusColor};"></i>
+                        <span style="font-weight: 600; color: #111827; font-size: 0.875rem;">Due: ${dueDateFormatted} at ${dueTimeFormatted}</span>
+                    </div>
+                    <div style="font-size: 0.75rem; color: ${statusColor}; font-weight: 600;">
+                        <i class="fas fa-clock"></i> ${timeStatus}
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

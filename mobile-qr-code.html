@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>Brainwave Mobile Access - QR Code</title>
+    <style>
+        /* Allow screenshots and screen recording */
+        * {
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+        }
+        
+        /* Remove any potential screenshot blocking */
+        html, body {
+            -webkit-touch-callout: default !important;
+            -webkit-user-select: text !important;
+            -khtml-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+        }
+    </style>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            padding: 3rem;
+            max-width: 600px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .logo-box {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1e3a8a;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .qr-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            display: inline-block;
+            margin: 2rem 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .url-display {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            word-break: break-all;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .instructions {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-top: 2rem;
+        }
+
+        .instructions h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .instructions ol {
+            margin-left: 1.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+        }
+
+        .copy-btn {
+            background: #fbbf24;
+            color: #1e3a8a;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .copy-btn:hover {
+            background: #f59e0b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        .status {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            min-height: 20px;
+        }
+
+        .success {
+            color: #10b981;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-box">B</div>
+        <h1>📱 Brainwave Mobile Access</h1>
+        <p class="subtitle">Quick access to Brainwave on your mobile device (Optional)</p>
+
+        <div class="qr-container">
+            <div id="qrcode"></div>
+        </div>
+
+        <div class="url-display" id="urlDisplay">
+            http://10.21.214.121:8000
+        </div>
+
+        <button class="copy-btn" onclick="copyUrl()">📋 Copy URL</button>
+        <div class="status" id="status"></div>
+
+        <div class="instructions">
+            <h3>📖 Access Options:</h3>
+            <ol>
+                <li><strong>Option 1 - QR Code (Quick):</strong> Scan the QR code above with your mobile camera</li>
+                <li><strong>Option 2 - Manual Entry:</strong> Type the URL above in your mobile browser</li>
+                <li><strong>Option 3 - Direct Access:</strong> Simply open your mobile browser and navigate to Brainwave directly</li>
+            </ol>
+            <p style="margin-top: 1rem; opacity: 0.9;">
+                <strong>Note:</strong> The QR code is just for convenience. You can access Brainwave anytime by typing the URL or bookmarking it on your mobile device.
+            </p>
+        </div>
+    </div>
+
+    <!-- QR Code Library - with timeout fallback -->
+    <script>
+        // Get local IP and generate QR code
+        const url = 'http://10.21.214.121:8000';
+        
+        // Show loading message
+        document.getElementById("qrcode").innerHTML = '<p style="color: #1e3a8a; padding: 20px;">Loading QR Code...</p>';
+        
+        // Load QR Code library with timeout
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+        script.async = true;
+        
+        let qrCodeGenerated = false;
+        
+        script.onload = function() {
+            if (!qrCodeGenerated) {
+                qrCodeGenerated = true;
+                document.getElementById("qrcode").innerHTML = '';
+                new QRCode(document.getElementById("qrcode"), {
+                    text: url,
+                    width: 256,
+                    height: 256,
+                    colorDark: "#1e3a8a",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            }
+        };
+        
+        script.onerror = function() {
+            document.getElementById("qrcode").innerHTML = '<p style="color: #1e3a8a; padding: 20px;">⚠️ QR Code failed to load.<br>Please use the URL below.</p>';
+        };
+        
+        // Timeout fallback after 5 seconds
+        setTimeout(function() {
+            if (!qrCodeGenerated) {
+                document.getElementById("qrcode").innerHTML = '<p style="color: #1e3a8a; padding: 20px;">⏱️ QR Code taking too long.<br>Please use the URL below.</p>';
+            }
+        }, 5000);
+        
+        document.head.appendChild(script);
+
+        // Copy URL function
+        function copyUrl() {
+            const urlText = document.getElementById('urlDisplay').textContent;
+            const statusEl = document.getElementById('status');
+            
+            navigator.clipboard.writeText(urlText).then(() => {
+                statusEl.textContent = '✅ URL copied to clipboard!';
+                statusEl.className = 'status success';
+                
+                setTimeout(() => {
+                    statusEl.textContent = '';
+                    statusEl.className = 'status';
+                }, 3000);
+            }).catch(err => {
+                statusEl.textContent = '❌ Failed to copy. Please copy manually.';
+                setTimeout(() => {
+                    statusEl.textContent = '';
+                }, 3000);
+            });
+        }
+
+        // Auto-detect and update IP if needed
+        console.log('🚀 Brainwave Mobile Access Ready!');
+        console.log('📱 URL:', url);
+        
+        // Ensure screenshots are allowed - remove any blocking event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Remove any context menu blocking
+            document.oncontextmenu = null;
+            document.onselectstart = null;
+            document.ondragstart = null;
+            
+            // Enable text selection and right-click
+            document.body.style.webkitUserSelect = 'text';
+            document.body.style.mozUserSelect = 'text';
+            document.body.style.msUserSelect = 'text';
+            document.body.style.userSelect = 'text';
+            
+            // Remove any screenshot blocking attributes
+            const allElements = document.querySelectorAll('*');
+            allElements.forEach(element => {
+                element.style.webkitUserSelect = 'text';
+                element.style.mozUserSelect = 'text';
+                element.style.msUserSelect = 'text';
+                element.style.userSelect = 'text';
+                
+                // Remove any data attributes that might block screenshots
+                element.removeAttribute('data-no-screenshot');
+                element.removeAttribute('data-screenshot-block');
+            });
+        });
+    </script>
+</body>
+</html>

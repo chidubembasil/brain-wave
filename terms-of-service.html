@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - BrainWave</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #1e3a8a;
+            --accent-yellow: #fbbf24;
+            --white: #ffffff;
+            --text-gray: #6b7280;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header/Navbar */
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--primary-blue);
+        }
+
+        .nav-login {
+            background: var(--accent-yellow);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            color: var(--primary-blue) !important;
+            font-weight: 600;
+        }
+        
+        .nav-login:hover {
+            background: #f59e0b;
+            transform: scale(1.05);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-blue);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .terms-hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 150px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terms-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+        }
+
+        .terms-hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .terms-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .terms-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        /* Content Section */
+        .terms-content {
+            padding: 80px 20px;
+            background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+        }
+
+        .terms-sections {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .terms-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(30, 58, 138, 0.1);
+            margin-bottom: 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .terms-section:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(30, 58, 138, 0.15);
+        }
+
+        .terms-section h2 {
+            font-size: 1.8rem;
+            color: #1e3a8a;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #fbbf24;
+            display: inline-block;
+        }
+
+        .terms-text p {
+            font-size: 1.05rem;
+            color: #000000;
+            line-height: 1.8;
+            margin-bottom: 1.2rem;
+        }
+
+        .terms-text h3 {
+            font-size: 1.3rem;
+            color: #1e3a8a;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .terms-text ul {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+
+        .terms-text ul li {
+            color: #000000;
+            padding: 0.8rem 0;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: start;
+            line-height: 1.7;
+        }
+
+        .terms-text ul li::before {
+            content: '▸';
+            color: #1e3a8a;
+            margin-right: 12px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-top: 1.5rem;
+            border-left: 4px solid #1e3a8a;
+        }
+
+        .contact-info p {
+            margin-bottom: 0.8rem;
+        }
+
+        .contact-info strong {
+            color: #1e3a8a;
+        }
+
+        /* Quick Navigation */
+        .quick-nav {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            border: 2px solid rgba(30, 58, 138, 0.1);
+            margin-bottom: 3rem;
+            position: sticky;
+            top: 100px;
+        }
+
+        .quick-nav h3 {
+            font-size: 1.5rem;
+            color: #1e3a8a;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .quick-nav-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .quick-nav-list li {
+            margin-bottom: 0.8rem;
+        }
+
+        .quick-nav-list a {
+            color: #000000;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 1rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .quick-nav-list a:hover {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .quick-nav-list a::before {
+            content: '→';
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        .footer {
+            background: #374151;
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3,
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: var(--accent-yellow);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-yellow);
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+
+        .social-link:hover {
+            background: var(--accent-yellow);
+            color: var(--primary-blue);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #4b5563;
+            color: white;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                padding: 1rem 0;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(6px, -6px);
+            }
+
+            .terms-hero h1 {
+                font-size: 2rem;
+            }
+
+            .terms-hero {
+                padding: 120px 20px 60px;
+            }
+
+            .terms-section {
+                padding: 2rem;
+            }
+
+            .quick-nav {
+                position: static;
+                margin-bottom: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navbar -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" class="logo-img">
+                    <rect x="0" y="0" width="40" height="40" rx="8" ry="8" fill="#fbbf24"/>
+                    <text x="20" y="28" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#1e3a8a">B</text>
+                </svg>
+                BrainWave
+            </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="features.html">Features</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="signup.html" class="nav-login">Sign Up</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Terms Hero Section -->
+    <section class="terms-hero">
+        <div class="container">
+            <div class="terms-hero-content">
+                <h1>Terms of Service</h1>
+                <p>Please read these terms carefully before using BrainWave services</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Terms Content -->
+    <section class="terms-content">
+        <div class="container">
+            <div class="terms-sections">
+                <!-- Acceptance of Terms -->
+                <div class="terms-section">
+                    <h2>1. Acceptance of Terms</h2>
+                    <div class="terms-text">
+                        <p>By accessing and using BrainWave ("the Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.</p>
+                        <p>These Terms of Service ("Terms") govern your use of our website located at brainwave.ng and our mobile applications (together or individually "Service") operated by BrainWave ("us", "we", or "our").</p>
+                    </div>
+                </div>
+
+                <!-- Description of Service -->
+                <div class="terms-section">
+                    <h2>2. Description of Service</h2>
+                    <div class="terms-text">
+                        <p>BrainWave is an educational technology platform that provides:</p>
+                        <ul>
+                            <li>Expert tutoring and personalized learning assistance</li>
+                            <li>Personalized study plans and curriculum</li>
+                            <li>Interactive learning materials and resources</li>
+                            <li>Progress tracking and analytics</li>
+                            <li>Exam preparation tools and practice tests</li>
+                            <li>Student and parent dashboards</li>
+                        </ul>
+                        <p>We reserve the right to modify, suspend, or discontinue any part of the Service at any time with or without notice.</p>
+                    </div>
+                </div>
+
+                <!-- User Accounts -->
+                <div class="terms-section">
+                    <h2>3. User Accounts</h2>
+                    <div class="terms-text">
+                        <p>To access certain features of the Service, you must register for an account. When you create an account, you agree to:</p>
+                        <ul>
+                            <li>Provide accurate, current, and complete information</li>
+                            <li>Maintain and update your information to keep it accurate</li>
+                            <li>Maintain the security of your password and account</li>
+                            <li>Accept responsibility for all activities under your account</li>
+                            <li>Notify us immediately of any unauthorized use of your account</li>
+                        </ul>
+                        <p>You are responsible for safeguarding your password and all activities that occur under your account.</p>
+                    </div>
+                </div>
+
+                <!-- Acceptable Use -->
+                <div class="terms-section">
+                    <h2>4. Acceptable Use Policy</h2>
+                    <div class="terms-text">
+                        <p>You agree not to use the Service to:</p>
+                        <ul>
+                            <li>Violate any applicable laws or regulations</li>
+                            <li>Infringe on intellectual property rights</li>
+                            <li>Transmit harmful, offensive, or inappropriate content</li>
+                            <li>Attempt to gain unauthorized access to our systems</li>
+                            <li>Interfere with or disrupt the Service or servers</li>
+                            <li>Use automated systems to access the Service without permission</li>
+                            <li>Share account credentials with unauthorized users</li>
+                            <li>Use the Service for commercial purposes without authorization</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Payment Terms -->
+                <div class="terms-section">
+                    <h2>5. Payment and Billing</h2>
+                    <div class="terms-text">
+                        <p>For paid services, the following terms apply:</p>
+                        <ul>
+                            <li>Subscription fees are billed in advance on a monthly or termly basis</li>
+                            <li>All fees are non-refundable except as required by law</li>
+                            <li>We may change our pricing with 30 days' notice</li>
+                            <li>Failed payments may result in service suspension</li>
+                            <li>You authorize us to charge your payment method for all fees</li>
+                            <li>Taxes are your responsibility unless otherwise stated</li>
+                        </ul>
+                        <p>Family plans cover multiple students as specified in the plan details. Additional students may require plan upgrades.</p>
+                    </div>
+                </div>
+
+                <!-- Intellectual Property -->
+                <div class="terms-section">
+                    <h2>6. Intellectual Property Rights</h2>
+                    <div class="terms-text">
+                        <p>The Service and its original content, features, and functionality are owned by BrainWave and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.</p>
+                        <p>You retain ownership of content you create, but grant us a license to use, modify, and display such content in connection with the Service.</p>
+                        <p>You may not reproduce, distribute, modify, or create derivative works of our content without explicit permission.</p>
+                    </div>
+                </div>
+
+                <!-- Privacy and Data -->
+                <div class="terms-section">
+                    <h2>7. Privacy and Data Protection</h2>
+                    <div class="terms-text">
+                        <p>Your privacy is important to us. Our Privacy Policy explains how we collect, use, and protect your information when you use our Service.</p>
+                        <p>By using our Service, you agree to the collection and use of information in accordance with our Privacy Policy.</p>
+                        <p>We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+                    </div>
+                </div>
+
+                <!-- Termination -->
+                <div class="terms-section">
+                    <h2>8. Termination</h2>
+                    <div class="terms-text">
+                        <p>We may terminate or suspend your account and access to the Service immediately, without prior notice, for any reason, including:</p>
+                        <ul>
+                            <li>Breach of these Terms</li>
+                            <li>Non-payment of fees</li>
+                            <li>Violation of our Acceptable Use Policy</li>
+                            <li>Fraudulent or illegal activity</li>
+                        </ul>
+                        <p>You may terminate your account at any time by contacting us or using account settings. Upon termination, your right to use the Service will cease immediately.</p>
+                    </div>
+                </div>
+
+                <!-- Disclaimers -->
+                <div class="terms-section">
+                    <h2>9. Disclaimers and Limitations</h2>
+                    <div class="terms-text">
+                        <p>The Service is provided "as is" and "as available" without warranties of any kind. We disclaim all warranties, express or implied, including:</p>
+                        <ul>
+                            <li>Merchantability and fitness for a particular purpose</li>
+                            <li>Non-infringement of third-party rights</li>
+                            <li>Accuracy, reliability, or completeness of content</li>
+                            <li>Uninterrupted or error-free operation</li>
+                        </ul>
+                        <p>We are not responsible for educational outcomes or exam results. The Service is a learning aid and does not guarantee academic success.</p>
+                    </div>
+                </div>
+
+                <!-- Limitation of Liability -->
+                <div class="terms-section">
+                    <h2>10. Limitation of Liability</h2>
+                    <div class="terms-text">
+                        <p>To the maximum extent permitted by law, BrainWave shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of profits, data, or other intangible losses.</p>
+                        <p>Our total liability for any claims related to the Service shall not exceed the amount you paid us in the 12 months preceding the claim.</p>
+                    </div>
+                </div>
+
+                <!-- Governing Law -->
+                <div class="terms-section">
+                    <h2>11. Governing Law and Disputes</h2>
+                    <div class="terms-text">
+                        <p>These Terms are governed by the laws of Nigeria. Any disputes arising from these Terms or the Service shall be resolved through:</p>
+                        <ul>
+                            <li>Good faith negotiation between the parties</li>
+                            <li>Mediation if negotiation fails</li>
+                            <li>Arbitration or Nigerian courts as a last resort</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Changes to Terms -->
+                <div class="terms-section">
+                    <h2>12. Changes to Terms</h2>
+                    <div class="terms-text">
+                        <p>We reserve the right to modify these Terms at any time. We will notify users of significant changes via:</p>
+                        <ul>
+                            <li>Email notification to registered users</li>
+                            <li>Prominent notice on our website</li>
+                            <li>In-app notifications</li>
+                        </ul>
+                        <p>Continued use of the Service after changes constitutes acceptance of the new Terms.</p>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="terms-section">
+                    <h2>13. Contact Information</h2>
+                    <div class="terms-text">
+                        <p>If you have questions about these Terms of Service, please contact us:</p>
+                        <div class="contact-info">
+                            <p><strong>Email:</strong> legal@brainwave.ng</p>
+                            <p><strong>Phone:</strong> +234 706 043 6659</p>
+                            <p><strong>Address:</strong> BrainWave Educational Technology<br>
+                            Lagos, Nigeria</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" class="logo-img">
+                            <rect x="0" y="0" width="40" height="40" rx="8" ry="8" fill="#fbbf24"/>
+                            <text x="20" y="28" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white">B</text>
+                        </svg>
+                        <h3>BrainWave</h3>
+                    </div>
+                    <p>Empowering students for academic excellence through innovative learning solutions.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="testimonials.html">Testimonials</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: support@brainwaveedu.com.ng</p>
+                    <p>Phone: +234 706 043 6659</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025-2030 BrainWave. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-menu a').forEach(n => n.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+        }));
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

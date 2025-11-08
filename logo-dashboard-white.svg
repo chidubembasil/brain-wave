@@ -1,0 +1,7 @@
+<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+  <!-- White background with subtle border -->
+  <rect x="0" y="0" width="40" height="40" rx="8" ry="8" fill="white" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1"/>
+  
+  <!-- Dark letter B for contrast -->
+  <text x="20" y="28" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#1e293b">B</text>
+</svg>

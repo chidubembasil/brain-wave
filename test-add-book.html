@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Add Book Functionality</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        #console-output {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Add Book Functionality Test</h1>
+    
+    <div class="test-section">
+        <h2>Quick Tests</h2>
+        <button onclick="runTest1()">Test 1: Check Dashboard Object</button>
+        <button onclick="runTest2()">Test 2: Add Test Book</button>
+        <button onclick="runTest3()">Test 3: Check LocalStorage</button>
+        <button onclick="runTest4()">Test 4: Open Add Book Modal</button>
+        <button onclick="clearConsole()">Clear Console</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Console Output</h2>
+        <div id="console-output"></div>
+    </div>
+
+    <script>
+        const consoleOutput = document.getElementById('console-output');
+        
+        function log(message, type = 'info') {
+            const color = type === 'error' ? '#f87171' : type === 'success' ? '#4ade80' : '#d4d4d4';
+            consoleOutput.innerHTML += `<div style="color: ${color}; margin: 2px 0;">${message}</div>`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        function clearConsole() {
+            consoleOutput.innerHTML = '';
+        }
+
+        function runTest1() {
+            log('=== TEST 1: Check Dashboard Object ===');
+            
+            if (typeof window.adminDashboard === 'undefined') {
+                log('❌ window.adminDashboard is not defined', 'error');
+                log('Opening admin dashboard page...', 'info');
+                setTimeout(() => {
+                    window.location.href = 'admin-dashboard.html';
+                }, 1000);
+                return;
+            }
+            
+            log('✓ Dashboard object exists', 'success');
+            log('Books array: ' + JSON.stringify(window.adminDashboard.books), 'info');
+            log('Books count: ' + (window.adminDashboard.books ? window.adminDashboard.books.length : 0), 'info');
+        }
+
+        function runTest2() {
+            log('=== TEST 2: Add Test Book ===');
+            
+            if (typeof window.adminDashboard === 'undefined') {
+                log('❌ Dashboard not loaded. Redirecting...', 'error');
+                setTimeout(() => window.location.href = 'admin-dashboard.html', 1000);
+                return;
+            }
+
+            const testBook = {
+                title: 'Test Physics Book',
+                description: 'A comprehensive physics textbook for SS1 students',
+                classLevel: 'SS1',
+                subject: 'Physics',
+                link: 'https://drive.google.com/file/d/test123'
+            };
+
+            log('Adding book: ' + JSON.stringify(testBook), 'info');
+            
+            try {
+                window.adminDashboard.addBook(testBook);
+                log('✓ Book added successfully!', 'success');
+                log('Total books: ' + window.adminDashboard.books.length, 'success');
+            } catch (error) {
+                log('❌ Error: ' + error.message, 'error');
+            }
+        }
+
+        function runTest3() {
+            log('=== TEST 3: Check LocalStorage ===');
+            
+            const storedBooks = localStorage.getItem('brainwave_books');
+            
+            if (!storedBooks) {
+                log('❌ No books in localStorage', 'error');
+                return;
+            }
+            
+            log('✓ Books found in localStorage', 'success');
+            log('Stored data: ' + storedBooks, 'info');
+            
+            try {
+                const books = JSON.parse(storedBooks);
+                log('Parsed books count: ' + books.length, 'success');
+                books.forEach((book, index) => {
+                    log(`  ${index + 1}. ${book.title} (${book.subject})`, 'info');
+                });
+            } catch (error) {
+                log('❌ Error parsing: ' + error.message, 'error');
+            }
+        }
+
+        function runTest4() {
+            log('=== TEST 4: Open Add Book Modal ===');
+            
+            if (typeof window.adminDashboard === 'undefined') {
+                log('❌ Dashboard not loaded. Redirecting...', 'error');
+                setTimeout(() => window.location.href = 'admin-dashboard.html', 1000);
+                return;
+            }
+
+            log('Opening modal...', 'info');
+            
+            try {
+                window.adminDashboard.openContentModal('book');
+                log('✓ Modal opened successfully!', 'success');
+                log('Redirecting to dashboard to see modal...', 'info');
+                setTimeout(() => {
+                    window.location.href = 'admin-dashboard.html';
+                }, 1500);
+            } catch (error) {
+                log('❌ Error: ' + error.message, 'error');
+            }
+        }
+
+        // Auto-run test on load if dashboard exists
+        window.addEventListener('load', () => {
+            if (typeof window.adminDashboard !== 'undefined') {
+                log('✓ Dashboard detected!', 'success');
+                runTest1();
+            } else {
+                log('⚠ Dashboard not detected. This test page should be opened from admin-dashboard.html', 'error');
+                log('Redirecting to admin dashboard...', 'info');
+                setTimeout(() => {
+                    window.location.href = 'admin-dashboard.html';
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>

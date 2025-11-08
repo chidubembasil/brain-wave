@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Test Data - BrainWave</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .info {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+        }
+
+        .button-group {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        button {
+            padding: 1rem;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .danger {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+        }
+
+        .log {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+        }
+
+        .log-entry {
+            padding: 0.25rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .success {
+            color: #16a34a;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        .info-text {
+            color: #2563eb;
+        }
+
+        .credentials {
+            background: #fef3c7;
+            border: 2px solid #fbbf24;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .credentials h3 {
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+
+        .credentials p {
+            margin: 0.25rem 0;
+            color: #78350f;
+        }
+
+        .credentials strong {
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 BrainWave Test Data Setup</h1>
+        
+        <div class="info">
+            <strong>ℹ️ Information:</strong>
+            <p>This tool helps you quickly set up test data for the Student Dashboard. Click the buttons below to populate the system with sample students, subjects, and content.</p>
+        </div>
+
+        <div class="button-group">
+            <button onclick="setupTestStudents()">1. Create Test Students</button>
+            <button onclick="setupTestSubjects()">2. Create Test Subjects</button>
+            <button onclick="setupTestStudyMaterials()">3. Create Study Materials</button>
+            <button onclick="setupTestAssessments()">4. Create Assessments</button>
+            <button onclick="setupTestLiveClasses()">5. Create Live Classes</button>
+            <button onclick="setupTestAnnouncements()">6. Create Announcements</button>
+            <button onclick="setupTestReports()">7. Create Reports</button>
+            <button onclick="setupCommunityLinks()">8. Setup Community Links</button>
+            <button onclick="setupAllData()" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%);">✨ Setup All Test Data</button>
+            <button onclick="clearAllData()" class="danger">🗑️ Clear All Data</button>
+        </div>
+
+        <h3>Setup Log:</h3>
+        <div class="log" id="log"></div>
+
+        <div class="credentials" id="credentials" style="display: none;">
+            <h3>🔑 Test Login Credentials</h3>
+            <p><strong>Student 1 (SS2 Science):</strong></p>
+            <p>Email: john.doe@student.com | Password: john.doe</p>
+            <p>Student Code: <span id="code1">-</span></p>
+            <br>
+            <p><strong>Student 2 (SS3 Humanities):</strong></p>
+            <p>Email: jane.smith@student.com | Password: jane.smith</p>
+            <p>Student Code: <span id="code2">-</span></p>
+            <br>
+            <p><strong>Student 3 (Jambite Science):</strong></p>
+            <p>Email: mike.johnson@student.com | Password: mike.johnson</p>
+            <p>Student Code: <span id="code3">-</span></p>
+            <br>
+            <p><strong>Login URL:</strong> <a href="student-login.html" target="_blank">student-login.html</a></p>
+        </div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function generateCode() {
+            return 'BW' + Math.random().toString(36).substr(2, 6).toUpperCase();
+        }
+
+        function setupTestStudents() {
+            log('Creating test students...', 'info-text');
+            
+            const students = [
+                {
+                    id: Date.now(),
+                    name: 'John Doe',
+                    email: 'john.doe@student.com',
+                    phone: '+234 801 234 5678',
+                    role: 'student',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    studentCode: generateCode(),
+                    plan: 'bootcamp',
+                    status: 'active',
+                    locked: false,
+                    joinDate: new Date().toISOString().split('T')[0],
+                    bootcampStartDate: new Date().toISOString().split('T')[0],
+                    planHistory: [{
+                        from: null,
+                        to: 'bootcamp',
+                        changedAt: new Date().toISOString(),
+                        changedBy: 'system'
+                    }],
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 1,
+                    name: 'Jane Smith',
+                    email: 'jane.smith@student.com',
+                    phone: '+234 802 345 6789',
+                    role: 'student',
+                    classLevel: 'SS3',
+                    stream: 'Humanities',
+                    studentCode: generateCode(),
+                    plan: '30',
+                    status: 'active',
+                    locked: false,
+                    joinDate: new Date().toISOString().split('T')[0],
+                    expiry: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                    planHistory: [{
+                        from: null,
+                        to: '30',
+                        changedAt: new Date().toISOString(),
+                        changedBy: 'system'
+                    }],
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 2,
+                    name: 'Mike Johnson',
+                    email: 'mike.johnson@student.com',
+                    phone: '+234 803 456 7890',
+                    role: 'student',
+                    classLevel: 'Jambite',
+                    stream: 'Science',
+                    studentCode: generateCode(),
+                    plan: '60',
+                    status: 'active',
+                    locked: false,
+                    joinDate: new Date().toISOString().split('T')[0],
+                    expiry: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                    planHistory: [{
+                        from: null,
+                        to: '60',
+                        changedAt: new Date().toISOString(),
+                        changedBy: 'system'
+                    }],
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            let users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            
+            // Remove existing test students
+            users = users.filter(u => !u.email.includes('@student.com'));
+            
+            // Add new test students
+            users = users.concat(students);
+            
+            localStorage.setItem('brainwave_users', JSON.stringify(users));
+            
+            // Also save to 'users' key for compatibility
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            log(`✅ Created ${students.length} test students`, 'success');
+            
+            // Show credentials
+            document.getElementById('credentials').style.display = 'block';
+            document.getElementById('code1').textContent = students[0].studentCode;
+            document.getElementById('code2').textContent = students[1].studentCode;
+            document.getElementById('code3').textContent = students[2].studentCode;
+        }
+
+        function setupTestSubjects() {
+            log('Creating test subjects...', 'info-text');
+            
+            const subjects = [
+                // SS2 Science
+                { id: Date.now(), name: 'Mathematics', classLevel: 'SS2', stream: 'Science', createdAt: new Date().toISOString() },
+                { id: Date.now() + 1, name: 'Physics', classLevel: 'SS2', stream: 'Science', createdAt: new Date().toISOString() },
+                { id: Date.now() + 2, name: 'Chemistry', classLevel: 'SS2', stream: 'Science', createdAt: new Date().toISOString() },
+                { id: Date.now() + 3, name: 'Biology', classLevel: 'SS2', stream: 'Science', createdAt: new Date().toISOString() },
+                
+                // SS3 Humanities
+                { id: Date.now() + 4, name: 'Literature', classLevel: 'SS3', stream: 'Humanities', createdAt: new Date().toISOString() },
+                { id: Date.now() + 5, name: 'Government', classLevel: 'SS3', stream: 'Humanities', createdAt: new Date().toISOString() },
+                { id: Date.now() + 6, name: 'History', classLevel: 'SS3', stream: 'Humanities', createdAt: new Date().toISOString() },
+                
+                // Jambite Science
+                { id: Date.now() + 7, name: 'Use of English', classLevel: 'Jambite', stream: 'Science', createdAt: new Date().toISOString() },
+                { id: Date.now() + 8, name: 'Physics (JAMB)', classLevel: 'Jambite', stream: 'Science', createdAt: new Date().toISOString() },
+                { id: Date.now() + 9, name: 'Chemistry (JAMB)', classLevel: 'Jambite', stream: 'Science', createdAt: new Date().toISOString() },
+                
+                // General subjects
+                { id: Date.now() + 10, name: 'English Language', classLevel: 'All Levels', stream: 'General', createdAt: new Date().toISOString() },
+                { id: Date.now() + 11, name: 'Citizenship and Heritage Studies', classLevel: 'All Levels', stream: 'General', createdAt: new Date().toISOString() }
+            ];
+
+            localStorage.setItem('brainwave_subjects', JSON.stringify(subjects));
+            log(`✅ Created ${subjects.length} test subjects`, 'success');
+        }
+
+        function setupTestStudyMaterials() {
+            log('Creating test study materials...', 'info-text');
+            
+            const books = [
+                {
+                    id: Date.now(),
+                    title: 'Advanced Mathematics Textbook',
+                    description: 'Complete guide to SS2 Mathematics covering algebra, geometry, and calculus',
+                    subject: 'Mathematics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    link: 'https://drive.google.com/file/d/sample',
+                    thumbnail: 'https://via.placeholder.com/300x400/1e3a8a/ffffff?text=Math+Book',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 1,
+                    title: 'Physics Fundamentals',
+                    description: 'Essential physics concepts for SS2 students',
+                    subject: 'Physics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    link: 'https://drive.google.com/file/d/sample2',
+                    thumbnail: 'https://via.placeholder.com/300x400/3b82f6/ffffff?text=Physics',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 2,
+                    title: 'Literature in English',
+                    description: 'Comprehensive literature guide for SS3 Humanities students',
+                    subject: 'Literature',
+                    classLevel: 'SS3',
+                    stream: 'Humanities',
+                    link: 'https://drive.google.com/file/d/sample3',
+                    thumbnail: 'https://via.placeholder.com/300x400/8b5cf6/ffffff?text=Literature',
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            const videos = [
+                {
+                    id: Date.now() + 10,
+                    title: 'Introduction to Calculus',
+                    description: 'Learn the basics of calculus with step-by-step examples',
+                    subject: 'Mathematics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    link: 'https://www.youtube.com/watch?v=WUvTyaaNkzM',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 11,
+                    title: 'Chemistry: Atomic Structure',
+                    description: 'Understanding atoms, electrons, and chemical bonding',
+                    subject: 'Chemistry',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    link: 'https://www.youtube.com/watch?v=Rd4a1X3B61w',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 12,
+                    title: 'JAMB Physics Preparation',
+                    description: 'Complete JAMB physics tutorial covering all topics',
+                    subject: 'Physics (JAMB)',
+                    classLevel: 'Jambite',
+                    stream: 'Science',
+                    link: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            localStorage.setItem('brainwave_books', JSON.stringify(books));
+            localStorage.setItem('brainwave_videos', JSON.stringify(videos));
+            log(`✅ Created ${books.length} eBooks and ${videos.length} videos`, 'success');
+        }
+
+        function setupTestAssessments() {
+            log('Creating test assessments...', 'info-text');
+            
+            const futureDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+            
+            const quizzes = [
+                {
+                    id: Date.now(),
+                    type: 'quiz',
+                    title: 'Mathematics Quiz - Algebra',
+                    subject: 'Mathematics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    dueDate: futureDate,
+                    duration: '30',
+                    totalMarks: 50,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 1,
+                    type: 'quiz',
+                    title: 'Physics Quiz - Motion',
+                    subject: 'Physics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    dueDate: futureDate,
+                    duration: '45',
+                    totalMarks: 60,
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            const assignments = [
+                {
+                    id: Date.now() + 10,
+                    type: 'assignment',
+                    title: 'Chemistry Assignment - Periodic Table',
+                    subject: 'Chemistry',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    dueDate: futureDate,
+                    duration: '60',
+                    totalMarks: 100,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 11,
+                    type: 'assignment',
+                    title: 'Literature Essay',
+                    subject: 'Literature',
+                    classLevel: 'SS3',
+                    stream: 'Humanities',
+                    dueDate: futureDate,
+                    duration: '120',
+                    totalMarks: 100,
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            const mocks = [
+                {
+                    id: Date.now() + 20,
+                    type: 'mock',
+                    title: 'JAMB Mock Exam - Physics',
+                    subject: 'Physics (JAMB)',
+                    classLevel: 'Jambite',
+                    stream: 'Science',
+                    dueDate: futureDate,
+                    duration: '120',
+                    totalMarks: 100,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 21,
+                    type: 'mock',
+                    title: 'SS2 Mid-Term Exam - Mathematics',
+                    subject: 'Mathematics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    dueDate: futureDate,
+                    duration: '90',
+                    totalMarks: 100,
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            localStorage.setItem('brainwave_quizs', JSON.stringify(quizzes));
+            localStorage.setItem('brainwave_assignments', JSON.stringify(assignments));
+            localStorage.setItem('brainwave_mocks', JSON.stringify(mocks));
+            
+            log(`✅ Created ${quizzes.length} quizzes, ${assignments.length} assignments, ${mocks.length} mock exams`, 'success');
+        }
+
+        function setupTestLiveClasses() {
+            log('Creating test live classes...', 'info-text');
+            
+            const liveClasses = [
+                {
+                    id: Date.now(),
+                    subject: 'Mathematics',
+                    teacher: 'Mr. Adeyemi',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    date: new Date().toISOString().split('T')[0],
+                    time: '10:00 AM',
+                    status: 'live',
+                    link: 'https://zoom.us/j/sample123',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 1,
+                    subject: 'Physics',
+                    teacher: 'Dr. Okonkwo',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    date: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                    time: '2:00 PM',
+                    status: 'scheduled',
+                    link: 'https://zoom.us/j/sample456',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 2,
+                    subject: 'Literature',
+                    teacher: 'Mrs. Bello',
+                    classLevel: 'SS3',
+                    stream: 'Humanities',
+                    date: new Date().toISOString().split('T')[0],
+                    time: '11:00 AM',
+                    status: 'live',
+                    link: 'https://zoom.us/j/sample789',
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            localStorage.setItem('brainwave_live_classes', JSON.stringify(liveClasses));
+            log(`✅ Created ${liveClasses.length} live classes`, 'success');
+        }
+
+        function setupTestAnnouncements() {
+            log('Creating test announcements...', 'info-text');
+            
+            const announcements = [
+                {
+                    id: Date.now(),
+                    title: 'Welcome to BrainWave!',
+                    message: 'We are excited to have you on our platform. Explore all the features and start learning today!',
+                    classLevel: 'All Levels',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 1,
+                    title: 'SS2 Mid-Term Exams',
+                    message: 'Mid-term examinations for SS2 students will commence next week. Please prepare adequately.',
+                    classLevel: 'SS2',
+                    createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: Date.now() + 2,
+                    title: 'JAMB Registration Reminder',
+                    message: 'All Jambite students should complete their JAMB registration before the deadline.',
+                    classLevel: 'Jambite',
+                    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: Date.now() + 3,
+                    title: 'New Study Materials Available',
+                    message: 'We have added new video tutorials and eBooks to the study materials section. Check them out!',
+                    classLevel: 'All Levels',
+                    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
+                }
+            ];
+
+            localStorage.setItem('brainwave_announcements', JSON.stringify(announcements));
+            log(`✅ Created ${announcements.length} announcements`, 'success');
+        }
+
+        function setupTestReports() {
+            log('Creating test reports...', 'info-text');
+            
+            const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            const students = users.filter(u => u.role === 'student');
+            
+            if (students.length === 0) {
+                log('⚠️ No students found. Create students first!', 'error');
+                return;
+            }
+
+            const reports = [];
+            
+            students.forEach((student, index) => {
+                if (student.studentCode) {
+                    reports.push({
+                        id: Date.now() + index * 3,
+                        studentCode: student.studentCode,
+                        studentName: student.name,
+                        assessmentTitle: 'Mathematics Quiz - Algebra',
+                        subject: 'Mathematics',
+                        type: 'quiz',
+                        score: 42 + (index * 10),
+                        totalMarks: 50,
+                        passed: true,
+                        date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                        createdAt: new Date().toISOString()
+                    });
+
+                    reports.push({
+                        id: Date.now() + index * 3 + 1,
+                        studentCode: student.studentCode,
+                        studentName: student.name,
+                        assessmentTitle: 'Physics Assignment',
+                        subject: 'Physics',
+                        type: 'assignment',
+                        score: 75 + (index * 5),
+                        totalMarks: 100,
+                        passed: true,
+                        date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                        createdAt: new Date().toISOString()
+                    });
+
+                    reports.push({
+                        id: Date.now() + index * 3 + 2,
+                        studentCode: student.studentCode,
+                        studentName: student.name,
+                        assessmentTitle: 'Chemistry Test',
+                        subject: 'Chemistry',
+                        type: 'quiz',
+                        score: 55 + (index * 8),
+                        totalMarks: 100,
+                        passed: true,
+                        date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                        createdAt: new Date().toISOString()
+                    });
+                }
+            });
+
+            localStorage.setItem('brainwave_reports', JSON.stringify(reports));
+            log(`✅ Created ${reports.length} test reports`, 'success');
+        }
+
+        function setupCommunityLinks() {
+            log('Setting up community links...', 'info-text');
+            
+            const links = {
+                whatsappEnabled: true,
+                whatsappLink: 'https://chat.whatsapp.com/sample',
+                telegramEnabled: true,
+                telegramLink: 'https://t.me/brainwave_students',
+                updatedAt: new Date().toISOString()
+            };
+
+            localStorage.setItem('brainwave_community_links', JSON.stringify(links));
+            log('✅ Community links configured', 'success');
+        }
+
+        function setupAllData() {
+            log('========================================', 'info-text');
+            log('Starting complete setup...', 'info-text');
+            log('========================================', 'info-text');
+            
+            setupTestStudents();
+            setTimeout(() => setupTestSubjects(), 100);
+            setTimeout(() => setupTestStudyMaterials(), 200);
+            setTimeout(() => setupTestAssessments(), 300);
+            setTimeout(() => setupTestLiveClasses(), 400);
+            setTimeout(() => setupTestAnnouncements(), 500);
+            setTimeout(() => setupTestReports(), 600);
+            setTimeout(() => setupCommunityLinks(), 700);
+            
+            setTimeout(() => {
+                log('========================================', 'success');
+                log('✅ ALL TEST DATA SETUP COMPLETE!', 'success');
+                log('========================================', 'success');
+                log('You can now test the Student Dashboard', 'success');
+                log('Open student-login.html to login', 'success');
+            }, 800);
+        }
+
+        function clearAllData() {
+            if (!confirm('Are you sure you want to clear ALL data? This cannot be undone!')) {
+                return;
+            }
+
+            log('Clearing all data...', 'error');
+            
+            const keys = [
+                'brainwave_users',
+                'users',
+                'brainwave_subjects',
+                'brainwave_books',
+                'brainwave_videos',
+                'brainwave_quizs',
+                'brainwave_assignments',
+                'brainwave_mocks',
+                'brainwave_live_classes',
+                'brainwave_announcements',
+                'brainwave_reports',
+                'brainwave_community_links',
+                'brainwave_current_student_id'
+            ];
+
+            keys.forEach(key => {
+                localStorage.removeItem(key);
+                log(`Removed: ${key}`, 'error');
+            });
+
+            document.getElementById('credentials').style.display = 'none';
+            log('✅ All data cleared!', 'success');
+        }
+
+        // Initial log
+        log('Test data setup tool ready. Click buttons above to setup data.', 'info-text');
+    </script>
+</body>
+</html>

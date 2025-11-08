@@ -1,0 +1,34 @@
+BRAINWAVE - CLEAR MOBILE CACHE INSTRUCTIONS
+============================================
+
+The features page has been updated with mobile fixes.
+To see the changes on your mobile device, please do ONE of the following:
+
+OPTION 1: Hard Refresh (Recommended)
+-------------------------------------
+On your mobile browser:
+- Chrome (Android): Tap the three dots menu → Settings → Privacy → Clear browsing data → Select "Cached images and files" → Clear data
+- Safari (iOS): Settings → Safari → Clear History and Website Data
+- Or simply close and reopen the browser app completely
+
+OPTION 2: Force Reload
+-----------------------
+- Add ?v=2 to the end of the URL
+- Instead of: http://10.138.189.121:8000/features.html
+- Use: http://10.138.189.121:8000/features.html?v=2
+
+OPTION 3: Private/Incognito Mode
+---------------------------------
+- Open the URL in a private/incognito browser window
+- This bypasses the cache completely
+
+WHAT WAS FIXED:
+===============
+✓ "Mock Examinations" text now fits in its box
+✓ "Live Classes" text now fits in its box
+✓ All feature titles properly wrap on mobile
+✓ Container widths constrained to prevent overflow
+✓ Font sizes optimized for mobile screens
+✓ Added cache-control headers to prevent future caching issues
+
+After clearing cache, the text should display properly within the feature boxes!

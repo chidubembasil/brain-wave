@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Plan & Days Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #1e3a8a;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 10px;
+        }
+        .test-user {
+            background: #f9fafb;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #3b82f6;
+        }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin: 5px;
+            color: white;
+        }
+        .badge-green { background: #10b981; }
+        .badge-orange { background: #f59e0b; }
+        .badge-red { background: #ef4444; }
+        button {
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #1e40af;
+        }
+        .info {
+            background: #dbeafe;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #d1fae5;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            color: #065f46;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Plan Type & Days Display Test Suite</h1>
+
+    <div class="test-section">
+        <h2>📊 Current User Status</h2>
+        <div id="currentStatus"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔧 Test Scenarios</h2>
+        <p>Click buttons below to set up different test scenarios:</p>
+        
+        <div class="test-user">
+            <h3>Scenario 1: Bootcamp User (5 days remaining)</h3>
+            <button onclick="setupBootcampUser(5)">Setup Bootcamp - 5 Days Left</button>
+            <button onclick="testStudentDashboard()">Test Student Dashboard</button>
+        </div>
+
+        <div class="test-user">
+            <h3>Scenario 2: Bootcamp User (1 day remaining - Warning)</h3>
+            <button onclick="setupBootcampUser(1)">Setup Bootcamp - 1 Day Left</button>
+            <button onclick="testStudentDashboard()">Test Student Dashboard</button>
+        </div>
+
+        <div class="test-user">
+            <h3>Scenario 3: Bootcamp Expired</h3>
+            <button onclick="setupBootcampUser(-2)">Setup Bootcamp - Expired</button>
+            <button onclick="testStudentDashboard()">Test Student Dashboard</button>
+        </div>
+
+        <div class="test-user">
+            <h3>Scenario 4: Individual Plan (30 days remaining)</h3>
+            <button onclick="setupIndividualPlan(30)">Setup Individual - 30 Days</button>
+            <button onclick="testStudentDashboard()">Test Student Dashboard</button>
+        </div>
+
+        <div class="test-user">
+            <h3>Scenario 5: Individual Plan (5 days remaining - Warning)</h3>
+            <button onclick="setupIndividualPlan(5)">Setup Individual - 5 Days</button>
+            <button onclick="testStudentDashboard()">Test Student Dashboard</button>
+        </div>
+
+        <div class="test-user">
+            <h3>Scenario 6: Family Plan (60 days remaining)</h3>
+            <button onclick="setupFamilyPlan(60)">Setup Family - 60 Days</button>
+            <button onclick="testParentDashboard()">Test Parent Dashboard</button>
+        </div>
+
+        <div class="test-user">
+            <h3>Scenario 7: Expired Subscription</h3>
+            <button onclick="setupExpiredPlan()">Setup Expired Plan</button>
+            <button onclick="testStudentDashboard()">Test Student Dashboard</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📋 Test Results</h2>
+        <div id="testResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🚀 Quick Actions</h2>
+        <button onclick="window.location.href='student-dashboard.html'">Open Student Dashboard</button>
+        <button onclick="window.location.href='parent-dashboard.html'">Open Parent Dashboard</button>
+        <button onclick="clearTestData()">Clear Test Data</button>
+        <button onclick="location.reload()">Refresh Page</button>
+    </div>
+
+    <script>
+        // Helper function to calculate date
+        function getDateFromDays(daysFromNow) {
+            const date = new Date();
+            date.setDate(date.getDate() + daysFromNow);
+            return date.toISOString().split('T')[0];
+        }
+
+        // Setup bootcamp user
+        function setupBootcampUser(daysRemaining) {
+            const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            const currentStudentId = localStorage.getItem('brainwave_current_student_id');
+            
+            let student = users.find(u => u.id == currentStudentId);
+            if (!student) {
+                student = {
+                    id: Date.now(),
+                    name: 'Test Student',
+                    email: 'test@student.com',
+                    role: 'student',
+                    studentCode: 'TEST001'
+                };
+                users.push(student);
+                localStorage.setItem('brainwave_current_student_id', student.id);
+            }
+
+            const startDate = getDateFromDays(-(7 - daysRemaining));
+            student.status = 'bootcamp';
+            student.plan = 'bootcamp';
+            student.planType = 'individual';
+            student.bootcampStartDate = startDate;
+            student.expiry = null;
+
+            localStorage.setItem('brainwave_users', JSON.stringify(users));
+            showSuccess(`Bootcamp user created with ${daysRemaining} days remaining`);
+            displayCurrentStatus();
+        }
+
+        // Setup individual plan
+        function setupIndividualPlan(daysRemaining) {
+            const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            const currentStudentId = localStorage.getItem('brainwave_current_student_id');
+            
+            let student = users.find(u => u.id == currentStudentId);
+            if (!student) {
+                student = {
+                    id: Date.now(),
+                    name: 'Test Student',
+                    email: 'test@student.com',
+                    role: 'student',
+                    studentCode: 'TEST001'
+                };
+                users.push(student);
+                localStorage.setItem('brainwave_current_student_id', student.id);
+            }
+
+            student.status = 'active';
+            student.plan = 'monthly';
+            student.planType = 'individual';
+            student.bootcampStartDate = null;
+            student.expiry = getDateFromDays(daysRemaining);
+
+            localStorage.setItem('brainwave_users', JSON.stringify(users));
+            showSuccess(`Individual plan created with ${daysRemaining} days remaining`);
+            displayCurrentStatus();
+        }
+
+        // Setup family plan (for parent)
+        function setupFamilyPlan(daysRemaining) {
+            const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            
+            let parent = users.find(u => u.role === 'parent');
+            if (!parent) {
+                parent = {
+                    id: Date.now(),
+                    name: 'Test Parent',
+                    email: 'test@parent.com',
+                    role: 'parent'
+                };
+                users.push(parent);
+            }
+
+            parent.status = 'active';
+            parent.plan = 'monthly';
+            parent.planType = 'family';
+            parent.bootcampStartDate = null;
+            parent.expiry = getDateFromDays(daysRemaining);
+
+            localStorage.setItem('brainwave_users', JSON.stringify(users));
+            localStorage.setItem('currentUser', JSON.stringify(parent));
+            showSuccess(`Family plan created with ${daysRemaining} days remaining`);
+            displayCurrentStatus();
+        }
+
+        // Setup expired plan
+        function setupExpiredPlan() {
+            const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            const currentStudentId = localStorage.getItem('brainwave_current_student_id');
+            
+            let student = users.find(u => u.id == currentStudentId);
+            if (!student) {
+                student = {
+                    id: Date.now(),
+                    name: 'Test Student',
+                    email: 'test@student.com',
+                    role: 'student',
+                    studentCode: 'TEST001'
+                };
+                users.push(student);
+                localStorage.setItem('brainwave_current_student_id', student.id);
+            }
+
+            student.status = 'expired';
+            student.plan = 'monthly';
+            student.planType = 'individual';
+            student.bootcampStartDate = null;
+            student.expiry = getDateFromDays(-5);
+
+            localStorage.setItem('brainwave_users', JSON.stringify(users));
+            showSuccess('Expired plan created');
+            displayCurrentStatus();
+        }
+
+        // Test student dashboard calculation
+        function testStudentDashboard() {
+            const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            const currentStudentId = localStorage.getItem('brainwave_current_student_id');
+            const student = users.find(u => u.id == currentStudentId);
+
+            if (!student) {
+                showError('No student found. Please setup a test scenario first.');
+                return;
+            }
+
+            const result = calculateDaysRemaining(student);
+            displayTestResult('Student Dashboard', student, result);
+        }
+
+        // Test parent dashboard calculation
+        function testParentDashboard() {
+            const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            const parent = users.find(u => u.role === 'parent');
+
+            if (!parent) {
+                showError('No parent found. Please setup a family plan first.');
+                return;
+            }
+
+            const result = calculateParentDaysRemaining(parent);
+            displayTestResult('Parent Dashboard', parent, result);
+        }
+
+        // Calculate days remaining (same logic as student-dashboard.js)
+        function calculateDaysRemaining(student) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (student.status === 'bootcamp' || student.plan === 'bootcamp') {
+                if (student.bootcampStartDate) {
+                    const startDate = new Date(student.bootcampStartDate);
+                    startDate.setHours(0, 0, 0, 0);
+                    const daysPassed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+                    const daysRemaining = 7 - daysPassed;
+                    
+                    if (daysRemaining > 0) {
+                        const color = daysRemaining <= 2 ? '#f59e0b' : '#10b981';
+                        return {
+                            text: `${daysRemaining} day${daysRemaining !== 1 ? 's' : ''} left in bootcamp`,
+                            color: color,
+                            type: daysRemaining <= 2 ? 'warning' : 'safe'
+                        };
+                    } else {
+                        return {
+                            text: 'Bootcamp expired',
+                            color: '#ef4444',
+                            type: 'urgent'
+                        };
+                    }
+                }
+            }
+            
+            if (student.expiry) {
+                const expiryDate = new Date(student.expiry);
+                expiryDate.setHours(0, 0, 0, 0);
+                const daysRemaining = Math.floor((expiryDate - today) / (1000 * 60 * 60 * 24));
+                
+                if (daysRemaining > 0) {
+                    const color = daysRemaining <= 7 ? '#f59e0b' : '#10b981';
+                    return {
+                        text: `${daysRemaining} day${daysRemaining !== 1 ? 's' : ''} remaining`,
+                        color: color,
+                        type: daysRemaining <= 7 ? 'warning' : 'safe'
+                    };
+                } else if (daysRemaining === 0) {
+                    return {
+                        text: 'Expires today',
+                        color: '#ef4444',
+                        type: 'urgent'
+                    };
+                } else {
+                    return {
+                        text: 'Subscription expired',
+                        color: '#ef4444',
+                        type: 'urgent'
+                    };
+                }
+            }
+            
+            return null;
+        }
+
+        // Calculate parent days remaining
+        function calculateParentDaysRemaining(parent) {
+            return calculateDaysRemaining(parent);
+        }
+
+        // Display current status
+        function displayCurrentStatus() {
+            const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            const currentStudentId = localStorage.getItem('brainwave_current_student_id');
+            const student = users.find(u => u.id == currentStudentId);
+            const parent = users.find(u => u.role === 'parent');
+
+            let html = '';
+
+            if (student) {
+                const result = calculateDaysRemaining(student);
+                html += `
+                    <div class="info">
+                        <h3>👨‍🎓 Current Student</h3>
+                        <p><strong>Name:</strong> ${student.name}</p>
+                        <p><strong>Plan Type:</strong> ${student.planType || 'individual'}</p>
+                        <p><strong>Status:</strong> ${student.status || 'N/A'}</p>
+                        <p><strong>Bootcamp Start:</strong> ${student.bootcampStartDate || 'N/A'}</p>
+                        <p><strong>Expiry:</strong> ${student.expiry || 'N/A'}</p>
+                        ${result ? `<p><strong>Days Display:</strong> <span class="badge badge-${result.type === 'safe' ? 'green' : result.type === 'warning' ? 'orange' : 'red'}">${result.text}</span></p>` : '<p><strong>Days Display:</strong> Hidden (no expiry info)</p>'}
+                    </div>
+                `;
+            }
+
+            if (parent) {
+                const result = calculateParentDaysRemaining(parent);
+                html += `
+                    <div class="info">
+                        <h3>👨‍👩‍👧‍👦 Current Parent</h3>
+                        <p><strong>Name:</strong> ${parent.name}</p>
+                        <p><strong>Plan Type:</strong> ${parent.planType || 'individual'}</p>
+                        <p><strong>Status:</strong> ${parent.status || 'N/A'}</p>
+                        <p><strong>Bootcamp Start:</strong> ${parent.bootcampStartDate || 'N/A'}</p>
+                        <p><strong>Expiry:</strong> ${parent.expiry || 'N/A'}</p>
+                        ${result ? `<p><strong>Days Display:</strong> <span class="badge badge-${result.type === 'safe' ? 'green' : result.type === 'warning' ? 'orange' : 'red'}">${result.text}</span></p>` : '<p><strong>Days Display:</strong> Hidden (no expiry info)</p>'}
+                    </div>
+                `;
+            }
+
+            if (!student && !parent) {
+                html = '<p class="info">No test users found. Please setup a test scenario.</p>';
+            }
+
+            document.getElementById('currentStatus').innerHTML = html;
+        }
+
+        // Display test result
+        function displayTestResult(dashboardType, user, result) {
+            const resultsDiv = document.getElementById('testResults');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            let html = `
+                <div class="success">
+                    <h4>✅ Test Completed - ${dashboardType} (${timestamp})</h4>
+                    <p><strong>User:</strong> ${user.name} (${user.planType || 'individual'} plan)</p>
+                    <p><strong>Status:</strong> ${user.status || 'N/A'}</p>
+                    ${result ? `
+                        <p><strong>Display Text:</strong> ${result.text}</p>
+                        <p><strong>Color:</strong> <span class="badge" style="background: ${result.color}">${result.color}</span></p>
+                        <p><strong>Type:</strong> ${result.type}</p>
+                    ` : '<p><strong>Result:</strong> No display (hidden)</p>'}
+                </div>
+            `;
+            
+            resultsDiv.innerHTML = html + resultsDiv.innerHTML;
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = `<div class="success">✅ ${message}</div>` + resultsDiv.innerHTML;
+        }
+
+        // Show error message
+        function showError(message) {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = `<div style="background: #fee2e2; padding: 10px; border-radius: 5px; color: #991b1b; margin: 10px 0;">❌ ${message}</div>` + resultsDiv.innerHTML;
+        }
+
+        // Clear test data
+        function clearTestData() {
+            if (confirm('Clear all test data? This will remove test users.')) {
+                localStorage.removeItem('brainwave_current_student_id');
+                const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+                const cleanedUsers = users.filter(u => !u.email.includes('test@'));
+                localStorage.setItem('brainwave_users', JSON.stringify(cleanedUsers));
+                showSuccess('Test data cleared');
+                displayCurrentStatus();
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', function() {
+            displayCurrentStatus();
+        });
+    </script>
+</body>
+</html>

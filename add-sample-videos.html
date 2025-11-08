@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Sample Videos - BrainWave</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .status {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f0fdf4;
+            border-radius: 12px;
+            border-left: 4px solid #10b981;
+            display: none;
+        }
+
+        .status.show {
+            display: block;
+        }
+
+        .status-title {
+            font-weight: 600;
+            color: #065f46;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: #1e40af;
+            font-size: 0.9rem;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e5e7eb;
+            margin: 1.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-video"></i> Add Sample Videos</h1>
+        <p class="subtitle">Quickly populate your dashboard with test videos</p>
+
+        <div class="info-box">
+            <p><strong>Note:</strong> This will add 3 sample educational videos to your dashboard so you can test all the enhanced buttons and features!</p>
+        </div>
+
+        <button class="btn btn-primary" onclick="addSampleVideos()">
+            <i class="fas fa-plus-circle"></i>
+            Add 3 Sample Videos
+        </button>
+
+        <button class="btn btn-success" onclick="viewCurrentVideos()">
+            <i class="fas fa-list"></i>
+            View Current Videos
+        </button>
+
+        <div class="divider"></div>
+
+        <button class="btn btn-secondary" onclick="clearAllVideos()">
+            <i class="fas fa-trash"></i>
+            Clear All Videos
+        </button>
+
+        <button class="btn btn-secondary" onclick="window.location.href='admin-dashboard.html#content'">
+            <i class="fas fa-arrow-right"></i>
+            Go to Dashboard
+        </button>
+
+        <div class="status" id="status">
+            <div class="status-title">
+                <i class="fas fa-check-circle"></i>
+                <span id="statusText">Success!</span>
+            </div>
+            <p id="statusMessage"></p>
+        </div>
+    </div>
+
+    <script>
+        function addSampleVideos() {
+            const sampleVideos = [
+                {
+                    id: Date.now(),
+                    title: "Quadratic Equations Explained",
+                    description: "Step-by-step explanation of solving quadratic equations using different methods including factoring and the quadratic formula.",
+                    classLevel: "SS2",
+                    subject: "Mathematics",
+                    link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                    duration: "15 min",
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 1,
+                    title: "Essay Writing Techniques",
+                    description: "Learn the fundamentals of essay writing including structure, thesis development, and effective argumentation.",
+                    classLevel: "SS1",
+                    subject: "English Language",
+                    link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                    duration: "22 min",
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 2,
+                    title: "Newton's Laws of Motion",
+                    description: "Comprehensive explanation of Newton's three laws of motion with real-world examples and problem-solving techniques.",
+                    classLevel: "SS3",
+                    subject: "Physics",
+                    link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                    duration: "18 min",
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            // Get existing videos
+            const existingVideos = JSON.parse(localStorage.getItem('brainwave_videos') || '[]');
+            
+            // Add sample videos
+            const allVideos = [...existingVideos, ...sampleVideos];
+            
+            // Save to localStorage
+            localStorage.setItem('brainwave_videos', JSON.stringify(allVideos));
+
+            // Show success message
+            showStatus('Videos Added Successfully!', `Added ${sampleVideos.length} sample videos. Total videos: ${allVideos.length}. Go to the dashboard to see them!`);
+
+            console.log('✅ Sample videos added:', sampleVideos);
+            console.log('📊 Total videos in storage:', allVideos.length);
+        }
+
+        function viewCurrentVideos() {
+            const videos = JSON.parse(localStorage.getItem('brainwave_videos') || '[]');
+            
+            if (videos.length === 0) {
+                showStatus('No Videos Found', 'There are currently no videos in storage. Click "Add 3 Sample Videos" to get started!');
+            } else {
+                const videoList = videos.map((v, i) => `${i + 1}. ${v.title} (${v.classLevel} - ${v.subject})`).join('\n');
+                showStatus(`Found ${videos.length} Videos`, videoList);
+                console.log('Current videos:', videos);
+            }
+        }
+
+        function clearAllVideos() {
+            if (confirm('Are you sure you want to delete ALL videos? This cannot be undone.')) {
+                localStorage.setItem('brainwave_videos', JSON.stringify([]));
+                showStatus('Videos Cleared', 'All videos have been removed from storage.');
+                console.log('✅ All videos cleared');
+            }
+        }
+
+        function showStatus(title, message) {
+            const status = document.getElementById('status');
+            const statusText = document.getElementById('statusText');
+            const statusMessage = document.getElementById('statusMessage');
+
+            statusText.textContent = title;
+            statusMessage.textContent = message;
+            status.classList.add('show');
+
+            setTimeout(() => {
+                status.classList.remove('show');
+            }, 5000);
+        }
+
+        // Check current status on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const videos = JSON.parse(localStorage.getItem('brainwave_videos') || '[]');
+            console.log('📊 Current video count:', videos.length);
+            if (videos.length > 0) {
+                console.log('📹 Videos in storage:', videos);
+            }
+        });
+    </script>
+</body>
+</html>
+

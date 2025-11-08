@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Confirmation - BrainWave</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            --primary-color: #1e3a8a;
+            --success-color: #10b981;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-200: #e5e7eb;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .confirmation-container {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow-xl);
+            max-width: 550px;
+            width: 100%;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .confirmation-header {
+            background: var(--primary-gradient);
+            padding: 3rem 2rem;
+            color: var(--white);
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--success-color);
+            animation: scaleIn 0.5s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .confirmation-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .confirmation-header p {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        .confirmation-body {
+            padding: 2.5rem 2rem;
+        }
+
+        .email-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--gray-50);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            border: 2px solid var(--gray-200);
+        }
+
+        .email-badge i {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .info-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-box li {
+            padding: 0.5rem 0;
+            color: var(--gray-700);
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .info-box li i {
+            color: var(--success-color);
+            margin-top: 0.25rem;
+        }
+
+        .verification-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: #dcfce7;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .verification-status.pending {
+            background: #fef3c7;
+        }
+
+        .verification-status .status-icon {
+            font-size: 2rem;
+        }
+
+        .verification-status.verified .status-icon {
+            color: var(--success-color);
+        }
+
+        .verification-status.pending .status-icon {
+            color: #f59e0b;
+        }
+
+        .verification-status .status-text {
+            text-align: left;
+        }
+
+        .verification-status .status-text h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .verification-status.verified .status-text h3 {
+            color: var(--success-color);
+        }
+
+        .verification-status.pending .status-text h3 {
+            color: #f59e0b;
+        }
+
+        .verification-status .status-text p {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            margin: 0;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: var(--white);
+            box-shadow: 0 4px 6px rgba(30, 58, 138, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(30, 58, 138, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-50);
+        }
+
+        .btn-verify {
+            background: var(--success-color);
+            color: var(--white);
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-verify:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .footer-note {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-200);
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: var(--white);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 4px 6px rgba(30, 58, 138, 0.2);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 6px 12px rgba(30, 58, 138, 0.4);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .confirmation-container {
+                margin: 1rem;
+            }
+
+            .confirmation-header {
+                padding: 2rem 1rem;
+            }
+
+            .confirmation-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .confirmation-body {
+                padding: 1.5rem 1rem;
+            }
+
+            .email-badge {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 0.75rem 1rem;
+                max-width: 100%;
+                word-break: break-all;
+                text-align: center;
+            }
+
+            .email-badge span {
+                word-break: break-word;
+                overflow-wrap: break-word;
+                max-width: 100%;
+            }
+
+            .info-box {
+                padding: 1rem;
+            }
+
+            .info-box h3 {
+                font-size: 1rem;
+            }
+
+            .info-box li {
+                font-size: 0.875rem;
+            }
+
+            .btn {
+                padding: 0.875rem 1.5rem;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="confirmation-container">
+        <div class="confirmation-header">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1>Account Created Successfully!</h1>
+            <p>Welcome to BrainWave</p>
+        </div>
+
+        <div class="confirmation-body">
+            <div class="email-badge">
+                <i class="fas fa-envelope"></i>
+                <span id="userEmail">Loading...</span>
+            </div>
+
+            <!-- Student Code Badge (only for students) -->
+            <div class="email-badge" id="studentCodeBadge" style="display: none; background: #fef3c7; border-color: #fbbf24;">
+                <i class="fas fa-id-card"></i>
+                <span id="studentCode">Loading...</span>
+            </div>
+
+            <div class="verification-status pending" id="verificationStatus">
+                <i class="fas fa-clock status-icon"></i>
+                <div class="status-text">
+                    <h3>Email Verification Pending</h3>
+                    <p>We've sent a confirmation email to your inbox</p>
+                </div>
+            </div>
+
+            <!-- Important Student Code Notice (only for students) -->
+            <div class="info-box" id="studentCodeNotice" style="display: none; background: #fef3c7; border-left-color: #fbbf24;">
+                <h3><i class="fas fa-star"></i> Important: Save Your Student Code!</h3>
+                <ul>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Your unique student code is displayed above</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Share this code with your parent to link accounts</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>You have 7 days of free bootcamp access</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3><i class="fas fa-info-circle"></i> What's Next?</h3>
+                <ul>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Check your email inbox for the verification link</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Click the link in the email to verify your account</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>After verification, return here and click "Check Verification Status"</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Enjoy your 7-day free bootcamp access!</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-verify" id="verifyBtn" onclick="checkVerificationStatus()">
+                    <i class="fas fa-sync-alt"></i> Check Verification Status
+                </button>
+                <a href="login.html" class="btn btn-primary" id="loginBtn" style="display: none;">
+                    <i class="fas fa-sign-in-alt"></i> Go to Login Page
+                </a>
+                <button class="btn btn-secondary" onclick="resendEmail()">
+                    <i class="fas fa-paper-plane"></i> Resend Verification Email
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, sendEmailVerification, db, doc, getDoc, updateDoc } from './firebase-config.js';
+
+        let checkInterval;
+
+        // Load and display the email
+        window.addEventListener('DOMContentLoaded', function() {
+            const email = localStorage.getItem('pendingUserEmail');
+            const userRole = localStorage.getItem('pendingUserRole');
+            const studentCode = localStorage.getItem('pendingStudentCode');
+            const emailElement = document.getElementById('userEmail');
+            
+            if (email) {
+                emailElement.textContent = email;
+            } else {
+                emailElement.textContent = 'No email found';
+            }
+
+            // Show student code if user is a student
+            if (userRole === 'student' && studentCode) {
+                const studentCodeBadge = document.getElementById('studentCodeBadge');
+                const studentCodeElement = document.getElementById('studentCode');
+                const studentCodeNotice = document.getElementById('studentCodeNotice');
+                
+                studentCodeBadge.style.display = 'inline-flex';
+                studentCodeElement.textContent = `Student Code: ${studentCode}`;
+                studentCodeNotice.style.display = 'block';
+            }
+
+            console.log('Pending user role:', userRole);
+
+            // Auto-check verification status every 3 seconds
+            checkInterval = setInterval(autoCheckVerification, 3000);
+        });
+
+        // Auto-check verification status
+        async function autoCheckVerification() {
+            if (!auth.currentUser) return;
+
+            try {
+                await auth.currentUser.reload();
+                if (auth.currentUser.emailVerified) {
+                    clearInterval(checkInterval);
+                    await handleVerificationSuccess();
+                }
+            } catch (error) {
+                console.error('Auto-check error:', error);
+            }
+        }
+
+        // Check email verification status
+        async function checkVerificationStatus() {
+            const verifyBtn = document.getElementById('verifyBtn');
+            const statusDiv = document.getElementById('verificationStatus');
+            
+            if (!auth.currentUser) {
+                alert('❌ Session expired. Please sign up again.');
+                window.location.href = 'signup.html';
+                return;
+            }
+
+            // Disable button and show loading
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '<span class="loading"></span> Checking...';
+            
+            try {
+                // Reload user to get latest emailVerified status
+                await auth.currentUser.reload();
+                
+                if (auth.currentUser.emailVerified) {
+                    await handleVerificationSuccess();
+                } else {
+                    // Not verified yet
+                    verifyBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Check Verification Status';
+                    verifyBtn.disabled = false;
+                    alert('⏳ Email not verified yet. Please check your inbox and click the verification link, then try again.');
+                }
+            } catch (error) {
+                console.error('Verification check error:', error);
+                verifyBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Check Verification Status';
+                verifyBtn.disabled = false;
+                alert('❌ Error checking verification status: ' + error.message);
+            }
+        }
+
+        // Handle successful verification
+        async function handleVerificationSuccess() {
+            const verifyBtn = document.getElementById('verifyBtn');
+            const statusDiv = document.getElementById('verificationStatus');
+            const loginBtn = document.getElementById('loginBtn');
+
+            // Update verification status UI
+            statusDiv.className = 'verification-status verified';
+            statusDiv.innerHTML = `
+                <i class="fas fa-check-circle status-icon"></i>
+                <div class="status-text">
+                    <h3>Email Verified!</h3>
+                    <p>Your account is now active and ready to use</p>
+                </div>
+            `;
+            
+            // Update Firestore with verification status
+            try {
+                const userDocRef = doc(db, 'users', auth.currentUser.uid);
+                await updateDoc(userDocRef, {
+                    emailVerified: true,
+                    verifiedAt: new Date().toISOString()
+                });
+                console.log('✅ Firestore updated with verification status');
+            } catch (error) {
+                console.warn('⚠️ Could not update Firestore:', error);
+            }
+            
+            // Clear pending data
+            localStorage.removeItem('pendingUserEmail');
+            localStorage.removeItem('pendingUserRole');
+            localStorage.removeItem('pendingStudentCode');
+            
+            // Update button
+            verifyBtn.innerHTML = '<i class="fas fa-check-double"></i> Verified Successfully!';
+            verifyBtn.style.background = '#10b981';
+            verifyBtn.disabled = true;
+            
+            // Show login button prominently
+            loginBtn.style.display = 'inline-flex';
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Proceed to Login';
+            loginBtn.style.animation = 'pulse 2s infinite';
+            
+            // Show success message
+            alert('✅ Email verified successfully! Please login to access your dashboard.');
+            
+            // Redirect to login page
+            setTimeout(() => {
+                console.log('🚀 Redirecting to login page...');
+                window.location.href = 'login.html';
+            }, 2000);
+        }
+
+        // Resend verification email
+        async function resendEmail() {
+            if (!auth.currentUser) {
+                alert('❌ Session expired. Please sign up again.');
+                window.location.href = 'signup.html';
+                return;
+            }
+            
+            try {
+                const actionCodeSettings = {
+                    url: window.location.origin + '/verify-email.html',
+                    handleCodeInApp: false
+                };
+                await sendEmailVerification(auth.currentUser, actionCodeSettings);
+                console.log('✅ Verification email resent to:', auth.currentUser.email);
+                alert(`📧 Verification email has been resent to:\n${auth.currentUser.email}\n\nPlease check your inbox (and spam folder).`);
+            } catch (error) {
+                console.error('Resend email error:', error);
+                console.error('Error code:', error.code);
+                if (error.code === 'auth/too-many-requests') {
+                    alert('❌ Too many requests. Please wait a few minutes before trying again.');
+                } else {
+                    alert('❌ Error sending email: ' + error.message);
+                }
+            }
+        }
+
+        // Make functions globally available
+        window.checkVerificationStatus = checkVerificationStatus;
+        window.resendEmail = resendEmail;
+
+        // Prevent back navigation after signup
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.go(1);
+        };
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainWave Integration Workflow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .workflow {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            align-items: start;
+            margin-bottom: 3rem;
+        }
+
+        .column {
+            background: #f9fafb;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+
+        .column h2 {
+            color: #3b82f6;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #3b82f6;
+        }
+
+        .item {
+            background: white;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .item h3 {
+            color: #1e3a8a;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .item p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .badge-admin {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .badge-student {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .badge-filter {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .legend {
+            background: #f9fafb;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .legend h3 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .icon-subject { background: #dbeafe; color: #2563eb; }
+        .icon-material { background: #dcfce7; color: #16a34a; }
+        .icon-assessment { background: #fef3c7; color: #d97706; }
+        .icon-live { background: #fee2e2; color: #dc2626; }
+        .icon-report { background: #e0e7ff; color: #6366f1; }
+        .icon-announcement { background: #fce7f3; color: #ec4899; }
+        .icon-community { background: #f3e8ff; color: #a855f7; }
+
+        .links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .link-button {
+            padding: 1rem;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .link-button:hover {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .workflow {
+                grid-template-columns: 1fr;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 BrainWave Admin → Student Integration Workflow</h1>
+
+        <div class="legend">
+            <h3>📋 Content Types</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="icon icon-subject">📚</div>
+                    <div>
+                        <strong>Subjects</strong>
+                        <p style="font-size: 0.75rem; color: #6b7280;">My Subjects section</p>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <div class="icon icon-material">📖</div>
+                    <div>
+                        <strong>Study Materials</strong>
+                        <p style="font-size: 0.75rem; color: #6b7280;">eBooks & Videos</p>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <div class="icon icon-assessment">📝</div>
+                    <div>
+                        <strong>Assessments</strong>
+                        <p style="font-size: 0.75rem; color: #6b7280;">Quizzes, Assignments, Mocks</p>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <div class="icon icon-live">🎥</div>
+                    <div>
+                        <strong>Live Classes</strong>
+                        <p style="font-size: 0.75rem; color: #6b7280;">Join live sessions</p>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <div class="icon icon-report">📊</div>
+                    <div>
+                        <strong>Reports</strong>
+                        <p style="font-size: 0.75rem; color: #6b7280;">Student grades</p>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <div class="icon icon-announcement">📢</div>
+                    <div>
+                        <strong>Announcements</strong>
+                        <p style="font-size: 0.75rem; color: #6b7280;">Important updates</p>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <div class="icon icon-community">👥</div>
+                    <div>
+                        <strong>Community</strong>
+                        <p style="font-size: 0.75rem; color: #6b7280;">WhatsApp & Telegram</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="workflow">
+            <!-- Admin Side -->
+            <div class="column">
+                <h2>⚙️ Admin Dashboard</h2>
+                
+                <div class="item">
+                    <h3>📚 1. Subjects</h3>
+                    <p>Subject Management → Add New Subject</p>
+                    <span class="badge badge-admin">Class Level</span>
+                    <span class="badge badge-admin">Stream</span>
+                </div>
+
+                <div class="item">
+                    <h3>📖 2. Study Materials</h3>
+                    <p>Content Management → Add Book/Video</p>
+                    <span class="badge badge-admin">Class Level</span>
+                    <span class="badge badge-admin">Stream</span>
+                </div>
+
+                <div class="item">
+                    <h3>📝 3. Assessments</h3>
+                    <p>Assessment Management → Create Quiz/Assignment/Mock</p>
+                    <span class="badge badge-admin">Class Level</span>
+                    <span class="badge badge-admin">Stream</span>
+                </div>
+
+                <div class="item">
+                    <h3>🎥 4. Live Classes</h3>
+                    <p>Live Classes & Reports → Schedule Class</p>
+                    <span class="badge badge-admin">Class Level</span>
+                    <span class="badge badge-admin">Stream</span>
+                </div>
+
+                <div class="item">
+                    <h3>📊 5. Reports</h3>
+                    <p>Live Classes & Reports → Add Report</p>
+                    <span class="badge badge-admin">Student Code</span>
+                </div>
+
+                <div class="item">
+                    <h3>📢 6. Announcements</h3>
+                    <p>Broadcast & Community → Send Announcement</p>
+                    <span class="badge badge-admin">Class Level (Optional)</span>
+                </div>
+
+                <div class="item">
+                    <h3>👥 7. Community Links</h3>
+                    <p>Broadcast & Community → Community Links</p>
+                    <span class="badge badge-admin">Global (All Students)</span>
+                </div>
+            </div>
+
+            <!-- Arrow -->
+            <div class="arrow">
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem;">→</div>
+                    <div style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">
+                        localStorage<br>Auto-Filtering
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Side -->
+            <div class="column">
+                <h2>🎓 Student Dashboard</h2>
+                
+                <div class="item">
+                    <h3>📚 My Subjects</h3>
+                    <p>Filtered by student's class level & stream</p>
+                    <span class="badge badge-filter">Auto-Filtered</span>
+                </div>
+
+                <div class="item">
+                    <h3>📖 Study Materials</h3>
+                    <p>eBooks & Videos for student's level/stream</p>
+                    <span class="badge badge-filter">Auto-Filtered</span>
+                </div>
+
+                <div class="item">
+                    <h3>📝 Quizzes & Assignments</h3>
+                    <p>Assessments for student's level/stream</p>
+                    <span class="badge badge-filter">Auto-Filtered</span>
+                </div>
+
+                <div class="item">
+                    <h3>🎥 Live Classes</h3>
+                    <p>Join classes for student's level/stream</p>
+                    <span class="badge badge-filter">Auto-Filtered</span>
+                    <span class="badge badge-student">Join Button</span>
+                </div>
+
+                <div class="item">
+                    <h3>📊 My Reports</h3>
+                    <p>Only student's own reports (by code)</p>
+                    <span class="badge badge-filter">By Student Code</span>
+                </div>
+
+                <div class="item">
+                    <h3>📢 Announcements</h3>
+                    <p>Relevant announcements for student's level</p>
+                    <span class="badge badge-filter">Auto-Filtered</span>
+                </div>
+
+                <div class="item">
+                    <h3>👥 Community</h3>
+                    <p>WhatsApp & Telegram links (all students)</p>
+                    <span class="badge badge-student">No Filter</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: #dbeafe; border-left: 4px solid #2563eb; padding: 1.5rem; border-radius: 0.75rem; margin-bottom: 2rem;">
+            <h3 style="color: #1e3a8a; margin-bottom: 1rem;">🔍 How Filtering Works</h3>
+            <p style="color: #374151; margin-bottom: 0.5rem;">
+                <strong>Class Level Match:</strong> Content shows if <code>classLevel === student.classLevel</code> OR <code>classLevel === "All Levels"</code>
+            </p>
+            <p style="color: #374151; margin-bottom: 0.5rem;">
+                <strong>Stream Match:</strong> Content shows if <code>stream === student.stream</code> OR <code>stream === "All Streams/General/Multi-Stream"</code>
+            </p>
+            <p style="color: #374151;">
+                <strong>Reports:</strong> Filtered by <code>studentCode</code> - students only see their own reports
+            </p>
+        </div>
+
+        <div style="background: #dcfce7; border-left: 4px solid #16a34a; padding: 1.5rem; border-radius: 0.75rem; margin-bottom: 2rem;">
+            <h3 style="color: #166534; margin-bottom: 1rem;">✅ Example: SS2 Science Student</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <p style="color: #166534; font-weight: 600; margin-bottom: 0.5rem;">✅ WILL SEE:</p>
+                    <ul style="color: #374151; padding-left: 1.5rem;">
+                        <li>Mathematics (SS2, Science)</li>
+                        <li>Physics (SS2, Science)</li>
+                        <li>English (All Levels, General)</li>
+                        <li>Math Quiz (SS2, Science)</li>
+                        <li>Physics Video (SS2, All Streams)</li>
+                    </ul>
+                </div>
+                <div>
+                    <p style="color: #dc2626; font-weight: 600; margin-bottom: 0.5rem;">❌ WON'T SEE:</p>
+                    <ul style="color: #374151; padding-left: 1.5rem;">
+                        <li>Literature (SS3, Humanities)</li>
+                        <li>Government (SS3, Humanities)</li>
+                        <li>JAMB Physics (Jambite, Science)</li>
+                        <li>History Quiz (SS3, Humanities)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h2 style="color: #1e3a8a; margin-bottom: 1rem;">🚀 Quick Links</h2>
+        <div class="links">
+            <a href="admin-dashboard.html" class="link-button" target="_blank">⚙️ Admin Dashboard</a>
+            <a href="signup.html" class="link-button" target="_blank">📝 Student Signup</a>
+            <a href="student-login.html" class="link-button" target="_blank">🔐 Student Login</a>
+            <a href="student-dashboard.html" class="link-button" target="_blank">🎓 Student Dashboard</a>
+            <a href="test-filtering.html" class="link-button" target="_blank">🧪 Test Filtering</a>
+            <a href="setup-test-data.html" class="link-button" target="_blank">📊 Setup Test Data</a>
+        </div>
+    </div>
+</body>
+</html>

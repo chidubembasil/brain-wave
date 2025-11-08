@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+        .btn { background: #3b82f6; color: white; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin: 10px; }
+        .btn:hover { background: #2563eb; }
+        pre { background: #1f2937; color: #10b981; padding: 20px; border-radius: 5px; overflow: auto; max-height: 500px; }
+        h1 { color: #1e3a8a; }
+        .status { padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #dcfce7; color: #16a34a; }
+        .error { background: #fee2e2; color: #dc2626; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Simple Data Test</h1>
+    <button class="btn" onclick="generateAndTest()">🚀 Generate Data & Test</button>
+    <button class="btn" onclick="checkData()">📊 Check Current Data</button>
+    <button class="btn" onclick="clearData()">🗑️ Clear All Data</button>
+    <button class="btn" onclick="openDashboard()">📱 Open Dashboard</button>
+    
+    <div id="status"></div>
+    <div id="output"></div>
+
+    <script>
+        function log(msg, type = 'success') {
+            const status = document.getElementById('status');
+            status.innerHTML = `<div class="status ${type}">${msg}</div>`;
+        }
+
+        function output(data) {
+            document.getElementById('output').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        function generateAndTest() {
+            log('🔄 Generating data...', 'success');
+            
+            // Clear everything first
+            localStorage.clear();
+            
+            const now = new Date();
+            
+            // 1. Create student
+            const student = {
+                id: 12345,
+                name: 'John Doe',
+                email: 'john.doe@student.com',
+                phone: '+234 800 000 0000',
+                role: 'student',
+                gender: 'Male',
+                classLevel: 'SS2',
+                stream: 'Science',
+                studentCode: 'BWTEST123',
+                plan: 'premium',
+                status: 'active',
+                locked: false,
+                joinDate: new Date().toISOString().split('T')[0],
+                bootcampStartDate: new Date().toISOString(),
+                planHistory: [],
+                createdAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('brainwave_users', JSON.stringify([student]));
+            localStorage.setItem('brainwave_current_student_id', student.id);
+            
+            // 2. Create reports
+            const reports = [
+                {
+                    id: 1,
+                    studentCode: student.studentCode,
+                    studentName: student.name,
+                    studentId: student.id,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Mathematics',
+                    type: 'quiz',
+                    score: 85,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 2,
+                    studentCode: student.studentCode,
+                    studentName: student.name,
+                    studentId: student.id,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Physics',
+                    type: 'quiz',
+                    score: 78,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 3,
+                    studentCode: student.studentCode,
+                    studentName: student.name,
+                    studentId: student.id,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Chemistry',
+                    type: 'quiz',
+                    score: 82,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 4,
+                    studentCode: student.studentCode,
+                    studentName: student.name,
+                    studentId: student.id,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Biology',
+                    type: 'quiz',
+                    score: 88,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 5,
+                    studentCode: student.studentCode,
+                    studentName: student.name,
+                    studentId: student.id,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'English Language',
+                    type: 'quiz',
+                    score: 76,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                }
+            ];
+            
+            localStorage.setItem('brainwave_reports', JSON.stringify(reports));
+            
+            // 3. Create achievements
+            const achievements = [
+                {
+                    id: 1,
+                    title: 'First Steps',
+                    description: 'Completed your first quiz successfully!',
+                    icon: 'fas fa-star',
+                    color: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+                    unlockedAt: new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 2,
+                    title: 'Perfect Score',
+                    description: 'Scored 100% on a quiz',
+                    icon: 'fas fa-trophy',
+                    color: 'linear-gradient(135deg, #10b981, #059669)',
+                    unlockedAt: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000).toISOString()
+                }
+            ];
+            
+            localStorage.setItem('brainwave_achievements', JSON.stringify(achievements));
+            
+            // 4. Create badges
+            const badges = [
+                {
+                    id: 1,
+                    name: 'Math Genius',
+                    description: 'Complete 20 math quizzes',
+                    icon: 'fas fa-calculator',
+                    color: '#3b82f6',
+                    unlocked: true,
+                    progress: 100
+                },
+                {
+                    id: 2,
+                    name: 'Science Explorer',
+                    description: 'Complete all science subjects',
+                    icon: 'fas fa-flask',
+                    color: '#10b981',
+                    unlocked: false,
+                    progress: 73
+                }
+            ];
+            
+            localStorage.setItem('brainwave_badges', JSON.stringify(badges));
+            
+            // 5. Create leaderboard
+            const leaderboard = [
+                {
+                    id: student.id,
+                    name: student.name,
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2450,
+                    badges: 3,
+                    avgScore: 82
+                },
+                {
+                    id: 2,
+                    name: 'Sarah Williams',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2680,
+                    badges: 5,
+                    avgScore: 88
+                },
+                {
+                    id: 3,
+                    name: 'Michael Chen',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2520,
+                    badges: 4,
+                    avgScore: 85
+                }
+            ];
+            
+            localStorage.setItem('brainwave_leaderboard', JSON.stringify(leaderboard));
+            
+            // 6. Create subjects
+            const subjects = [
+                { id: 1, name: 'Mathematics', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 2, name: 'Physics', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 3, name: 'Chemistry', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 4, name: 'Biology', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 5, name: 'English Language', stream: 'General', classLevel: 'All Levels', createdAt: now.toISOString() }
+            ];
+            
+            localStorage.setItem('brainwave_subjects', JSON.stringify(subjects));
+            
+            // Mark as generated
+            localStorage.setItem('brainwave_mock_data_generated', 'true');
+            
+            log('✅ Data generated successfully!', 'success');
+            checkData();
+        }
+
+        function checkData() {
+            const data = {
+                'Mock Generated': localStorage.getItem('brainwave_mock_data_generated'),
+                'Student ID': localStorage.getItem('brainwave_current_student_id'),
+                'Users': JSON.parse(localStorage.getItem('brainwave_users') || '[]'),
+                'Reports': JSON.parse(localStorage.getItem('brainwave_reports') || '[]'),
+                'Achievements': JSON.parse(localStorage.getItem('brainwave_achievements') || '[]'),
+                'Badges': JSON.parse(localStorage.getItem('brainwave_badges') || '[]'),
+                'Leaderboard': JSON.parse(localStorage.getItem('brainwave_leaderboard') || '[]'),
+                'Subjects': JSON.parse(localStorage.getItem('brainwave_subjects') || '[]')
+            };
+            
+            const summary = {
+                'Mock Generated': data['Mock Generated'] ? '✅ Yes' : '❌ No',
+                'Student ID': data['Student ID'] || '❌ Not set',
+                'Users Count': data.Users.length,
+                'Reports Count': data.Reports.length,
+                'Achievements Count': data.Achievements.length,
+                'Badges Count': data.Badges.length,
+                'Leaderboard Count': data.Leaderboard.length,
+                'Subjects Count': data.Subjects.length
+            };
+            
+            output(summary);
+            
+            if (data.Reports.length > 0) {
+                log(`✅ Found ${data.Reports.length} reports! Data is ready.`, 'success');
+            } else {
+                log('❌ No reports found. Click "Generate Data & Test"', 'error');
+            }
+        }
+
+        function clearData() {
+            if (confirm('Clear all data?')) {
+                localStorage.clear();
+                log('🗑️ All data cleared', 'success');
+                output({message: 'localStorage is now empty'});
+            }
+        }
+
+        function openDashboard() {
+            window.location.href = 'student-dashboard.html';
+        }
+
+        // Auto-check on load
+        window.addEventListener('DOMContentLoaded', checkData);
+    </script>
+</body>
+</html>

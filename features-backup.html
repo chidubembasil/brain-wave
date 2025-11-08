@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Features - BrainWave</title>
+    <link rel="stylesheet" href="style.css?v=20250107160000">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Critical CSS - Force load if external CSS fails */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .features-hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%) !important;
+            padding: 8rem 0 5rem !important;
+            text-align: center !important;
+            position: relative !important;
+            overflow: hidden !important;
+        }
+        
+        .feature-showcase-item {
+            background: white !important;
+            border-radius: 24px !important;
+            padding: 3.5rem !important;
+            margin-bottom: 4rem !important;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08) !important;
+        }
+        
+        .feature-icon {
+            width: 140px !important;
+            height: 140px !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navbar -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" class="logo-img">
+                        <rect x="0" y="0" width="40" height="40" rx="8" ry="8" fill="#fbbf24"/>
+                        <text x="20" y="28" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#1e3a8a">B</text>
+                    </svg>
+                    <h2><a href="index.html">BrainWave</a></h2>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="features.html" class="active">Features</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="signup.html" class="nav-login">Sign Up</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Features Hero Section -->
+    <section class="features-hero" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important; color: white !important;">
+        <div class="container">
+            <div class="features-hero-content">
+                <h1 style="color: white !important;">Powerful Features for Academic Excellence</h1>
+                <p style="color: white !important;">Discover comprehensive learning tools designed to help Nigerian students excel in their studies and achieve their academic goals.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Features Section -->
+    <section class="core-features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Core Learning Features</h2>
+                <p>Everything you need for effective studying and exam preparation</p>
+            </div>
+            
+            <div class="features-showcase">
+                <div class="feature-showcase-item">
+                    <div class="feature-visual">
+                        <div class="feature-icon quiz-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Interactive Quizzes</h3>
+                        <p>Engage with thousands of practice questions across all subjects. Our adaptive quiz system adjusts difficulty based on your performance, ensuring optimal learning progression.</p>
+                        <ul class="feature-benefits">
+                            <li>Subject-specific question banks</li>
+                            <li>Instant feedback and explanations</li>
+                            <li>Performance tracking</li>
+                            <li>Timed practice sessions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-showcase-item reverse">
+                    <div class="feature-visual">
+                        <div class="feature-icon exam-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Mock Examinations</h3>
+                        <p>Prepare for WAEC, NECO, and JAMB with realistic exam simulations. Experience actual exam conditions with time limits and comprehensive result analysis.</p>
+                        <ul class="feature-benefits">
+                            <li>WAEC/NECO past questions</li>
+                            <li>JAMB CBT simulation</li>
+                            <li>Detailed performance reports</li>
+                            <li>Weakness identification</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-showcase-item">
+                    <div class="feature-visual">
+                        <div class="feature-icon video-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Video Lessons</h3>
+                        <p>Learn from expert teachers through high-quality video content. Complex topics are broken down into digestible lessons with visual aids and real-world examples.</p>
+                        <ul class="feature-benefits">
+                            <li>HD video quality</li>
+                            <li>Expert Nigerian teachers</li>
+                            <li>Curriculum-aligned content</li>
+                            <li>Offline download capability</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-showcase-item reverse">
+                    <div class="feature-visual">
+                        <div class="feature-icon live-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Live Classes</h3>
+                        <p>Join interactive live sessions with qualified teachers. Ask questions in real-time, participate in discussions, and get immediate clarification on difficult concepts.</p>
+                        <ul class="feature-benefits">
+                            <li>Real-time interaction</li>
+                            <li>Q&A sessions</li>
+                            <li>Recorded for later viewing</li>
+                            <li>Small class sizes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Success Tools Section -->
+    <section class="advanced-features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Student Success Tools</h2>
+                <p>Comprehensive tools designed to maximize your academic performance and exam success</p>
+            </div>
+            
+            <div class="advanced-grid">
+                <div class="advanced-card">
+                    <div class="advanced-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h4>Exam Preparation Hub</h4>
+                    <p>Dedicated preparation center for WAEC, NECO, and JAMB with past questions, marking schemes, and expert tips for exam success.</p>
+                </div>
+
+                <div class="advanced-card">
+                    <div class="advanced-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h4>Speed Learning Techniques</h4>
+                    <p>Master effective study methods including speed reading, memory techniques, and time management strategies for faster learning.</p>
+                </div>
+
+                <div class="advanced-card">
+                    <div class="advanced-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h4>Performance Tracker</h4>
+                    <p>Monitor your academic progress with detailed analytics, grade tracking, and personalized improvement recommendations.</p>
+                </div>
+
+                <div class="advanced-card">
+                    <div class="advanced-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="m9 11 2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h4>Smart Study Planner</h4>
+                    <p>Intelligent study scheduling that creates personalized timetables based on your subjects, exam dates, and learning pace, designed by educational experts for optimal results.</p>
+                </div>
+
+                <div class="advanced-card">
+                    <div class="advanced-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h4>Study Motivation Center</h4>
+                    <p>Stay motivated with goal setting, achievement tracking, study streaks, and rewards system to maintain consistent learning habits.</p>
+                </div>
+
+                <div class="advanced-card">
+                    <div class="advanced-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h4>Digital Study Library</h4>
+                    <p>Access thousands of textbooks, reference materials, and study guides available offline for uninterrupted learning anywhere.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subject Coverage Section -->
+    <section class="subject-coverage">
+        <div class="container">
+            <div class="section-header">
+                <h2>Complete Subject Coverage</h2>
+                <p>Comprehensive content for all Nigerian secondary school subjects</p>
+            </div>
+            
+            <div class="subjects-grid">
+                <div class="subject-category">
+                    <h3>Senior Secondary</h3>
+                    <div class="department-section">
+                        <h4>Science Department</h4>
+                        <ul class="subject-list">
+                            <li>English Language</li>
+                            <li>Mathematics</li>
+                            <li>Citizenship and Heritage Studies</li>
+                            <li>Physics</li>
+                            <li>Chemistry</li>
+                            <li>Biology</li>
+                            <li>Economics</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="department-section">
+                        <h4>Humanities Department</h4>
+                        <ul class="subject-list">
+                            <li>English Language</li>
+                            <li>Mathematics</li>
+                            <li>Citizenship and Heritage Studies</li>
+                            <li>Literature in English</li>
+                            <li>Government</li>
+                            <li>Biology</li>
+                            <li>Economics</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="department-section">
+                        <h4>Business Department</h4>
+                        <ul class="subject-list">
+                            <li>English Language</li>
+                            <li>Mathematics</li>
+                            <li>Citizenship and Heritage Studies</li>
+                            <li>Commerce</li>
+                            <li>Accounting</li>
+                            <li>Biology</li>
+                            <li>Economics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="features-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Experience These Features?</h2>
+                <p>Join thousands of Nigerian students who are already excelling with BrainWave</p>
+                <div class="cta-buttons">
+                    <a href="pricing.html" class="btn-primary">View Pricing Plans</a>
+                    <a href="signup.html" class="btn-secondary">Start Free Bootcamp</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" class="logo-img">
+                            <rect x="0" y="0" width="40" height="40" rx="8" ry="8" fill="#fbbf24"/>
+                            <text x="20" y="28" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white">B</text>
+                        </svg>
+                        <h3>BrainWave</h3>
+                    </div>
+                    <p>Empowering students for academic excellence through innovative learning solutions.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="testimonials.html">Testimonials</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: support@brainwaveedu.com.ng</p>
+                    <p>Phone: +234 706 043 6659</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025-2030 BrainWave. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Mobile Navigation Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    hamburger.classList.toggle('active');
+                });
+                
+                // Close menu when clicking on nav links
+                const navLinks = document.querySelectorAll('.nav-menu a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        navMenu.classList.remove('active');
+                        hamburger.classList.remove('active');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal Debug Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            margin: 0.5rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            color: white;
+        }
+        .btn-quiz { background: #3b82f6; }
+        .btn-assignment { background: #f59e0b; }
+        .btn-exam { background: #8b5cf6; }
+        .log {
+            background: #1f2937;
+            color: #10b981;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: monospace;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+        .error { color: #ef4444; }
+        .success { color: #10b981; }
+        .warning { color: #f59e0b; }
+    </style>
+</head>
+<body>
+    <div class="test-section">
+        <h1>🔍 Assessment Modal Debug Test</h1>
+        <p>Click the buttons below to test if the modal functions are working:</p>
+        
+        <button class="btn-quiz" onclick="testQuiz()">Test Create Quiz</button>
+        <button class="btn-assignment" onclick="testAssignment()">Test Create Assignment</button>
+        <button class="btn-exam" onclick="testExam()">Test Create Exam</button>
+        <button onclick="checkElements()" style="background: #10b981;">Check Modal Elements</button>
+        <button onclick="clearLog()" style="background: #6b7280;">Clear Log</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📋 Debug Log</h2>
+        <div id="log" class="log">
+            <div class="success">✅ Debug console ready...</div>
+        </div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : '';
+            logDiv.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '<div class="success">✅ Log cleared...</div>';
+        }
+
+        function checkElements() {
+            log('🔍 Checking for modal elements...', 'info');
+            
+            const modal = document.getElementById('assessment-modal');
+            const modalTitle = document.getElementById('assessment-modal-title');
+            const assessmentType = document.getElementById('assessment-type');
+            const form = document.getElementById('assessment-form');
+            const questionsContainer = document.getElementById('questions-container');
+            
+            log(`Modal: ${modal ? '✅ Found' : '❌ Not Found'}`, modal ? 'success' : 'error');
+            log(`Modal Title: ${modalTitle ? '✅ Found' : '❌ Not Found'}`, modalTitle ? 'success' : 'error');
+            log(`Assessment Type: ${assessmentType ? '✅ Found' : '❌ Not Found'}`, assessmentType ? 'success' : 'error');
+            log(`Form: ${form ? '✅ Found' : '❌ Not Found'}`, form ? 'success' : 'error');
+            log(`Questions Container: ${questionsContainer ? '✅ Found' : '❌ Not Found'}`, questionsContainer ? 'success' : 'error');
+            
+            log('🔍 Checking for global functions...', 'info');
+            log(`window.openAssessmentModal: ${typeof window.openAssessmentModal}`, typeof window.openAssessmentModal === 'function' ? 'success' : 'error');
+            log(`window.adminDashboard: ${typeof window.adminDashboard}`, typeof window.adminDashboard === 'object' ? 'success' : 'error');
+            
+            if (window.adminDashboard) {
+                log(`adminDashboard.openAssessmentModal: ${typeof window.adminDashboard.openAssessmentModal}`, typeof window.adminDashboard.openAssessmentModal === 'function' ? 'success' : 'error');
+            }
+        }
+
+        function testQuiz() {
+            log('🎯 Testing Create Quiz button...', 'info');
+            try {
+                if (typeof window.openAssessmentModal === 'function') {
+                    log('✅ Calling openAssessmentModal("quiz")', 'success');
+                    window.openAssessmentModal('quiz');
+                    log('✅ Function called successfully', 'success');
+                } else {
+                    log('❌ openAssessmentModal function not found!', 'error');
+                    log('⚠️ This means admin.js may not be loaded', 'warning');
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function testAssignment() {
+            log('🎯 Testing Create Assignment button...', 'info');
+            try {
+                if (typeof window.openAssessmentModal === 'function') {
+                    log('✅ Calling openAssessmentModal("assignment")', 'success');
+                    window.openAssessmentModal('assignment');
+                    log('✅ Function called successfully', 'success');
+                } else {
+                    log('❌ openAssessmentModal function not found!', 'error');
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function testExam() {
+            log('🎯 Testing Create Exam button...', 'info');
+            try {
+                if (typeof window.openAssessmentModal === 'function') {
+                    log('✅ Calling openAssessmentModal("exam")', 'success');
+                    window.openAssessmentModal('exam');
+                    log('✅ Function called successfully', 'success');
+                } else {
+                    log('❌ openAssessmentModal function not found!', 'error');
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-check on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                log('🚀 Page loaded, running auto-check...', 'info');
+                checkElements();
+            }, 1000);
+        });
+    </script>
+
+    <!-- Include admin.js to test -->
+    <script src="admin.js"></script>
+</body>
+</html>

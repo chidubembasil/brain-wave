@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway - BrainWave</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            --primary-color: #1e3a8a;
+            --secondary-color: #3b82f6;
+            --accent-color: #fbbf24;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--gray-900);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo-box {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+
+        .logo-letter {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .payment-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .card-header i {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        .card-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--gray-600);
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .plan-option {
+            background: var(--gray-50);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .plan-option:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .plan-option.selected {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+
+        .plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .plan-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .plan-option.selected .plan-price {
+            color: var(--white);
+        }
+
+        .plan-description {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .plan-days {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-top: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            background: rgba(30, 58, 138, 0.1);
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .plan-option.selected .plan-days {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+        }
+
+        .plan-option.free-plan .plan-price {
+            color: var(--success-color) !important;
+            font-weight: 800;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--gray-700);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-method {
+            background: var(--gray-50);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .payment-method.selected {
+            background: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+
+        .payment-method i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-method-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--gray-200);
+            color: var(--gray-700);
+            margin-top: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-300);
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: var(--gray-50);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .security-badge i {
+            color: var(--success-color);
+        }
+
+        @media (max-width: 768px) {
+            .payment-container {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-box">
+                    <span class="logo-letter">B</span>
+                </div>
+                <h1>BrainWave</h1>
+            </div>
+            <p style="color: var(--gray-600); font-size: 1.125rem;">Secure Payment Gateway</p>
+        </div>
+
+        <div class="payment-container">
+            <!-- Order Summary -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-receipt"></i>
+                    <h2>Order Summary</h2>
+                </div>
+
+                <div id="orderSummary">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+
+                <div id="planSelection" style="margin-top: 1.5rem;">
+                    <!-- Plan options will be shown for upgrades -->
+                </div>
+
+                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid var(--gray-200);">
+                    <div class="info-row" style="border: none; font-size: 1.25rem;">
+                        <span class="info-label">Total Amount:</span>
+                        <span class="info-value" style="color: var(--primary-color); font-size: 1.5rem;" id="totalAmount">₦0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Details -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-credit-card"></i>
+                    <h2>Payment Method</h2>
+                </div>
+
+                <div class="payment-methods">
+                    <div class="payment-method selected" onclick="selectPaymentMethod('card')">
+                        <i class="fas fa-credit-card"></i>
+                        <div class="payment-method-name">Card Payment</div>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod('bank')">
+                        <i class="fas fa-university"></i>
+                        <div class="payment-method-name">Bank Transfer</div>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod('paystack')">
+                        <i class="fas fa-wallet"></i>
+                        <div class="payment-method-name">Paystack</div>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod('flutterwave')">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <div class="payment-method-name">Flutterwave</div>
+                    </div>
+                </div>
+
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" id="email" placeholder="your@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" id="phone" placeholder="+234 800 000 0000" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-lock"></i>
+                        Proceed to Payment
+                    </button>
+
+                    <button type="button" class="btn btn-secondary" onclick="goBack()">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Dashboard
+                    </button>
+                </form>
+
+                <div class="security-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Secured by 256-bit SSL encryption</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let paymentData = null;
+        let selectedPlan = null;
+        let selectedPaymentMethod = 'card';
+
+        // Load payment data on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const data = sessionStorage.getItem('brainwave_payment_data');
+            
+            if (!data) {
+                alert('No payment data found. Redirecting to dashboard...');
+                window.location.href = 'parent-dashboard-preview.html';
+                return;
+            }
+
+            paymentData = JSON.parse(data);
+            displayOrderSummary();
+        });
+
+        // Display order summary
+        function displayOrderSummary() {
+            const summaryContainer = document.getElementById('orderSummary');
+            const planSelectionContainer = document.getElementById('planSelection');
+            
+            let html = `
+                <div class="info-row">
+                    <span class="info-label">Transaction Type:</span>
+                    <span class="info-value">${paymentData.type === 'upgrade' ? 'Plan Upgrade' : 'Subscription Renewal'}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Student Name:</span>
+                    <span class="info-value">${paymentData.childName}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Current Plan:</span>
+                    <span class="info-value">${paymentData.currentPlan.charAt(0).toUpperCase() + paymentData.currentPlan.slice(1)}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Parent Name:</span>
+                    <span class="info-value">${paymentData.parentName}</span>
+                </div>
+                <div class="info-row" id="planDaysRow" style="display: none;">
+                    <span class="info-label">Plan Duration:</span>
+                    <span class="info-value" id="planDaysValue">-</span>
+                </div>
+            `;
+            
+            summaryContainer.innerHTML = html;
+
+            // Pre-fill email
+            document.getElementById('email').value = paymentData.parentEmail;
+
+            // Show plan selection for upgrades
+            if (paymentData.type === 'upgrade') {
+                planSelectionContainer.innerHTML = `
+                    <h3 style="font-weight: 700; margin-bottom: 1rem; color: var(--gray-900);">Select New Plan:</h3>
+                    <div class="plan-option" onclick="selectPlan('individual', 3000, 30)">
+                        <div class="plan-header">
+                            <span class="plan-name">Individual Plan</span>
+                            <span class="plan-price">₦3,000</span>
+                        </div>
+                        <div class="plan-description">Personal learning experience for 30 days</div>
+                        <div class="plan-days">30 Days Access</div>
+                    </div>
+                    <div class="plan-option" onclick="selectPlan('family', 8000, 30)">
+                        <div class="plan-header">
+                            <span class="plan-name">Family Plan</span>
+                            <span class="plan-price">₦8,000</span>
+                        </div>
+                        <div class="plan-description">Perfect for families with multiple children</div>
+                        <div class="plan-days">30 Days Access</div>
+                    </div>
+                    <div class="plan-option" onclick="selectPlan('premium', 5000, 30)">
+                        <div class="plan-header">
+                            <span class="plan-name">Premium Plan</span>
+                            <span class="plan-price">₦5,000</span>
+                        </div>
+                        <div class="plan-description">Full access to all features for 30 days</div>
+                        <div class="plan-days">30 Days Access</div>
+                    </div>
+                    <div class="plan-option free-plan" onclick="selectPlan('bootcamp', 0, 7)">
+                        <div class="plan-header">
+                            <span class="plan-name">Bootcamp Plan</span>
+                            <span class="plan-price">Free</span>
+                        </div>
+                        <div class="plan-description">7-day intensive learning program</div>
+                        <div class="plan-days">7 Days Access</div>
+                    </div>
+                `;
+            } else {
+                // For renewals, set the current plan
+                const prices = {
+                    'individual': { price: 3000, days: 30 },
+                    'family': { price: 8000, days: 30 },
+                    'premium': { price: 5000, days: 30 },
+                    'bootcamp': { price: 0, days: 7 },
+                    'free': { price: 0, days: 0 }
+                };
+                const planData = prices[paymentData.currentPlan] || { price: 0, days: 0 };
+                selectPlan(paymentData.currentPlan, planData.price, planData.days);
+            }
+        }
+
+        // Select plan
+        function selectPlan(plan, price, days) {
+            selectedPlan = { name: plan, price: price, days: days };
+            
+            // Update UI
+            document.querySelectorAll('.plan-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event?.target?.closest('.plan-option')?.classList.add('selected');
+            
+            // Update total
+            document.getElementById('totalAmount').textContent = `₦${price.toLocaleString()}`;
+            
+            // Update plan days display
+            const planDaysRow = document.getElementById('planDaysRow');
+            const planDaysValue = document.getElementById('planDaysValue');
+            if (planDaysRow && planDaysValue) {
+                planDaysRow.style.display = 'flex';
+                planDaysValue.textContent = `${days} Days`;
+            }
+        }
+
+        // Select payment method
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            
+            document.querySelectorAll('.payment-method').forEach(m => {
+                m.classList.remove('selected');
+            });
+            event.target.closest('.payment-method').classList.add('selected');
+        }
+
+        // Handle form submission
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (paymentData.type === 'upgrade' && !selectedPlan) {
+                alert('Please select a plan to upgrade to.');
+                return;
+            }
+
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+
+            // Simulate payment processing
+            const paymentInfo = {
+                ...paymentData,
+                selectedPlan: selectedPlan,
+                paymentMethod: selectedPaymentMethod,
+                email: email,
+                phone: phone,
+                amount: selectedPlan.price,
+                transactionId: 'TXN' + Date.now(),
+                status: 'pending'
+            };
+
+            // Store transaction
+            sessionStorage.setItem('brainwave_transaction', JSON.stringify(paymentInfo));
+
+            // Show processing message
+            alert(`🔄 Processing Payment...\n\nAmount: ₦${selectedPlan.price.toLocaleString()}\nMethod: ${selectedPaymentMethod.toUpperCase()}\n\nYou will be redirected to the payment processor.`);
+
+            // Simulate successful payment after 2 seconds
+            setTimeout(() => {
+                alert(`✅ Payment Successful!\n\nTransaction ID: ${paymentInfo.transactionId}\n\nYour subscription has been updated.`);
+                
+                // Clear session data
+                sessionStorage.removeItem('brainwave_payment_data');
+                sessionStorage.removeItem('brainwave_transaction');
+                
+                // Redirect back to dashboard
+                window.location.href = 'parent-dashboard-preview.html';
+            }, 2000);
+        });
+
+        // Go back to dashboard
+        function goBack() {
+            if (confirm('Are you sure you want to cancel this payment?')) {
+                sessionStorage.removeItem('brainwave_payment_data');
+                window.location.href = 'parent-dashboard-preview.html';
+            }
+        }
+    </script>
+</body>
+</html>

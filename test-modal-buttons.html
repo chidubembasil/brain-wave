@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Modal Buttons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-btn {
+            padding: 12px 24px;
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        .test-btn:hover {
+            background: #1e40af;
+        }
+        .success {
+            color: #10b981;
+            font-weight: bold;
+        }
+        .error {
+            color: #ef4444;
+            font-weight: bold;
+        }
+        #log {
+            background: #1f2937;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        .log-entry {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Modal Buttons Test Page</h1>
+    
+    <div class="test-section">
+        <h2>Content Modal Tests</h2>
+        <button class="test-btn" onclick="testContentModal()">Open Content Modal</button>
+        <button class="test-btn" onclick="testContentClose()">Test Close Button</button>
+        <button class="test-btn" onclick="testContentCancel()">Test Cancel Button</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Assessment Modal Tests</h2>
+        <button class="test-btn" onclick="testAssessmentModal()">Open Assessment Modal</button>
+        <button class="test-btn" onclick="testAssessmentClose()">Test Close Button</button>
+        <button class="test-btn" onclick="testAssessmentCancel()">Test Cancel Button</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Button Verification</h2>
+        <button class="test-btn" onclick="verifyButtons()">Verify All Buttons</button>
+        <button class="test-btn" onclick="clearLog()">Clear Log</button>
+    </div>
+    
+    <div id="log"></div>
+    
+    <script>
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            const timestamp = new Date().toLocaleTimeString();
+            const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+            entry.innerHTML = `<span style="color: #9ca3af">[${timestamp}]</span> ${icon} ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+            log('Log cleared');
+        }
+        
+        function testContentModal() {
+            const modal = document.getElementById('content-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                log('Content modal opened', 'success');
+            } else {
+                log('Content modal not found', 'error');
+            }
+        }
+        
+        function testContentClose() {
+            const btn = document.getElementById('content-modal-close-btn');
+            if (btn) {
+                log('Found close button, simulating click...');
+                btn.click();
+                log('Close button clicked', 'success');
+            } else {
+                log('Close button not found', 'error');
+            }
+        }
+        
+        function testContentCancel() {
+            const btn = document.getElementById('content-modal-cancel-btn');
+            if (btn) {
+                log('Found cancel button, simulating click...');
+                btn.click();
+                log('Cancel button clicked', 'success');
+            } else {
+                log('Cancel button not found', 'error');
+            }
+        }
+        
+        function testAssessmentModal() {
+            const modal = document.getElementById('assessment-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                log('Assessment modal opened', 'success');
+            } else {
+                log('Assessment modal not found', 'error');
+            }
+        }
+        
+        function testAssessmentClose() {
+            const btn = document.getElementById('assessment-modal-close-btn');
+            if (btn) {
+                log('Found assessment close button, simulating click...');
+                btn.click();
+                log('Assessment close button clicked', 'success');
+            } else {
+                log('Assessment close button not found', 'error');
+            }
+        }
+        
+        function testAssessmentCancel() {
+            const btn = document.getElementById('assessment-modal-cancel-btn');
+            if (btn) {
+                log('Found assessment cancel button, simulating click...');
+                btn.click();
+                log('Assessment cancel button clicked', 'success');
+            } else {
+                log('Assessment cancel button not found', 'error');
+            }
+        }
+        
+        function verifyButtons() {
+            log('=== Starting Button Verification ===');
+            
+            // Content Modal Buttons
+            const contentClose = document.getElementById('content-modal-close-btn');
+            const contentCancel = document.getElementById('content-modal-cancel-btn');
+            const contentSave = document.getElementById('content-modal-save-btn');
+            
+            log(`Content Close Button: ${contentClose ? '✅ Found' : '❌ Missing'}`, contentClose ? 'success' : 'error');
+            log(`Content Cancel Button: ${contentCancel ? '✅ Found' : '❌ Missing'}`, contentCancel ? 'success' : 'error');
+            log(`Content Save Button: ${contentSave ? '✅ Found' : '❌ Missing'}`, contentSave ? 'success' : 'error');
+            
+            if (contentClose) {
+                log(`  - onclick: ${contentClose.onclick ? '✅ Attached' : '❌ Not attached'}`, contentClose.onclick ? 'success' : 'error');
+            }
+            if (contentCancel) {
+                log(`  - onclick: ${contentCancel.onclick ? '✅ Attached' : '❌ Not attached'}`, contentCancel.onclick ? 'success' : 'error');
+            }
+            
+            // Assessment Modal Buttons
+            const assessmentClose = document.getElementById('assessment-modal-close-btn');
+            const assessmentCancel = document.getElementById('assessment-modal-cancel-btn');
+            const assessmentSave = document.getElementById('assessment-modal-save-btn');
+            const addQuestion = document.getElementById('add-question-btn');
+            
+            log(`Assessment Close Button: ${assessmentClose ? '✅ Found' : '❌ Missing'}`, assessmentClose ? 'success' : 'error');
+            log(`Assessment Cancel Button: ${assessmentCancel ? '✅ Found' : '❌ Missing'}`, assessmentCancel ? 'success' : 'error');
+            log(`Assessment Save Button: ${assessmentSave ? '✅ Found' : '❌ Missing'}`, assessmentSave ? 'success' : 'error');
+            log(`Add Question Button: ${addQuestion ? '✅ Found' : '❌ Missing'}`, addQuestion ? 'success' : 'error');
+            
+            if (assessmentClose) {
+                log(`  - onclick: ${assessmentClose.onclick ? '✅ Attached' : '❌ Not attached'}`, assessmentClose.onclick ? 'success' : 'error');
+            }
+            if (assessmentCancel) {
+                log(`  - onclick: ${assessmentCancel.onclick ? '✅ Attached' : '❌ Not attached'}`, assessmentCancel.onclick ? 'success' : 'error');
+            }
+            if (addQuestion) {
+                log(`  - onclick: ${addQuestion.onclick ? '✅ Attached' : '❌ Not attached'}`, addQuestion.onclick ? 'success' : 'error');
+            }
+            
+            log('=== Verification Complete ===');
+        }
+        
+        // Load modals from admin dashboard
+        window.addEventListener('DOMContentLoaded', function() {
+            log('Page loaded, fetching modals from admin-dashboard.html...');
+            
+            fetch('admin-dashboard.html')
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    // Extract modals
+                    const contentModal = doc.getElementById('content-modal');
+                    const assessmentModal = doc.getElementById('assessment-modal');
+                    
+                    if (contentModal) {
+                        document.body.appendChild(contentModal);
+                        log('Content modal loaded', 'success');
+                    } else {
+                        log('Content modal not found in HTML', 'error');
+                    }
+                    
+                    if (assessmentModal) {
+                        document.body.appendChild(assessmentModal);
+                        log('Assessment modal loaded', 'success');
+                    } else {
+                        log('Assessment modal not found in HTML', 'error');
+                    }
+                    
+                    // Wait a bit then verify
+                    setTimeout(verifyButtons, 500);
+                })
+                .catch(error => {
+                    log('Error loading modals: ' + error.message, 'error');
+                });
+        });
+    </script>
+</body>
+</html>

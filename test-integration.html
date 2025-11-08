@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Integration</title>
+</head>
+<body>
+    <h1>Test Signup Integration</h1>
+    
+    <div>
+        <h2>Current Users in localStorage:</h2>
+        <div id="usersList"></div>
+    </div>
+    
+    <div style="margin: 20px 0;">
+        <button onclick="addTestUser()">Add Test User</button>
+        <button onclick="clearUsers()">Clear All Users</button>
+        <button onclick="refreshDisplay()">Refresh Display</button>
+    </div>
+    
+    <script>
+        function refreshDisplay() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const usersList = document.getElementById('usersList');
+            
+            if (users.length === 0) {
+                usersList.innerHTML = '<p>No users found</p>';
+            } else {
+                usersList.innerHTML = users.map((user, index) => `
+                    <div style="border: 1px solid #ccc; padding: 10px; margin: 5px 0;">
+                        <strong>${index + 1}. ${user.name}</strong><br>
+                        Email: ${user.email}<br>
+                        Plan: ${user.plan}<br>
+                        Status: ${user.status}<br>
+                        Join Date: ${user.joinDate}<br>
+                        Bootcamp Start: ${user.bootcampStartDate}
+                    </div>
+                `).join('');
+            }
+            
+            console.log('Found users:', users);
+        }
+        
+        function addTestUser() {
+            const userData = {
+                id: Date.now(),
+                name: 'Test User ' + Date.now(),
+                email: 'test' + Date.now() + '@example.com',
+                plan: 'bootcamp',
+                status: 'bootcamp',
+                expiry: null,
+                locked: false,
+                joinDate: new Date().toISOString().split('T')[0],
+                bootcampStartDate: new Date().toISOString().split('T')[0],
+                planHistory: [{
+                    from: null,
+                    to: 'bootcamp',
+                    changedAt: new Date().toISOString(),
+                    changedBy: 'test'
+                }]
+            };
+            
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
+            users.push(userData);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            console.log('Added test user:', userData);
+            refreshDisplay();
+        }
+        
+        function clearUsers() {
+            localStorage.removeItem('users');
+            console.log('Cleared all users');
+            refreshDisplay();
+        }
+        
+        // Initial load
+        refreshDisplay();
+        
+        // Listen for storage changes
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'users') {
+                console.log('Storage changed, refreshing display');
+                refreshDisplay();
+            }
+        });
+    </script>
+</body>
+</html>

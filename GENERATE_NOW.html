@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Generate Data NOW</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 { color: #1e3a8a; margin: 0 0 20px 0; }
+        .big-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        .big-btn:hover { transform: scale(1.02); }
+        .status {
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .success { background: #dcfce7; color: #16a34a; }
+        .info { background: #dbeafe; color: #2563eb; }
+        pre {
+            background: #1f2937;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 GENERATE DATA NOW</h1>
+        <button class="big-btn" onclick="generateNow()">CLICK HERE TO GENERATE</button>
+        <div id="status"></div>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function generateNow() {
+            document.getElementById('status').innerHTML = '<div class="status info">⏳ Generating data...</div>';
+            
+            // STEP 1: CLEAR EVERYTHING
+            localStorage.clear();
+            
+            // STEP 2: CREATE STUDENT
+            const student = {
+                id: 99999,
+                name: 'John Doe',
+                email: 'john.doe@student.com',
+                phone: '+234 800 000 0000',
+                role: 'student',
+                gender: 'Male',
+                classLevel: 'SS2',
+                stream: 'Science',
+                studentCode: 'BW-546850-GI02',
+                plan: 'premium',
+                status: 'active',
+                locked: false,
+                joinDate: new Date().toISOString().split('T')[0],
+                createdAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('brainwave_users', JSON.stringify([student]));
+            localStorage.setItem('brainwave_current_student_id', '99999');
+            
+            // STEP 3: CREATE REPORTS
+            const now = new Date();
+            const reports = [];
+            const subjects = ['Mathematics', 'Physics', 'Chemistry', 'Biology', 'English Language'];
+            const scores = [85, 78, 82, 88, 76];
+            
+            subjects.forEach((subject, index) => {
+                reports.push({
+                    id: index + 1,
+                    studentId: 99999,
+                    studentCode: 'BW-546850-GI02',
+                    studentName: 'John Doe',
+                    assessmentTitle: 'First Term Exam',
+                    subject: subject,
+                    type: 'quiz',
+                    score: scores[index],
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                });
+            });
+            
+            localStorage.setItem('brainwave_reports', JSON.stringify(reports));
+            
+            // STEP 4: CREATE ACHIEVEMENTS
+            const achievements = [
+                {
+                    id: 1,
+                    title: 'First Steps',
+                    description: 'Completed your first quiz successfully!',
+                    icon: 'fas fa-star',
+                    color: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+                    unlockedAt: new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 2,
+                    title: 'Perfect Score',
+                    description: 'Scored 100% on a quiz',
+                    icon: 'fas fa-trophy',
+                    color: 'linear-gradient(135deg, #10b981, #059669)',
+                    unlockedAt: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 3,
+                    title: 'Study Streak',
+                    description: 'Maintained a 7-day study streak',
+                    icon: 'fas fa-fire',
+                    color: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                    unlockedAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString()
+                }
+            ];
+            
+            localStorage.setItem('brainwave_achievements', JSON.stringify(achievements));
+            
+            // STEP 5: CREATE BADGES
+            const badges = [
+                {
+                    id: 1,
+                    name: 'Math Genius',
+                    description: 'Complete 20 math quizzes',
+                    icon: 'fas fa-calculator',
+                    color: '#3b82f6',
+                    unlocked: true,
+                    progress: 100
+                },
+                {
+                    id: 2,
+                    name: 'Science Explorer',
+                    description: 'Complete all science subjects',
+                    icon: 'fas fa-flask',
+                    color: '#10b981',
+                    unlocked: true,
+                    progress: 100
+                },
+                {
+                    id: 3,
+                    name: 'Bookworm',
+                    description: 'Read 15 eBooks',
+                    icon: 'fas fa-book-open',
+                    color: '#8b5cf6',
+                    unlocked: false,
+                    progress: 73
+                }
+            ];
+            
+            localStorage.setItem('brainwave_badges', JSON.stringify(badges));
+            
+            // STEP 6: CREATE LEADERBOARD
+            const leaderboard = [
+                {
+                    id: 2,
+                    name: 'Sarah Williams',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2680,
+                    badges: 5,
+                    avgScore: 88
+                },
+                {
+                    id: 3,
+                    name: 'Michael Chen',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2520,
+                    badges: 4,
+                    avgScore: 85
+                },
+                {
+                    id: 99999,
+                    name: 'John Doe',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2450,
+                    badges: 3,
+                    avgScore: 82
+                }
+            ];
+            
+            localStorage.setItem('brainwave_leaderboard', JSON.stringify(leaderboard));
+            
+            // STEP 7: CREATE SUBJECTS
+            const subjectsData = [
+                { id: 1, name: 'Mathematics', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 2, name: 'Physics', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 3, name: 'Chemistry', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 4, name: 'Biology', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 5, name: 'English Language', stream: 'General', classLevel: 'All Levels', createdAt: now.toISOString() }
+            ];
+            
+            localStorage.setItem('brainwave_subjects', JSON.stringify(subjectsData));
+            localStorage.setItem('brainwave_mock_data_generated', 'true');
+            
+            // SHOW RESULTS
+            const summary = {
+                'Student': student.name + ' (ID: ' + student.id + ')',
+                'Student Code': student.studentCode,
+                'Reports': reports.length,
+                'Achievements': achievements.length,
+                'Badges': badges.length,
+                'Leaderboard': leaderboard.length,
+                'Subjects': subjectsData.length
+            };
+            
+            document.getElementById('output').innerHTML = '<pre>' + JSON.stringify(summary, null, 2) + '</pre>';
+            document.getElementById('status').innerHTML = `
+                <div class="status success">
+                    ✅ SUCCESS!<br><br>
+                    Data generated:<br>
+                    • ${reports.length} Reports<br>
+                    • ${achievements.length} Achievements<br>
+                    • ${badges.length} Badges<br>
+                    • ${leaderboard.length} Leaderboard entries<br><br>
+                    <button class="big-btn" onclick="window.location.href='student-dashboard.html'" style="margin-top: 20px;">
+                        OPEN DASHBOARD NOW
+                    </button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

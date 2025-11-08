@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard - BrainWave</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* BrainWave Brand Colors */
+            --primary-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            --secondary-gradient: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            
+            --primary-color: #1e3a8a;
+            --secondary-color: #3b82f6;
+            --accent-color: #fbbf24;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --purple: #8b5cf6;
+            
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: var(--gray-900);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Hamburger Menu */
+        .hamburger-menu {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 320px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            transition: left 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+            box-shadow: var(--shadow-2xl);
+            overflow-y: auto;
+        }
+
+        .hamburger-menu.open {
+            left: 0;
+        }
+
+        .menu-header {
+            padding: 2rem;
+            background: var(--primary-gradient);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .menu-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-logo-box {
+            width: 50px;
+            height: 50px;
+            background: var(--white);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .menu-logo h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .close-menu {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close-menu:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .menu-items {
+            padding: 1.5rem;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--gray-800);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary-gradient);
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .menu-item:hover {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            transform: translateX(8px);
+        }
+
+        .menu-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .menu-item i {
+            font-size: 1.2rem;
+            width: 24px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .menu-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+            margin: 1.5rem 0;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Top Header */
+        .top-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .hamburger-btn {
+            background: var(--primary-gradient);
+            border: none;
+            color: var(--white);
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.3s;
+            box-shadow: var(--shadow-md);
+        }
+
+        .hamburger-btn:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .tracking-info {
+            flex: 1;
+        }
+
+        .tracking-header {
+            font-size: 0.75rem;
+            color: var(--gray-800);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .child-name-display {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .class-level {
+            font-size: 1rem;
+            color: var(--gray-800);
+            font-weight: 600;
+            background: rgba(251, 191, 36, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        .status-badge {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: var(--shadow-md);
+            animation: fadeInScale 0.5s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .status-active {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: var(--white);
+        }
+
+        .status-expired {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: var(--white);
+        }
+
+        .status-locked {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: var(--white);
+        }
+
+        /* Child Switcher */
+        .child-switcher {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1400px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .switcher-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .switcher-header h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .add-child-btn {
+            background: var(--success-gradient);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            box-shadow: var(--shadow-md);
+        }
+
+        .add-child-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .children-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .child-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+            border: 2px solid rgba(30, 58, 138, 0.2);
+            border-radius: 20px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .child-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 0;
+        }
+
+        .child-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .child-card.active {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border-color: transparent;
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .child-card.active::before {
+            opacity: 1;
+        }
+
+        .child-card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .child-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .child-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s;
+        }
+
+        .child-card.active .child-avatar {
+            background: var(--white);
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .child-info h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+            font-weight: 700;
+        }
+
+        .child-info p {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .child-status-mini {
+            display: inline-block;
+            padding: 0.375rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-top: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Dashboard Content */
+        .dashboard-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-xl);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title i {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Report Snapshots */
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .report-card {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border-left: 4px solid;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(30, 58, 138, 0.1) 0%, transparent 70%);
+            transition: all 0.5s;
+        }
+
+        .report-card:hover::before {
+            transform: translate(-25%, -25%);
+        }
+
+        .report-card:nth-child(1) {
+            border-left-color: #1e3a8a;
+        }
+
+        .report-card:nth-child(2) {
+            border-left-color: #10b981;
+        }
+
+        .report-card:nth-child(3) {
+            border-left-color: #fbbf24;
+        }
+
+        .report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .report-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-title {
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--gray-900);
+        }
+
+        .report-date {
+            font-size: 0.875rem;
+            color: var(--gray-800);
+            background: rgba(255, 255, 255, 0.7);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        .report-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item {
+            flex: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--gray-800);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-top: 0.5rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .action-btn {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border: none;
+            padding: 1.25rem;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .action-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .action-btn i {
+            font-size: 1.3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Recent Activity */
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.25rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border-radius: 12px;
+        }
+
+        .activity-item:hover {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+            transform: translateX(8px);
+        }
+
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-time {
+            font-size: 0.875rem;
+            color: var(--gray-800);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gray-800);
+        }
+
+        .empty-state i {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            color: var(--gray-900);
+            margin-bottom: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .tracking-info {
+                width: 100%;
+            }
+
+            .children-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .reports-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .child-name-display {
+                font-size: 1.5rem;
+            }
+
+            .section-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation"></div>
+
+    <!-- Hamburger Menu -->
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+    <div class="hamburger-menu" id="hamburgerMenu">
+        <div class="menu-header">
+            <div class="menu-logo">
+                <div class="menu-logo-box">B</div>
+                <h2>BrainWave</h2>
+            </div>
+            <button class="close-menu" onclick="closeMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="menu-items">
+            <a href="#" class="menu-item" onclick="showSection('overview')">
+                <i class="fas fa-home"></i>
+                <span>Dashboard Overview</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('reports')">
+                <i class="fas fa-chart-line"></i>
+                <span>Academic Reports</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('attendance')">
+                <i class="fas fa-calendar-check"></i>
+                <span>Attendance</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('assessments')">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Assessments</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('subjects')">
+                <i class="fas fa-book"></i>
+                <span>Subjects</span>
+            </a>
+            
+            <div class="menu-divider"></div>
+            
+            <a href="#" class="menu-item" onclick="showSection('subscription')">
+                <i class="fas fa-credit-card"></i>
+                <span>Subscription</span>
+            </a>
+            <a href="parent-link-children.html" class="menu-item">
+                <i class="fas fa-user-plus"></i>
+                <span>Link New Child</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('settings')">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            
+            <div class="menu-divider"></div>
+            
+            <a href="#" class="menu-item" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Top Header -->
+    <div class="top-header">
+        <div class="header-content">
+            <button class="hamburger-btn" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="tracking-info">
+                <div class="tracking-header">Tracking</div>
+                <div class="child-name-display">
+                    <span id="currentChildName">-</span>
+                    <span class="class-level" id="currentChildClass">-</span>
+                </div>
+            </div>
+            
+            <div id="statusBadge" class="status-badge status-active">ACTIVE</div>
+        </div>
+    </div>
+
+    <!-- Child Switcher -->
+    <div class="child-switcher">
+        <div class="switcher-header">
+            <h3><i class="fas fa-users"></i> Your Children</h3>
+            <button class="add-child-btn" onclick="window.location.href='parent-link-children.html'">
+                <i class="fas fa-plus"></i>
+                Add Child
+            </button>
+        </div>
+        <div class="children-grid" id="childrenGrid">
+            <!-- Children cards will be populated here -->
+        </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+        <!-- Overview Section -->
+        <div class="section-card" id="overviewSection">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-bar"></i>
+                    Academic Overview
+                </h2>
+            </div>
+            
+            <div class="reports-grid" id="academicOverview">
+                <!-- Report cards will be populated here -->
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-bolt"></i>
+                    Quick Actions
+                </h2>
+            </div>
+            
+            <div class="quick-actions">
+                <button class="action-btn" onclick="viewFullReport()">
+                    <i class="fas fa-file-alt"></i>
+                    <span>View Full Report</span>
+                </button>
+                <button class="action-btn" onclick="downloadReport()">
+                    <i class="fas fa-download"></i>
+                    <span>Download Report</span>
+                </button>
+                <button class="action-btn" onclick="contactTeacher()">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact Teacher</span>
+                </button>
+                <button class="action-btn" onclick="viewSchedule()">
+                    <i class="fas fa-calendar"></i>
+                    <span>View Schedule</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-history"></i>
+                    Recent Activity
+                </h2>
+            </div>
+            
+            <div id="recentActivity">
+                <!-- Activity will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentParent = null;
+        let currentChild = null;
+        let children = [];
+
+        // Initialize dashboard
+        window.addEventListener('DOMContentLoaded', function() {
+            loadParentData();
+            loadChildren();
+            if (children.length > 0) {
+                switchToChild(children[0]);
+            }
+        });
+
+        // Load parent data
+        function loadParentData() {
+            currentParent = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            // DEMO MODE: Check if URL has ?demo=true parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const isDemoMode = urlParams.get('demo') === 'true';
+            
+            if (!currentParent.email || currentParent.role !== 'parent') {
+                if (isDemoMode) {
+                    // Use demo data
+                    currentParent = {
+                        id: 'demo-parent-001',
+                        name: 'Demo Parent',
+                        email: 'demo@parent.com',
+                        role: 'parent'
+                    };
+                    console.log('🎨 DEMO MODE ACTIVATED');
+                } else {
+                    alert('Please login as a parent to access this dashboard');
+                    window.location.href = 'login.html';
+                    return;
+                }
+            }
+            
+            // Check and auto-lock expired parent accounts (skip in demo mode)
+            if (!isDemoMode) {
+                let users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+                const parentIndex = users.findIndex(u => u.email === currentParent.email && u.role === 'parent');
+                
+                if (parentIndex !== -1) {
+                    const parentUser = users[parentIndex];
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    if (parentUser.expiry || parentUser.expiryDate) {
+                        const expiryDate = new Date(parentUser.expiry || parentUser.expiryDate);
+                        expiryDate.setHours(0, 0, 0, 0);
+                        
+                        // If expiry date has passed, automatically lock the account
+                        if (expiryDate < today && !parentUser.locked) {
+                            parentUser.locked = true;
+                            parentUser.accountLocked = true;
+                            parentUser.status = 'expired';
+                            parentUser.lockedReason = 'Subscription expired';
+                            parentUser.lockedAt = new Date().toISOString();
+                            
+                            // Update in storage
+                            users[parentIndex] = parentUser;
+                            localStorage.setItem('brainwave_users', JSON.stringify(users));
+                            localStorage.setItem('users', JSON.stringify(users));
+                            
+                            console.log(`🔒 Parent account auto-locked: ${parentUser.email} (Expired: ${parentUser.expiry || parentUser.expiryDate})`);
+                            
+                            alert('Your subscription has expired and your account has been locked. Please contact the administrator or renew your subscription.');
+                            logout();
+                            return;
+                        }
+                    }
+                    
+                    // Check if account is locked
+                    if (parentUser.locked || parentUser.accountLocked) {
+                        const reason = parentUser.lockedReason || 'Your account has been locked';
+                        alert(`${reason}. Please contact the administrator.`);
+                        logout();
+                        return;
+                    }
+                    
+                    // Update currentParent with full data
+                    currentParent = parentUser;
+                    localStorage.setItem('currentUser', JSON.stringify(currentParent));
+                }
+            }
+        }
+
+        // Load children
+        function loadChildren() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isDemoMode = urlParams.get('demo') === 'true';
+            
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            children = users.filter(u => u.role === 'student' && u.parentId === currentParent.id);
+            
+            // DEMO MODE: Use sample children if no real data
+            if (children.length === 0 && isDemoMode) {
+                children = [
+                    {
+                        id: 'demo-child-001',
+                        name: 'Sarah Adekunle',
+                        classLevel: 'SS2',
+                        stream: 'Science',
+                        status: 'active',
+                        accountLocked: false,
+                        expiryDate: '2025-12-31',
+                        parentId: 'demo-parent-001'
+                    },
+                    {
+                        id: 'demo-child-002',
+                        name: 'David Okonkwo',
+                        classLevel: 'JSS3',
+                        stream: 'General',
+                        status: 'bootcamp',
+                        bootcampStartDate: new Date().toISOString(),
+                        accountLocked: false,
+                        parentId: 'demo-parent-001'
+                    },
+                    {
+                        id: 'demo-child-003',
+                        name: 'Grace Adebayo',
+                        classLevel: 'SS1',
+                        stream: 'Humanities',
+                        status: 'expired',
+                        accountLocked: false,
+                        expiryDate: '2025-01-01',
+                        parentId: 'demo-parent-001'
+                    }
+                ];
+                console.log('📊 Demo children loaded:', children.length);
+            }
+            
+            if (children.length === 0) {
+                showEmptyState();
+                return;
+            }
+            
+            renderChildrenGrid();
+        }
+
+        // Render children grid
+        function renderChildrenGrid() {
+            const grid = document.getElementById('childrenGrid');
+            grid.innerHTML = '';
+            
+            children.forEach((child, index) => {
+                const status = getChildStatus(child);
+                const initials = child.name.split(' ').map(n => n[0]).join('').substring(0, 2);
+                
+                const card = document.createElement('div');
+                card.className = `child-card ${index === 0 ? 'active' : ''}`;
+                card.onclick = () => switchToChild(child);
+                
+                card.innerHTML = `
+                    <div class="child-card-content">
+                        <div class="child-card-header">
+                            <div class="child-avatar">${initials}</div>
+                            <div class="child-info">
+                                <h4>${child.name}</h4>
+                                <p>${child.classLevel || 'Not Set'}</p>
+                            </div>
+                        </div>
+                        <div class="child-status-mini ${status.class}">${status.text}</div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Switch to child
+        function switchToChild(child) {
+            currentChild = child;
+            
+            // Update header
+            document.getElementById('currentChildName').textContent = child.name;
+            document.getElementById('currentChildClass').textContent = child.classLevel || 'Not Set';
+            
+            // Update status badge
+            const status = getChildStatus(child);
+            const badge = document.getElementById('statusBadge');
+            badge.textContent = status.text;
+            badge.className = `status-badge ${status.class}`;
+            
+            // Update active card
+            document.querySelectorAll('.child-card').forEach((card, index) => {
+                card.classList.toggle('active', children[index].id === child.id);
+            });
+            
+            // Load child data
+            loadChildData(child);
+        }
+
+        // Get child status
+        function getChildStatus(child) {
+            if (child.accountLocked) {
+                return { text: 'LOCKED', class: 'status-locked' };
+            }
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            // Check payment status first (set by admin via subscription management)
+            if (child.paymentStatus === 'paid' || child.isPaid === true) {
+                // Paid members are always active unless account is locked
+                return { text: 'ACTIVE - PAID', class: 'status-active' };
+            }
+            
+            // Check if on bootcamp (free trial)
+            if (child.paymentStatus === 'bootcamp' || child.status === 'bootcamp' || child.plan === 'bootcamp') {
+                if (child.bootcampStartDate) {
+                    const startDate = new Date(child.bootcampStartDate);
+                    startDate.setHours(0, 0, 0, 0);
+                    const daysPassed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+                    
+                    if (daysPassed >= 7) {
+                        return { text: 'EXPIRED', class: 'status-expired' };
+                    }
+                    return { text: 'ACTIVE - BOOTCAMP', class: 'status-active' };
+                }
+                return { text: 'ACTIVE - BOOTCAMP', class: 'status-active' };
+            }
+            
+            // Check expiry date for time-based subscriptions
+            if (child.expiryDate || child.expiry) {
+                const expiryDate = new Date(child.expiryDate || child.expiry);
+                expiryDate.setHours(0, 0, 0, 0);
+                
+                if (expiryDate < today) {
+                    return { text: 'EXPIRED', class: 'status-expired' };
+                }
+                return { text: 'ACTIVE', class: 'status-active' };
+            }
+            
+            // Default to active if no specific status found
+            return { text: 'ACTIVE', class: 'status-active' };
+        }
+
+        // Load child data
+        function loadChildData(child) {
+            loadAcademicOverview(child);
+            loadRecentActivity(child);
+        }
+
+        // Load academic overview
+        function loadAcademicOverview(child) {
+            const container = document.getElementById('academicOverview');
+            
+            const reports = [
+                {
+                    title: 'Overall Performance',
+                    date: 'Current Term',
+                    stats: [
+                        { label: 'Average', value: '85%' },
+                        { label: 'Rank', value: '5th' }
+                    ]
+                },
+                {
+                    title: 'Attendance',
+                    date: 'This Month',
+                    stats: [
+                        { label: 'Present', value: '18' },
+                        { label: 'Absent', value: '2' }
+                    ]
+                },
+                {
+                    title: 'Assessments',
+                    date: 'Last 30 Days',
+                    stats: [
+                        { label: 'Completed', value: '12' },
+                        { label: 'Pending', value: '3' }
+                    ]
+                }
+            ];
+            
+            container.innerHTML = reports.map(report => `
+                <div class="report-card">
+                    <div class="report-header">
+                        <div class="report-title">${report.title}</div>
+                        <div class="report-date">${report.date}</div>
+                    </div>
+                    <div class="report-stats">
+                        ${report.stats.map(stat => `
+                            <div class="stat-item">
+                                <div class="stat-label">${stat.label}</div>
+                                <div class="stat-value">${stat.value}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load recent activity
+        function loadRecentActivity(child) {
+            const container = document.getElementById('recentActivity');
+            
+            const activities = [
+                { icon: 'fa-check-circle', text: 'Completed Mathematics Quiz', time: '2 hours ago', gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' },
+                { icon: 'fa-book', text: 'Started English Literature assignment', time: '1 day ago', gradient: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)' },
+                { icon: 'fa-video', text: 'Attended Live Chemistry Class', time: '2 days ago', gradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)' }
+            ];
+            
+            if (activities.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No recent activity</p></div>';
+                return;
+            }
+            
+            container.innerHTML = activities.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-icon" style="background: ${activity.gradient};">
+                        <i class="fas ${activity.icon}"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-text">${activity.text}</div>
+                        <div class="activity-time">${activity.time}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Show empty state
+        function showEmptyState() {
+            document.getElementById('childrenGrid').innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-users"></i>
+                    <h3>No Children Linked</h3>
+                    <p>Click "Add Child" to link your children's accounts</p>
+                </div>
+            `;
+            
+            document.getElementById('academicOverview').innerHTML = `
+                <div class="empty-state">
+                    <p>Link a child to view their academic overview</p>
+                </div>
+            `;
+        }
+
+        // Menu functions
+        function toggleMenu() {
+            const menu = document.getElementById('hamburgerMenu');
+            const overlay = document.getElementById('menuOverlay');
+            menu.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            document.getElementById('hamburgerMenu').classList.remove('open');
+            document.getElementById('menuOverlay').classList.remove('active');
+        }
+
+        function showSection(section) {
+            console.log('Showing section:', section);
+            closeMenu();
+        }
+
+        // Quick action functions
+        function viewFullReport() {
+            if (!currentChild) {
+                alert('Please select a child first');
+                return;
+            }
+            alert('Full report feature coming soon!');
+        }
+
+        function downloadReport() {
+            if (!currentChild) {
+                alert('Please select a child first');
+                return;
+            }
+            alert('Download report feature coming soon!');
+        }
+
+        function contactTeacher() {
+            if (!currentChild) {
+                alert('Please select a child first');
+                return;
+            }
+            alert('Contact teacher feature coming soon!');
+        }
+
+        function viewSchedule() {
+            if (!currentChild) {
+                alert('Please select a child first');
+                return;
+            }
+            alert('View schedule feature coming soon!');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>

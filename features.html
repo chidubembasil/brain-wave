@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="cache-buster" content="v2025-10-10-01-36">
+    <title>Features - BrainWave</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #1e3a8a;
+            --accent-yellow: #fbbf24;
+            --white: #ffffff;
+            --text-gray: #6b7280;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header/Navbar */
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--primary-blue);
+        }
+
+        .nav-login {
+            background: var(--accent-yellow);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            color: var(--primary-blue) !important;
+            font-weight: 600;
+        }
+        
+        .nav-login:hover {
+            background: #f59e0b;
+            transform: scale(1.05);
+        }
+
+        /* Hero Section */
+        .features-hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 150px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .features-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+        }
+
+        .features-hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .features-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .features-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        /* Core Features Section */
+        .core-features {
+            padding: 80px 20px;
+            background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: #000000;
+            max-width: 700px;
+            margin: 1.5rem auto 0;
+        }
+
+        .features-showcase {
+            margin-top: 4rem;
+        }
+
+        .feature-showcase-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 4rem;
+            padding: 3.5rem;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(30, 58, 138, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .feature-showcase-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 80px rgba(30, 58, 138, 0.15);
+        }
+
+        .feature-showcase-item.reverse {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .feature-showcase-item.reverse .feature-visual {
+            order: 2;
+        }
+
+        .feature-showcase-item.reverse .feature-content {
+            order: 1;
+        }
+
+        .feature-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .feature-icon {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .quiz-icon {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            box-shadow: 0 10px 40px rgba(251, 191, 36, 0.4);
+        }
+
+        .exam-icon {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            box-shadow: 0 10px 40px rgba(236, 72, 153, 0.4);
+        }
+
+        .video-icon {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.4);
+        }
+
+        .live-icon {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        .feature-icon svg {
+            width: 60px;
+            height: 60px;
+        }
+
+        .feature-content h3 {
+            font-size: 2rem;
+            color: #1e3a8a;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-content p {
+            font-size: 1.1rem;
+            color: #000000;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .feature-benefits {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-benefits li {
+            color: #000000;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+
+        .feature-benefits li::before {
+            content: '✓';
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            border-radius: 50%;
+            margin-right: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        /* Advanced Features */
+        .advanced-features {
+            padding: 80px 20px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        }
+
+        .advanced-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .advanced-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
+        }
+
+        .advanced-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(30, 58, 138, 0.15);
+            border-color: rgba(30, 58, 138, 0.2);
+        }
+
+        .advanced-icon {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: white;
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.4);
+        }
+
+        .advanced-icon svg {
+            width: 45px;
+            height: 45px;
+        }
+
+        .advanced-card h4 {
+            font-size: 1.5rem;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .advanced-card p {
+            color: #000000;
+            line-height: 1.7;
+        }
+
+        /* Subject Coverage */
+        .subject-coverage {
+            padding: 80px 20px;
+            background: linear-gradient(180deg, #f8fafc 0%, #e0f2fe 100%);
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .subject-category {
+            background: white;
+            padding: 3rem 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6, #1e3a8a);
+        }
+
+        .subject-category h3 {
+            font-size: 1.8rem;
+            color: #1e3a8a;
+            margin-bottom: 2rem;
+            text-align: center;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #fbbf24;
+        }
+
+        .department-section {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 16px;
+        }
+
+        .department-section h4 {
+            color: #1e3a8a;
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #1e3a8a;
+            display: inline-block;
+        }
+
+        .subject-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .subject-list li {
+            color: #000000;
+            padding: 0.9rem 0.5rem;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .subject-list li::before {
+            content: '▸';
+            color: #1e3a8a;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .subject-list li:hover::before {
+            color: var(--accent-yellow);
+        }
+
+        /* CTA Section */
+        .features-cta {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-content h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-content p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 1.2rem 3rem;
+            border-radius: 12px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--accent-yellow);
+            color: var(--primary-blue);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+            background: #f59e0b;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--primary-blue);
+            transform: translateY(-3px) scale(1.05);
+            border-color: white;
+        }
+
+        /* Footer */
+        .footer {
+            background: #374151;
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3,
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: var(--accent-yellow);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-yellow);
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+
+        .social-link:hover {
+            background: var(--accent-yellow);
+            color: var(--primary-blue);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #4b5563;
+            color: white;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .features-hero h1 {
+                font-size: 2rem;
+            }
+
+            .features-hero {
+                padding: 120px 20px 60px;
+            }
+
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .feature-showcase-item {
+                grid-template-columns: 1fr !important;
+                gap: 1.5rem !important;
+                padding: 2rem 1.5rem !important;
+                text-align: center;
+                overflow: hidden;
+            }
+
+            .feature-showcase-item.reverse .feature-visual,
+            .feature-showcase-item.reverse .feature-content {
+                order: unset;
+            }
+
+            .feature-visual {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .feature-content {
+                width: 100%;
+                max-width: 100%;
+                overflow: hidden;
+            }
+
+            .feature-icon {
+                width: 100px !important;
+                height: 100px !important;
+                margin-bottom: 1.5rem !important;
+                margin-top: 0 !important;
+            }
+
+            .feature-visual {
+                margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
+                margin-top: 0 !important;
+            }
+
+            .feature-content {
+                padding-top: 1.5rem !important;
+                margin-top: 0 !important;
+            }
+
+            .feature-content h3 {
+                font-size: 1.3rem !important;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                white-space: normal;
+                line-height: 1.4 !important;
+                width: 100%;
+                max-width: 100%;
+                margin-top: 0 !important;
+                margin-bottom: 1rem !important;
+                padding-top: 0.5rem !important;
+            }
+
+            .feature-content p {
+                font-size: 1rem;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+
+            .feature-benefits li {
+                font-size: 0.95rem;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+
+            .advanced-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .advanced-card h4 {
+                font-size: 1.3rem;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+
+            .cta-content h2 {
+                font-size: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        /* Extra small mobile devices */
+        @media (max-width: 480px) {
+            .feature-showcase-item {
+                padding: 1.5rem 1rem;
+                overflow: hidden;
+            }
+
+            .feature-content {
+                width: 100%;
+                max-width: 100%;
+                overflow: hidden;
+            }
+
+            .feature-content h3 {
+                font-size: 1.15rem;
+                line-height: 1.3;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                white-space: normal;
+                width: 100%;
+            }
+
+            .feature-content p {
+                font-size: 0.95rem;
+                width: 100%;
+            }
+
+            .feature-icon {
+                width: 80px !important;
+                height: 80px !important;
+                margin-bottom: 1.5rem !important;
+                margin-top: 0 !important;
+            }
+
+            .feature-icon svg {
+                width: 40px !important;
+                height: 40px !important;
+            }
+
+            .feature-visual {
+                margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
+                margin-top: 0 !important;
+            }
+
+            .feature-content {
+                padding-top: 1rem !important;
+                margin-top: 0 !important;
+            }
+
+            .feature-content h3 {
+                margin-top: 0 !important;
+                margin-bottom: 0.75rem !important;
+                padding: 0.5rem 0.5rem 0 0.5rem !important;
+                line-height: 1.3 !important;
+            }
+
+            .feature-content p {
+                padding: 0 0.5rem !important;
+                margin-bottom: 0.75rem !important;
+            }
+
+            .feature-benefits {
+                padding: 0 0.5rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navbar -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" class="logo-img">
+                    <rect x="0" y="0" width="40" height="40" rx="8" ry="8" fill="#fbbf24"/>
+                    <text x="20" y="28" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#1e3a8a">B</text>
+                </svg>
+                BrainWave
+            </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="features.html" class="active">Features</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="signup.html" class="nav-login">Sign Up</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Features Hero Section -->
+    <section class="features-hero">
+        <div class="container">
+            <div class="features-hero-content">
+                <h1>Powerful Features for Academic Excellence</h1>
+                <p>Discover comprehensive learning tools designed to help Nigerian students excel in their studies and achieve their academic goals.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Features Section -->
+    <section class="core-features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Core Learning Features</h2>
+                <p>Everything you need for effective studying and exam preparation</p>
+            </div>
+            
+            <div class="features-showcase">
+                <div class="feature-showcase-item">
+                    <div class="feature-visual">
+                        <div class="feature-icon quiz-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Interactive Quizzes</h3>
+                        <p>Engage with thousands of practice questions across all subjects. Our adaptive quiz system adjusts difficulty based on your performance, ensuring optimal learning progression.</p>
+                        <ul class="feature-benefits">
+                            <li>Subject-specific question banks</li>
+                            <li>Instant feedback and explanations</li>
+                            <li>Performance tracking</li>
+                            <li>Timed practice sessions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-showcase-item reverse">
+                    <div class="feature-visual">
+                        <div class="feature-icon exam-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Mock Examinations</h3>
+                        <p>Prepare for WAEC, NECO, and JAMB with realistic exam simulations. Experience actual exam conditions with time limits and comprehensive result analysis.</p>
+                        <ul class="feature-benefits">
+                            <li>WAEC/NECO past questions</li>
+                            <li>JAMB CBT simulation</li>
+                            <li>Detailed performance reports</li>
+                            <li>Weakness identification</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-showcase-item">
+                    <div class="feature-visual">
+                        <div class="feature-icon video-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Video Lessons</h3>
+                        <p>Learn from expert teachers through high-quality video content. Complex topics are broken down into digestible lessons with visual aids and real-world examples.</p>
+                        <ul class="feature-benefits">
+                            <li>HD video quality</li>
+                            <li>Expert Nigerian teachers</li>
+                            <li>Curriculum-aligned content</li>
+                            <li>Offline download capability</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-showcase-item reverse">
+                    <div class="feature-visual">
+                        <div class="feature-icon live-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Live Classes</h3>
+                        <p>Join interactive live sessions with qualified teachers. Ask questions in real-time, participate in discussions, and get immediate clarification on difficult concepts.</p>
+                        <ul class="feature-benefits">
+                            <li>Real-time interaction</li>
+                            <li>Q&A sessions</li>
+                            <li>Recorded for later viewing</li>
+                            <li>Small class sizes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Success Tools Section -->
+    <section class="advanced-features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Student Success Tools</h2>
+                <p>Comprehensive tools designed to maximize your academic performance and exam success</p>
+            </div>
+            
+            <div class="advanced-grid">
+                <div class="advanced-card">
+                    <div class="advanced-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h4>Exam Preparation Hub</h4>
+                    <p>Dedicated preparation center for WAEC, NECO, and JAMB with past questions, marking schemes, and expert tips for exam success.</p>
+                </div>
+
+                <div class="advanced-card">
+                    <div class="advanced-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h4>Speed Learning Techniques</h4>
+                    <p>Master effective study methods including speed reading, memory techniques, and time management strategies for faster learning.</p>
+                </div>
+
+                <div class="advanced-card">
+                    <div class="advanced-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h4>Performance Tracker</h4>
+                    <p>Monitor your academic progress with detailed analytics, grade tracking, and personalized improvement recommendations.</p>
+                </div>
+
+                <div class="advanced-card">
+                    <div class="advanced-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="m9 11 2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h4>Smart Study Planner</h4>
+                    <p>Intelligent study scheduling that creates personalized timetables based on your subjects, exam dates, and learning pace.</p>
+                </div>
+
+                <div class="advanced-card">
+                    <div class="advanced-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h4>Study Motivation Center</h4>
+                    <p>Stay motivated with goal setting, achievement tracking, study streaks, and rewards system to maintain consistent learning habits.</p>
+                </div>
+
+                <div class="advanced-card">
+                    <div class="advanced-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h4>Digital Study Library</h4>
+                    <p>Access thousands of textbooks, reference materials, and study guides available offline for uninterrupted learning anywhere.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subject Coverage Section -->
+    <section class="subject-coverage">
+        <div class="container">
+            <div class="section-header">
+                <h2>Complete Subject Coverage</h2>
+                <p>Comprehensive content for all Nigerian secondary school subjects</p>
+            </div>
+            
+            <div class="subjects-grid">
+                <div class="subject-category">
+                    <h3>Senior Secondary</h3>
+                    <div class="department-section">
+                        <h4>Science Department</h4>
+                        <ul class="subject-list">
+                            <li>English Language</li>
+                            <li>Mathematics</li>
+                            <li>Citizenship and Heritage Studies</li>
+                            <li>Physics</li>
+                            <li>Chemistry</li>
+                            <li>Biology</li>
+                            <li>Economics</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="department-section">
+                        <h4>Humanities Department</h4>
+                        <ul class="subject-list">
+                            <li>English Language</li>
+                            <li>Mathematics</li>
+                            <li>Citizenship and Heritage Studies</li>
+                            <li>Literature in English</li>
+                            <li>Government</li>
+                            <li>Biology</li>
+                            <li>Economics</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="department-section">
+                        <h4>Business Department</h4>
+                        <ul class="subject-list">
+                            <li>English Language</li>
+                            <li>Mathematics</li>
+                            <li>Citizenship and Heritage Studies</li>
+                            <li>Commerce</li>
+                            <li>Accounting</li>
+                            <li>Biology</li>
+                            <li>Economics</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="subject-category">
+                    <h3>JAMB Preparation</h3>
+                    <div class="department-section">
+                        <h4>JAMB (Science)</h4>
+                        <ul class="subject-list">
+                            <li>English Language</li>
+                            <li>Mathematics</li>
+                            <li>Physics</li>
+                            <li>Chemistry</li>
+                            <li>Biology</li>
+                            <li>Economics</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="department-section">
+                        <h4>JAMB (Humanities)</h4>
+                        <ul class="subject-list">
+                            <li>English Language</li>
+                            <li>Mathematics</li>
+                            <li>Literature-in-English</li>
+                            <li>Government</li>
+                            <li>Economics</li>
+                            <li>CRS</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="department-section">
+                        <h4>JAMB (Business)</h4>
+                        <ul class="subject-list">
+                            <li>English Language</li>
+                            <li>Mathematics</li>
+                            <li>Economics</li>
+                            <li>Commerce</li>
+                            <li>Accounts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="features-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Experience These Features?</h2>
+                <p>Join thousands of Nigerian students who are already excelling with BrainWave</p>
+                <div class="cta-buttons">
+                    <a href="pricing.html" class="btn-primary">View Pricing Plans</a>
+                    <a href="signup.html" class="btn-secondary">Start Free Bootcamp</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" class="logo-img">
+                            <rect x="0" y="0" width="40" height="40" rx="8" ry="8" fill="#fbbf24"/>
+                            <text x="20" y="28" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white">B</text>
+                        </svg>
+                        <h3>BrainWave</h3>
+                    </div>
+                    <p>Empowering students for academic excellence through innovative learning solutions.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="testimonials.html">Testimonials</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: support@brainwaveedu.com.ng</p>
+                    <p>Phone: +234 706 043 6659</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025-2030 BrainWave. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+

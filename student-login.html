@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login - BrainWave</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            --primary-color: #1e3a8a;
+            --secondary-color: #3b82f6;
+            --accent-color: #fbbf24;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .login-container {
+            background: var(--white);
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 450px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .login-header {
+            background: var(--primary-gradient);
+            color: var(--white);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1rem;
+        }
+
+        .login-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .login-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--gray-100);
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .password-input-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray-500);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0.25rem;
+        }
+
+        .toggle-password:hover {
+            color: var(--primary-color);
+        }
+
+        .form-button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-gradient);
+            color: var(--white);
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .form-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.3);
+        }
+
+        .form-button:active {
+            transform: translateY(0);
+        }
+
+        .form-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .divider span {
+            padding: 0 1rem;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+
+        .login-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 0.875rem 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .alert.show {
+            display: flex;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--white);
+            text-decoration: none;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            opacity: 0.9;
+            transition: opacity 0.2s ease;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid var(--white);
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                border-radius: 1rem;
+            }
+
+            .login-header {
+                padding: 1.5rem;
+            }
+
+            .login-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .login-body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to Home
+            </a>
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1>Student Login</h1>
+            <p>Access your learning dashboard</p>
+        </div>
+
+        <div class="login-body">
+            <div class="alert alert-error" id="errorAlert">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="errorMessage">Invalid credentials</span>
+            </div>
+
+            <div class="alert alert-success" id="successAlert">
+                <i class="fas fa-check-circle"></i>
+                <span id="successMessage">Login successful!</span>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        class="form-input" 
+                        placeholder="Enter your email"
+                        required
+                        autocomplete="email"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="password-input-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            class="form-input" 
+                            placeholder="Enter your password"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="form-button" id="loginButton">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login to Dashboard</span>
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+            <div class="login-footer">
+                <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+                <p style="margin-top: 0.5rem;">
+                    <a href="admin-login.html">Admin Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // Hide alerts
+            document.getElementById('errorAlert').classList.remove('show');
+            document.getElementById('successAlert').classList.remove('show');
+            
+            // Disable button and show loading
+            const loginButton = document.getElementById('loginButton');
+            loginButton.disabled = true;
+            loginButton.innerHTML = '<div class="spinner"></div><span>Logging in...</span>';
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // Get users from localStorage
+                const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+                
+                // Find student with matching email
+                const student = users.find(u => 
+                    u.email.toLowerCase() === email.toLowerCase() && 
+                    u.role === 'student'
+                );
+                
+                if (!student) {
+                    showError('No student account found with this email');
+                    resetButton();
+                    return;
+                }
+                
+                // In a real app, you would verify the password hash
+                // For now, we'll accept any password for testing
+                // In production, implement proper password verification
+                if (!password) {
+                    showError('Please enter your password');
+                    resetButton();
+                    return;
+                }
+                
+                // Check if account is locked
+                if (student.locked) {
+                    showError('Your account has been locked. Please contact the administrator.');
+                    resetButton();
+                    return;
+                }
+                
+                // Check subscription status
+                if (student.status === 'expired') {
+                    showError('Your subscription has expired. Please renew to continue.');
+                    resetButton();
+                    return;
+                }
+                
+                // Login successful
+                localStorage.setItem('brainwave_current_student_id', student.id);
+                
+                // Show success message
+                document.getElementById('successAlert').classList.add('show');
+                loginButton.innerHTML = '<i class="fas fa-check"></i><span>Success! Redirecting...</span>';
+                
+                // Redirect to dashboard
+                setTimeout(() => {
+                    window.location.href = 'student-dashboard.html';
+                }, 1000);
+                
+            }, 800);
+        });
+
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorAlert').classList.add('show');
+        }
+
+        function resetButton() {
+            const loginButton = document.getElementById('loginButton');
+            loginButton.disabled = false;
+            loginButton.innerHTML = '<i class="fas fa-sign-in-alt"></i><span>Login to Dashboard</span>';
+        }
+
+        // Auto-hide alerts after 5 seconds
+        setInterval(() => {
+            document.getElementById('errorAlert').classList.remove('show');
+        }, 5000);
+    </script>
+</body>
+</html>

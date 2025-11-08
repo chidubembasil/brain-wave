@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Children - BrainWave</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .link-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+
+        .link-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .link-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .link-header h1 {
+            font-size: 1.75rem;
+            color: #1e3a8a;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        .link-header p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .child-entry {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .child-entry h3 {
+            margin: 0 0 1rem 0;
+            color: #1e3a8a;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #334155;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #fbbf24;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #fbbf24;
+            color: #1e3a8a;
+        }
+
+        .btn-primary:hover {
+            background: #f59e0b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .btn-add {
+            background: #10b981;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-add:hover {
+            background: #059669;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: #1e40af;
+            font-size: 0.875rem;
+        }
+
+        .linked-children {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .linked-child-card {
+            background: white;
+            border: 2px solid #10b981;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .linked-child-info h4 {
+            margin: 0 0 0.25rem 0;
+            color: #1e3a8a;
+        }
+
+        .linked-child-info p {
+            margin: 0;
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .btn-remove {
+            background: #ef4444;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-remove:hover {
+            background: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <div class="link-container">
+        <div class="link-card">
+            <div class="link-header">
+                <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto;">
+                    <rect x="0" y="0" width="60" height="60" rx="12" ry="12" fill="#fbbf24"/>
+                    <text x="30" y="42" font-family="Arial, sans-serif" font-size="36" font-weight="bold" text-anchor="middle" fill="#1e3a8a">B</text>
+                </svg>
+                <h1>Link Your Children's Accounts</h1>
+                <p>Enter your children's unique student codes to access their reports and progress</p>
+            </div>
+
+            <div class="info-box">
+                <p><strong>💡 Tip:</strong> Each student receives a unique code (e.g., BW-123456-ABCD) when they sign up. Ask your child for their code to link their account.</p>
+            </div>
+
+            <div id="children-forms">
+                <!-- Child forms will be added here -->
+            </div>
+
+            <button class="btn btn-add" onclick="addChildForm()">
+                ➕ Add Another Child
+            </button>
+
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="skipForNow()" style="flex: 1;">Skip for Now</button>
+                <button class="btn btn-primary" onclick="linkChildren()" style="flex: 2;">Link Children</button>
+            </div>
+
+            <div id="linked-children-section" class="linked-children" style="display: none;">
+                <h3 style="margin: 0 0 1rem 0; color: #1e3a8a;">Linked Children</h3>
+                <div id="linked-children-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let childCount = 0;
+        let linkedChildren = [];
+
+        // Load current user
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        
+        if (!currentUser.email || currentUser.role !== 'parent') {
+            alert('Please sign up as a parent first');
+            window.location.href = 'signup.html';
+        }
+
+        // Add initial child form
+        window.addEventListener('DOMContentLoaded', function() {
+            addChildForm();
+        });
+
+        function addChildForm() {
+            childCount++;
+            const container = document.getElementById('children-forms');
+            
+            const childForm = document.createElement('div');
+            childForm.className = 'child-entry';
+            childForm.id = `child-form-${childCount}`;
+            childForm.innerHTML = `
+                <h3>👶 Child ${childCount}</h3>
+                <div class="form-group">
+                    <label for="child-name-${childCount}">Child's Full Name *</label>
+                    <input type="text" id="child-name-${childCount}" placeholder="Enter child's full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="child-code-${childCount}">Unique Student Code *</label>
+                    <input type="text" id="child-code-${childCount}" placeholder="BW-XXXXXX-XXXX" style="text-transform: uppercase;" required>
+                </div>
+            `;
+            
+            container.appendChild(childForm);
+        }
+
+        function linkChildren() {
+            const forms = document.querySelectorAll('.child-entry');
+            const childrenData = [];
+            
+            // Validate and collect data
+            for (let i = 0; i < forms.length; i++) {
+                const formId = forms[i].id.split('-')[2];
+                const name = document.getElementById(`child-name-${formId}`).value.trim();
+                const code = document.getElementById(`child-code-${formId}`).value.trim().toUpperCase();
+                
+                if (!name || !code) {
+                    alert(`Please fill in all fields for Child ${formId}`);
+                    return;
+                }
+                
+                childrenData.push({ name, code });
+            }
+            
+            if (childrenData.length === 0) {
+                alert('Please add at least one child');
+                return;
+            }
+            
+            // Get all users
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
+            const linkedStudents = [];
+            const notFoundCodes = [];
+            
+            // Find and link students
+            childrenData.forEach(child => {
+                const student = users.find(u => u.studentCode === child.code && u.role === 'student');
+                
+                if (student) {
+                    // Link student to parent
+                    student.parentId = currentUser.id;
+                    linkedStudents.push({
+                        studentId: student.id,
+                        studentName: student.name,
+                        studentCode: student.studentCode,
+                        classLevel: student.classLevel,
+                        stream: student.stream
+                    });
+                } else {
+                    notFoundCodes.push(child.code);
+                }
+            });
+            
+            if (notFoundCodes.length > 0) {
+                alert(`The following student codes were not found:\n${notFoundCodes.join(', ')}\n\nPlease check the codes and try again.`);
+                return;
+            }
+            
+            // Update parent's children list
+            const parentIndex = users.findIndex(u => u.id === currentUser.id);
+            if (parentIndex !== -1) {
+                users[parentIndex].children = linkedStudents;
+                users[parentIndex].childrenCount = linkedStudents.length;
+                users[parentIndex].needsChildLinking = false;
+            }
+            
+            // Save updated users
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Update current user
+            currentUser.children = linkedStudents;
+            currentUser.childrenCount = linkedStudents.length;
+            currentUser.needsChildLinking = false;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            console.log('Children linked successfully:', linkedStudents);
+            
+            alert(`Successfully linked ${linkedStudents.length} child${linkedStudents.length > 1 ? 'ren' : ''}!\n\nYou can now view their reports and progress from your parent dashboard.`);
+            
+            // Redirect to login or dashboard
+            window.location.href = 'login.html';
+        }
+
+        function skipForNow() {
+            if (confirm('You can link your children later from your parent dashboard.\n\nContinue to login?')) {
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - BrainWave</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="auth-logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" class="logo-img">
+                        <rect x="0" y="0" width="40" height="40" rx="8" ry="8" fill="#fbbf24"/>
+                        <text x="20" y="28" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#1e3a8a">B</text>
+                    </svg>
+                    <h1>BrainWave</h1>
+                </div>
+                <p>Welcome back! Please sign in to your account.</p>
+            </div>
+            
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Log In</button>
+            </form>
+            
+            <div class="login-footer">
+                <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+                <p><a href="forgot-password.html">Forgot your password?</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, signInWithEmailAndPassword, checkAccountStatus, getDoc, doc, db, updateDoc } from './firebase-config.js';
+
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // Basic validation
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                // Sign in with Firebase Authentication
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                console.log('✅ User authenticated:', user.uid);
+                
+                // Reload user to get latest email verification status
+                await user.reload();
+                
+                // Check if email is verified
+                if (!user.emailVerified) {
+                    hideLoading();
+                    await auth.signOut();
+                    alert('❌ Please verify your email address before logging in. Check your inbox for the verification link.\n\nIf you just verified your email, please wait a moment and try logging in again.');
+                    return;
+                }
+                
+                // Check account status (locked/expired)
+                const statusCheck = await checkAccountStatus(user.uid);
+                
+                if (!statusCheck.valid) {
+                    hideLoading();
+                    await auth.signOut();
+                    alert(statusCheck.reason + '. Please contact the administrator or renew your subscription.');
+                    return;
+                }
+                
+                // Get user data from Firestore
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                
+                if (!userDoc.exists()) {
+                    hideLoading();
+                    await auth.signOut();
+                    alert('User data not found. Please contact support.');
+                    return;
+                }
+                
+                const userData = userDoc.data();
+                
+                // Store user session data
+                const userSession = {
+                    uid: user.uid,
+                    email: user.email,
+                    name: userData.name,
+                    role: userData.role,
+                    isLoggedIn: true,
+                    loginTime: new Date().toISOString()
+                };
+                
+                localStorage.setItem('currentUser', JSON.stringify(userSession));
+                sessionStorage.setItem('userData', JSON.stringify(userSession));
+                
+                console.log('✅ Login successful. Role:', userData.role);
+                
+                // Redirect based on user role
+                if (userData.role === 'student') {
+                    window.location.href = 'student-dashboard.html';
+                } else if (userData.role === 'parent') {
+                    window.location.href = 'parent-dashboard.html';
+                } else if (userData.role === 'admin') {
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    window.location.href = 'student-dashboard.html';
+                }
+                
+            } catch (error) {
+                hideLoading();
+                console.error('Login error:', error);
+                
+                // Handle specific Firebase errors
+                if (error.code === 'auth/user-not-found') {
+                    alert('No account found with this email. Please sign up first.');
+                } else if (error.code === 'auth/wrong-password') {
+                    alert('Incorrect password. Please try again.');
+                } else if (error.code === 'auth/invalid-email') {
+                    alert('Invalid email address.');
+                } else if (error.code === 'auth/too-many-requests') {
+                    alert('Too many failed login attempts. Please try again later.');
+                } else {
+                    alert('Login failed: ' + error.message);
+                }
+            }
+        });
+
+        // Loading functions
+        function showLoading() {
+            const submitBtn = document.querySelector('.login-btn');
+            submitBtn.textContent = 'Signing In...';
+            submitBtn.disabled = true;
+        }
+
+        function hideLoading() {
+            const submitBtn = document.querySelector('.login-btn');
+            submitBtn.textContent = 'Log In';
+            submitBtn.disabled = false;
+        }
+    </script>
+</body>
+</html>

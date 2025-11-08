@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Data - BrainWave</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #1e3a8a; }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9fafb;
+            border-left: 4px solid #3b82f6;
+            border-radius: 5px;
+        }
+        .btn {
+            background: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover { background: #2563eb; }
+        .btn-danger { background: #ef4444; }
+        .btn-danger:hover { background: #dc2626; }
+        pre {
+            background: #1f2937;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #dcfce7; color: #16a34a; border-left: 4px solid #16a34a; }
+        .error { background: #fee2e2; color: #dc2626; border-left: 4px solid #dc2626; }
+        .warning { background: #fef3c7; color: #d97706; border-left: 4px solid #d97706; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Data Check Tool</h1>
+        
+        <div class="section">
+            <h2>Quick Actions</h2>
+            <button class="btn" onclick="checkAll()">🔍 Check All Data</button>
+            <button class="btn" onclick="viewReports()">📊 View Reports</button>
+            <button class="btn" onclick="viewStudent()">👤 View Student</button>
+            <button class="btn" onclick="viewAchievements()">🏆 View Achievements</button>
+            <button class="btn" onclick="viewBadges()">🎖️ View Badges</button>
+            <button class="btn" onclick="viewLeaderboard()">📈 View Leaderboard</button>
+            <button class="btn btn-danger" onclick="clearAndRegenerate()">🔄 Clear & Regenerate</button>
+        </div>
+
+        <div id="status"></div>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function showOutput(data) {
+            document.getElementById('output').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        function checkAll() {
+            const data = {
+                mockGenerated: localStorage.getItem('brainwave_mock_data_generated'),
+                currentStudentId: localStorage.getItem('brainwave_current_student_id'),
+                users: JSON.parse(localStorage.getItem('brainwave_users') || '[]'),
+                reports: JSON.parse(localStorage.getItem('brainwave_reports') || '[]'),
+                achievements: JSON.parse(localStorage.getItem('brainwave_achievements') || '[]'),
+                badges: JSON.parse(localStorage.getItem('brainwave_badges') || '[]'),
+                leaderboard: JSON.parse(localStorage.getItem('brainwave_leaderboard') || '[]'),
+                subjects: JSON.parse(localStorage.getItem('brainwave_subjects') || '[]'),
+            };
+
+            const summary = {
+                'Mock Data Generated': data.mockGenerated ? '✅ Yes' : '❌ No',
+                'Current Student ID': data.currentStudentId || '❌ Not set',
+                'Users Count': data.users.length,
+                'Reports Count': data.reports.length,
+                'Achievements Count': data.achievements.length,
+                'Badges Count': data.badges.length,
+                'Leaderboard Count': data.leaderboard.length,
+                'Subjects Count': data.subjects.length
+            };
+
+            showOutput(summary);
+
+            if (data.reports.length === 0) {
+                showStatus('⚠️ WARNING: No reports found in localStorage!', 'warning');
+            } else if (data.users.length === 0) {
+                showStatus('⚠️ WARNING: No users found in localStorage!', 'warning');
+            } else {
+                showStatus('✅ Data looks good!', 'success');
+            }
+        }
+
+        function viewReports() {
+            const reports = JSON.parse(localStorage.getItem('brainwave_reports') || '[]');
+            showOutput(reports);
+            showStatus(`Found ${reports.length} reports`, reports.length > 0 ? 'success' : 'error');
+        }
+
+        function viewStudent() {
+            const studentId = localStorage.getItem('brainwave_current_student_id');
+            const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            const student = users.find(u => u.id == studentId);
+            
+            showOutput(student || {error: 'Student not found'});
+            showStatus(student ? `✅ Student: ${student.name}` : '❌ No student found', student ? 'success' : 'error');
+        }
+
+        function viewAchievements() {
+            const achievements = JSON.parse(localStorage.getItem('brainwave_achievements') || '[]');
+            showOutput(achievements);
+            showStatus(`Found ${achievements.length} achievements`, achievements.length > 0 ? 'success' : 'error');
+        }
+
+        function viewBadges() {
+            const badges = JSON.parse(localStorage.getItem('brainwave_badges') || '[]');
+            showOutput(badges);
+            showStatus(`Found ${badges.length} badges`, badges.length > 0 ? 'success' : 'error');
+        }
+
+        function viewLeaderboard() {
+            const leaderboard = JSON.parse(localStorage.getItem('brainwave_leaderboard') || '[]');
+            showOutput(leaderboard);
+            showStatus(`Found ${leaderboard.length} students in leaderboard`, leaderboard.length > 0 ? 'success' : 'error');
+        }
+
+        function clearAndRegenerate() {
+            if (confirm('This will clear all data and redirect to regenerate page. Continue?')) {
+                localStorage.clear();
+                showStatus('✅ Data cleared! Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'force-regenerate-data.html';
+                }, 1000);
+            }
+        }
+
+        // Auto-check on load
+        window.addEventListener('DOMContentLoaded', checkAll);
+    </script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Fix - Generate Student Data</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        p {
+            color: #4b5563;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 1rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        
+        #output {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        #output.show {
+            display: block;
+        }
+        
+        .success {
+            color: #10b981;
+        }
+        
+        .error {
+            color: #ef4444;
+        }
+        
+        .info {
+            color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Student Dashboard Data Fixer</h1>
+        <p>Use this page to diagnose and fix empty data issues in your student dashboard.</p>
+        
+        <button class="btn" onclick="checkData()">
+            1️⃣ Check Current Data
+        </button>
+        
+        <button class="btn btn-secondary" onclick="generateData()">
+            2️⃣ Generate Fresh Data
+        </button>
+        
+        <button class="btn btn-danger" onclick="clearAndRedirect()">
+            3️⃣ Clear All & Go to Dashboard
+        </button>
+        
+        <div id="output"></div>
+    </div>
+    
+    <script>
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            output.classList.add('show');
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = message;
+            output.appendChild(div);
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        function checkData() {
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+            output.classList.add('show');
+            
+            log('🔍 Checking localStorage data...', 'info');
+            
+            const currentStudentId = localStorage.getItem('brainwave_current_student_id');
+            const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            const reports = JSON.parse(localStorage.getItem('brainwave_reports') || '[]');
+            
+            log(`✅ Current Student ID: ${currentStudentId || 'NOT SET'}`, currentStudentId ? 'success' : 'error');
+            log(`✅ Total Users: ${users.length}`, users.length > 0 ? 'success' : 'error');
+            log(`✅ Total Reports: ${reports.length}`, reports.length > 0 ? 'success' : 'error');
+            
+            if (currentStudentId && reports.length > 0) {
+                const studentReports = reports.filter(r => r.studentId == currentStudentId);
+                log(`✅ Reports for Current Student: ${studentReports.length}`, studentReports.length > 0 ? 'success' : 'error');
+                
+                if (studentReports.length === 0) {
+                    log('⚠️ ISSUE: Reports exist but none match your student ID!', 'error');
+                    log(`   Your ID: ${currentStudentId}`, 'info');
+                    log(`   Report IDs: ${reports.map(r => r.studentId).join(', ')}`, 'info');
+                    log('💡 Solution: Click "Generate Fresh Data" button', 'info');
+                } else {
+                    log('✅ Data looks good! Reports should be visible.', 'success');
+                }
+            } else {
+                log('⚠️ ISSUE: Missing data!', 'error');
+                log('💡 Solution: Click "Generate Fresh Data" button', 'info');
+            }
+        }
+        
+        function generateData() {
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+            output.classList.add('show');
+            
+            log('🔄 Generating fresh data...', 'info');
+            
+            const now = new Date();
+            
+            // Create demo student
+            const demoStudent = {
+                id: Date.now(),
+                name: 'John Doe',
+                email: 'john.doe@student.com',
+                phone: '+234 800 000 0000',
+                role: 'student',
+                gender: 'Male',
+                classLevel: 'SS2',
+                stream: 'Science',
+                studentCode: 'BW' + Math.random().toString(36).substr(2, 6).toUpperCase(),
+                plan: 'premium',
+                status: 'active',
+                locked: false,
+                joinDate: new Date().toISOString().split('T')[0],
+                createdAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('brainwave_users', JSON.stringify([demoStudent]));
+            localStorage.setItem('brainwave_current_student_id', demoStudent.id);
+            log(`✅ Created student: ${demoStudent.name} (ID: ${demoStudent.id})`, 'success');
+            
+            // Create reports
+            const reports = [
+                {id: 1, studentId: demoStudent.id, studentCode: demoStudent.studentCode, studentName: demoStudent.name, subject: 'Mathematics', type: 'quiz', score: 85, totalMarks: 100, date: now.toISOString(), passed: true},
+                {id: 2, studentId: demoStudent.id, studentCode: demoStudent.studentCode, studentName: demoStudent.name, subject: 'Physics', type: 'quiz', score: 78, totalMarks: 100, date: now.toISOString(), passed: true},
+                {id: 3, studentId: demoStudent.id, studentCode: demoStudent.studentCode, studentName: demoStudent.name, subject: 'Chemistry', type: 'quiz', score: 82, totalMarks: 100, date: now.toISOString(), passed: true},
+                {id: 4, studentId: demoStudent.id, studentCode: demoStudent.studentCode, studentName: demoStudent.name, subject: 'Biology', type: 'quiz', score: 88, totalMarks: 100, date: now.toISOString(), passed: true},
+                {id: 5, studentId: demoStudent.id, studentCode: demoStudent.studentCode, studentName: demoStudent.name, subject: 'English Language', type: 'quiz', score: 76, totalMarks: 100, date: now.toISOString(), passed: true}
+            ];
+            
+            localStorage.setItem('brainwave_reports', JSON.stringify(reports));
+            log(`✅ Created ${reports.length} reports`, 'success');
+            
+            // Create subjects
+            const subjects = [
+                {id: 1, name: 'Mathematics', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString()},
+                {id: 2, name: 'Physics', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString()},
+                {id: 3, name: 'Chemistry', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString()},
+                {id: 4, name: 'Biology', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString()},
+                {id: 5, name: 'English Language', stream: 'General', classLevel: 'All Levels', createdAt: now.toISOString()}
+            ];
+            
+            localStorage.setItem('brainwave_subjects', JSON.stringify(subjects));
+            localStorage.setItem('brainwave_mock_data_generated', 'true');
+            log(`✅ Created ${subjects.length} subjects`, 'success');
+            
+            log('', 'info');
+            log('🎉 SUCCESS! Data generated successfully!', 'success');
+            log('', 'info');
+            log('📊 Summary:', 'info');
+            log(`   - Student: ${demoStudent.name}`, 'success');
+            log(`   - Student ID: ${demoStudent.id}`, 'success');
+            log(`   - Reports: ${reports.length}`, 'success');
+            log(`   - Subjects: ${subjects.length}`, 'success');
+            log('', 'info');
+            log('👉 Now click "Clear All & Go to Dashboard" to see the data!', 'info');
+        }
+        
+        function clearAndRedirect() {
+            log('🔄 Redirecting to dashboard...', 'info');
+            setTimeout(() => {
+                window.location.href = 'student-dashboard.html';
+            }, 500);
+        }
+    </script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Hero Image</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .instructions {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #2196F3;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #1976D2;
+        }
+        .instructions ol {
+            line-height: 2;
+        }
+        .image-preview {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 8px;
+        }
+        .image-preview img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .download-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 20px auto;
+            padding: 15px 30px;
+            background: #4CAF50;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .download-btn:hover {
+            background: #45a049;
+        }
+        .path {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            color: #856404;
+            word-break: break-all;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📥 Download Your Hero Image</h1>
+        
+        <div class="instructions">
+            <h3>Quick Instructions:</h3>
+            <ol>
+                <li><strong>Right-click</strong> on the image below</li>
+                <li>Select <strong>"Save image as..."</strong></li>
+                <li>Navigate to: <span class="path">C:\Users\PC\Documents\Brainwave  trae\images\</span></li>
+                <li>Save the file as: <strong>student-hero.jpg</strong></li>
+                <li>Refresh your homepage to see the new image!</li>
+            </ol>
+        </div>
+
+        <div class="image-preview">
+            <h3>Your Hero Image:</h3>
+            <img src="https://images.pexels.com/photos/8500285/pexels-photo-8500285.jpeg?auto=compress&cs=tinysrgb&w=1200" 
+                 alt="Student in Classroom" 
+                 id="heroImage">
+            <p><small>Right-click on the image above and select "Save image as..."</small></p>
+        </div>
+
+        <a href="https://images.pexels.com/photos/8500285/pexels-photo-8500285.jpeg?auto=compress&cs=tinysrgb&w=1200" 
+           download="student-hero.jpg" 
+           class="download-btn">
+            💾 Download Image
+        </a>
+
+        <div class="success">
+            <strong>✓ Alternative:</strong> Click the green "Download Image" button above, then move the downloaded file to the images folder.
+        </div>
+
+        <div class="instructions">
+            <h3>📂 Where to Save:</h3>
+            <p>Make sure to save the image in this exact location:</p>
+            <p class="path">C:\Users\PC\Documents\Brainwave  trae\images\student-hero.jpg</p>
+        </div>
+    </div>
+
+    <script>
+        // Log instructions to console
+        console.log('Save the image to: C:\\Users\\PC\\Documents\\Brainwave  trae\\images\\student-hero.jpg');
+    </script>
+</body>
+</html>

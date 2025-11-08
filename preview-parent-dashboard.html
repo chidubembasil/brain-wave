@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview Parent Dashboard - BrainWave</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-box {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            border-radius: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            color: #1e3a8a;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .info-card {
+            background: #f9fafb;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .info-card h3 {
+            color: #1e3a8a;
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #111827;
+            font-weight: 600;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(30, 58, 138, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+        }
+
+        .spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-icon {
+            font-size: 3rem;
+            color: #10b981;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-box">B</div>
+            <h1>Parent Dashboard Preview</h1>
+            <p class="subtitle">Load dummy data to preview the parent dashboard</p>
+        </div>
+
+        <div id="content">
+            <div class="info-card">
+                <h3>📋 Preview Data</h3>
+                <div class="info-item">
+                    <span class="info-label">Parent Account</span>
+                    <span class="info-value">Sarah Johnson</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Email</span>
+                    <span class="info-value">sarah.johnson@email.com</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Plan Type</span>
+                    <span class="info-value">Family Plan</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Status</span>
+                    <span class="status-badge status-active">Active</span>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3>👨‍👩‍👧‍👦 Children (3)</h3>
+                <div class="info-item">
+                    <span class="info-label">Emma Johnson</span>
+                    <span class="info-value">Form 1 - Science</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Michael Johnson</span>
+                    <span class="info-value">Form 3 - Humanities</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Olivia Johnson</span>
+                    <span class="info-value">Form 2 - Science</span>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3>📊 Sample Data Includes</h3>
+                <div class="info-item">
+                    <span class="info-label">Academic Reports</span>
+                    <span class="info-value">✓ Multiple subjects</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Achievements</span>
+                    <span class="info-value">✓ Performance badges</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Leaderboard</span>
+                    <span class="info-value">✓ Rankings & stats</span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="loadDummyData()">
+                🚀 Load Dummy Data & Preview
+            </button>
+
+            <button class="btn btn-secondary" onclick="clearData()">
+                🗑️ Clear All Data
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function loadDummyData() {
+            const content = document.getElementById('content');
+            content.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading dummy data...</p>
+                </div>
+            `;
+
+            // Generate unique IDs
+            const parentId = 'parent_' + Date.now();
+            const child1Id = 'student_' + Date.now() + '_1';
+            const child2Id = 'student_' + Date.now() + '_2';
+            const child3Id = 'student_' + Date.now() + '_3';
+
+            // Create parent account
+            const parent = {
+                id: parentId,
+                name: 'Sarah Johnson',
+                email: 'sarah.johnson@email.com',
+                role: 'parent',
+                planType: 'family',
+                status: 'active',
+                expiry: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(), // 90 days from now
+                createdAt: new Date().toISOString()
+            };
+
+            // Create children accounts
+            const children = [
+                {
+                    id: child1Id,
+                    name: 'Emma Johnson',
+                    email: 'emma.johnson@student.com',
+                    role: 'student',
+                    parentId: parentId,
+                    classLevel: 'Form 1',
+                    stream: 'Science',
+                    status: 'active',
+                    accountLocked: false,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: child2Id,
+                    name: 'Michael Johnson',
+                    email: 'michael.johnson@student.com',
+                    role: 'student',
+                    parentId: parentId,
+                    classLevel: 'Form 3',
+                    stream: 'Humanities',
+                    status: 'active',
+                    accountLocked: false,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: child3Id,
+                    name: 'Olivia Johnson',
+                    email: 'olivia.johnson@student.com',
+                    role: 'student',
+                    parentId: parentId,
+                    classLevel: 'Form 2',
+                    stream: 'Science',
+                    status: 'active',
+                    accountLocked: false,
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            // Create academic reports for each child
+            const reports = [];
+            const subjects = ['Mathematics', 'English', 'Kiswahili', 'Chemistry', 'Physics', 'Biology'];
+            
+            children.forEach(child => {
+                // Generate 4-6 random subjects for each child
+                const numSubjects = 4 + Math.floor(Math.random() * 3);
+                const childSubjects = subjects.slice(0, numSubjects);
+                
+                childSubjects.forEach(subject => {
+                    const score = 60 + Math.floor(Math.random() * 40); // Score between 60-100
+                    reports.push({
+                        id: 'report_' + Date.now() + '_' + Math.random(),
+                        studentId: child.id,
+                        studentName: child.name,
+                        subject: subject,
+                        score: score,
+                        totalMarks: 100,
+                        percentage: score,
+                        grade: getGrade(score),
+                        term: 'Term 1',
+                        year: new Date().getFullYear(),
+                        createdAt: new Date().toISOString()
+                    });
+                });
+            });
+
+            // Get existing users or create new array
+            let users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            
+            // Remove any existing dummy data for this parent
+            users = users.filter(u => u.email !== parent.email && !u.parentId);
+            
+            // Add parent and children
+            users.push(parent);
+            users.push(...children);
+
+            // Save to localStorage
+            localStorage.setItem('brainwave_users', JSON.stringify(users));
+            localStorage.setItem('brainwave_reports', JSON.stringify(reports));
+            localStorage.setItem('currentUser', JSON.stringify(parent));
+
+            // Show success message
+            setTimeout(() => {
+                content.innerHTML = `
+                    <div class="success-icon">✅</div>
+                    <h2 style="text-align: center; color: #10b981; margin-bottom: 1rem;">Success!</h2>
+                    <p style="text-align: center; color: #6b7280; margin-bottom: 2rem;">
+                        Dummy data has been loaded successfully.
+                    </p>
+                    <div class="info-card">
+                        <h3>✓ Data Loaded</h3>
+                        <div class="info-item">
+                            <span class="info-label">Parent Account</span>
+                            <span class="info-value">1</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Children</span>
+                            <span class="info-value">${children.length}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Academic Reports</span>
+                            <span class="info-value">${reports.length}</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="openDashboard()">
+                        📊 Open Parent Dashboard
+                    </button>
+                    <button class="btn btn-secondary" onclick="location.reload()">
+                        ← Back
+                    </button>
+                `;
+            }, 1500);
+        }
+
+        function getGrade(percentage) {
+            if (percentage >= 90) return 'A+';
+            if (percentage >= 80) return 'A';
+            if (percentage >= 70) return 'B';
+            if (percentage >= 60) return 'C';
+            if (percentage >= 50) return 'D';
+            if (percentage >= 40) return 'E';
+            return 'F';
+        }
+
+        function openDashboard() {
+            window.location.href = 'parent-dashboard.html';
+        }
+
+        function clearData() {
+            if (confirm('Are you sure you want to clear all data? This will remove all dummy accounts and reports.')) {
+                localStorage.removeItem('brainwave_users');
+                localStorage.removeItem('brainwave_reports');
+                localStorage.removeItem('currentUser');
+                
+                const content = document.getElementById('content');
+                content.innerHTML = `
+                    <div style="text-align: center; padding: 2rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🗑️</div>
+                        <h2 style="color: #6b7280; margin-bottom: 1rem;">Data Cleared</h2>
+                        <p style="color: #9ca3af; margin-bottom: 2rem;">All dummy data has been removed.</p>
+                        <button class="btn btn-secondary" onclick="location.reload()">
+                            ← Back
+                        </button>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

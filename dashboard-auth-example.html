@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - BrainWave (With Auth)</title>
+    <!-- Add your existing CSS links here -->
+</head>
+<body>
+    <!-- Your dashboard HTML content here -->
+    
+    <!-- Add this script at the end of body, BEFORE any other scripts -->
+    <script type="module">
+        import { checkAuth, logout } from './auth-guard.js';
+        import { getUserById, getStudentProgress, getAssessments, getStudyMaterials, getLiveClasses } from './database-operations.js';
+        
+        // Global user data
+        let currentUserData = null;
+        
+        // Check authentication on page load
+        (async function initDashboard() {
+            try {
+                // Check if user is authenticated and has 'student' role
+                currentUserData = await checkAuth('student');
+                
+                console.log('✅ Dashboard loaded for:', currentUserData.name);
+                
+                // Load dashboard data
+                await loadDashboardData();
+                
+            } catch (error) {
+                console.error('Authentication failed:', error);
+                // User will be redirected by checkAuth
+            }
+        })();
+        
+        // Load all dashboard data
+        async function loadDashboardData() {
+            try {
+                // Show loading state
+                showLoadingState();
+                
+                // Load user profile data
+                displayUserProfile(currentUserData);
+                
+                // Load student progress
+                const progress = await getStudentProgress(currentUserData.uid);
+                displayProgress(progress);
+                
+                // Load assessments
+                const assessments = await getAssessments({
+                    classLevel: currentUserData.classLevel,
+                    stream: currentUserData.stream,
+                    status: 'available'
+                });
+                displayAssessments(assessments);
+                
+                // Load study materials
+                const materials = await getStudyMaterials({
+                    classLevel: currentUserData.classLevel,
+                    stream: currentUserData.stream
+                });
+                displayStudyMaterials(materials);
+                
+                // Load live classes
+                const liveClasses = await getLiveClasses({
+                    classLevel: currentUserData.classLevel,
+                    status: 'live'
+                });
+                displayLiveClasses(liveClasses);
+                
+                // Hide loading state
+                hideLoadingState();
+                
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                showError('Failed to load dashboard data. Please refresh the page.');
+            }
+        }
+        
+        // Display functions (implement based on your UI)
+        function displayUserProfile(userData) {
+            // Update profile elements with user data
+            const nameElement = document.getElementById('userName');
+            if (nameElement) nameElement.textContent = userData.name;
+            
+            const emailElement = document.getElementById('userEmail');
+            if (emailElement) emailElement.textContent = userData.email;
+            
+            const codeElement = document.getElementById('studentCode');
+            if (codeElement) codeElement.textContent = userData.studentCode;
+            
+            const classElement = document.getElementById('classLevel');
+            if (classElement) classElement.textContent = userData.classLevel;
+            
+            // Display subscription status
+            const statusElement = document.getElementById('subscriptionStatus');
+            if (statusElement) {
+                statusElement.textContent = userData.status === 'bootcamp' ? 'Bootcamp' : 'Active';
+                statusElement.className = userData.status === 'bootcamp' ? 'status-bootcamp' : 'status-active';
+            }
+        }
+        
+        function displayProgress(progress) {
+            // Update progress statistics
+            console.log('Progress data:', progress);
+            // Implement your UI updates here
+        }
+        
+        function displayAssessments(assessments) {
+            console.log('Assessments:', assessments);
+            // Implement your UI updates here
+        }
+        
+        function displayStudyMaterials(materials) {
+            console.log('Study materials:', materials);
+            // Implement your UI updates here
+        }
+        
+        function displayLiveClasses(classes) {
+            console.log('Live classes:', classes);
+            // Implement your UI updates here
+        }
+        
+        function showLoadingState() {
+            // Show loading spinner or skeleton
+            console.log('Loading...');
+        }
+        
+        function hideLoadingState() {
+            // Hide loading spinner
+            console.log('Loading complete');
+        }
+        
+        function showError(message) {
+            alert(message);
+        }
+        
+        // Logout handler
+        window.handleLogout = async function() {
+            if (confirm('Are you sure you want to logout?')) {
+                await logout();
+            }
+        };
+        
+        // Make currentUserData available globally if needed
+        window.currentUserData = currentUserData;
+    </script>
+    
+    <!-- Your other existing scripts here -->
+</body>
+</html>

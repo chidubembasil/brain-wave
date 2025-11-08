@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic Page - NO SCRIPTS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .box {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 { color: #1e3a8a; }
+        h2 { color: #3b82f6; margin-top: 0; }
+        .success { color: #10b981; font-weight: bold; }
+        a {
+            display: inline-block;
+            background: #1e3a8a;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+        a:hover { background: #3b82f6; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Diagnostic Page (NO JavaScript)</h1>
+    
+    <div class="box">
+        <h2 class="success">✅ SUCCESS!</h2>
+        <p>If you can see this page, the server is working correctly and the URL query parameter fix is working!</p>
+        <p>This page has <strong>ZERO JavaScript</strong> - so there should be NO redirects.</p>
+    </div>
+
+    <div class="box">
+        <h2>🧪 Test Links:</h2>
+        <p><a href="email-confirmation.html">📧 Email Confirmation (Normal)</a></p>
+        <p><a href="email-confirmation.html?v=123456">📧 Email Confirmation (With Query Param)</a></p>
+        <p><a href="clear-session.html">🗑️ Clear Session Page</a></p>
+        <p><a href="signup.html">✍️ Signup Page</a></p>
+        <p><a href="login.html">🔐 Login Page</a></p>
+        <p><a href="index.html">🏠 Home Page</a></p>
+    </div>
+
+    <div class="box">
+        <h2>📋 Instructions:</h2>
+        <ol>
+            <li>If this page loaded successfully, your server is working fine</li>
+            <li>Open your browser's Developer Tools (F12)</li>
+            <li>Go to the Console tab</li>
+            <li>Clear your browser cache (Ctrl+Shift+Delete)</li>
+            <li>Try clicking the links above one by one</li>
+            <li>Check the Console for any errors or redirects</li>
+        </ol>
+    </div>
+
+    <div class="box">
+        <h2>🛠️ To Manually Clear Session:</h2>
+        <p>Open Developer Tools (F12), go to Console, and paste this:</p>
+        <pre style="background: #f0f0f0; padding: 10px; border-radius: 5px; overflow-x: auto;">localStorage.clear(); sessionStorage.clear(); location.reload();</pre>
+    </div>
+
+    <div class="box">
+        <h2>Current URL:</h2>
+        <p id="url">Loading...</p>
+    </div>
+
+    <!-- ONLY ONE TINY SCRIPT TO SHOW URL -->
+    <script>
+        document.getElementById('url').textContent = window.location.href;
+        // Log to console that we loaded successfully
+        console.log('✅ Diagnostic page loaded successfully - NO REDIRECTS!');
+        console.log('Current URL:', window.location.href);
+        console.log('localStorage keys:', Object.keys(localStorage));
+        console.log('brainwave_current_student_id:', localStorage.getItem('brainwave_current_student_id'));
+    </script>
+</body>
+</html>
+

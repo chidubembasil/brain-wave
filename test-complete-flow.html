@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Flow Test - BrainWave</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            background: #f9fafb;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .step h2 {
+            color: #374151;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .step-number {
+            background: #3b82f6;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .success {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        }
+
+        .warning {
+            background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+        }
+
+        .danger {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+        }
+
+        .info-box {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+
+        .success-box {
+            background: #dcfce7;
+            border-left: 4px solid #16a34a;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+            color: #166534;
+        }
+
+        .error-box {
+            background: #fee2e2;
+            border-left: 4px solid #dc2626;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+            color: #991b1b;
+        }
+
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Complete Subject Flow Test</h1>
+
+        <div class="step">
+            <h2><span class="step-number">1</span> Clear & Reset</h2>
+            <p>Start fresh by clearing all existing data</p>
+            <button onclick="clearAll()" class="danger">🗑️ Clear All Data</button>
+            <div id="clearResult"></div>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">2</span> Create Test Subject</h2>
+            <p>Add a subject directly to localStorage (simulates admin adding subject)</p>
+            <button onclick="createTestSubject()" class="success">➕ Create Test Subject</button>
+            <div id="createResult"></div>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">3</span> Create Test Student</h2>
+            <p>Create a student account that matches the subject</p>
+            <button onclick="createTestStudent()" class="success">👤 Create Test Student</button>
+            <div id="studentResult"></div>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">4</span> Verify Subject Filtering</h2>
+            <p>Check if the subject appears for the student</p>
+            <button onclick="verifyFiltering()">🔍 Verify Filtering</button>
+            <div id="verifyResult"></div>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">5</span> Open Dashboards</h2>
+            <p>Test in the actual dashboards</p>
+            <button onclick="window.open('admin-dashboard.html', '_blank')">⚙️ Admin Dashboard</button>
+            <button onclick="window.open('student-login.html', '_blank')">🔐 Student Login</button>
+            <button onclick="window.open('debug-student-subjects.html', '_blank')">🔍 Debug Tool</button>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">6</span> Manual Admin Test</h2>
+            <div class="info-box">
+                <strong>📝 Instructions:</strong>
+                <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>Open Admin Dashboard (button above)</li>
+                    <li>Go to "Subject Management"</li>
+                    <li>Click "Add Subject" button</li>
+                    <li>Fill in:
+                        <ul style="margin-left: 1rem; margin-top: 0.25rem;">
+                            <li>Name: <strong>Geography</strong></li>
+                            <li>Description: <strong>Study of Earth</strong></li>
+                            <li>Stream: <strong>Science</strong></li>
+                            <li>Class Levels: <strong>SS2</strong></li>
+                            <li>Icon: <strong>fa-globe</strong></li>
+                        </ul>
+                    </li>
+                    <li>Click "Add Subject"</li>
+                    <li>Come back here and click "Check New Subject" below</li>
+                </ol>
+            </div>
+            <button onclick="checkNewSubject()">🔄 Check New Subject</button>
+            <div id="newSubjectResult"></div>
+        </div>
+    </div>
+
+    <script>
+        function clearAll() {
+            const keys = [
+                'brainwave_subjects',
+                'brainwave_users',
+                'brainwave_current_student_id',
+                'brainwave_books',
+                'brainwave_videos',
+                'brainwave_quizs',
+                'brainwave_assignments',
+                'brainwave_mocks'
+            ];
+
+            keys.forEach(key => localStorage.removeItem(key));
+
+            document.getElementById('clearResult').innerHTML = `
+                <div class="success-box">
+                    <strong>✅ All data cleared!</strong>
+                    <p>Ready for fresh test</p>
+                </div>
+            `;
+        }
+
+        function createTestSubject() {
+            const subject = {
+                id: Date.now(),
+                name: "Mathematics",
+                description: "Study of numbers and calculations",
+                classLevel: "SS2",
+                stream: "Science",
+                icon: "fa-calculator",
+                createdAt: new Date().toISOString()
+            };
+
+            let subjects = JSON.parse(localStorage.getItem('brainwave_subjects') || '[]');
+            subjects.push(subject);
+            localStorage.setItem('brainwave_subjects', JSON.stringify(subjects));
+
+            document.getElementById('createResult').innerHTML = `
+                <div class="success-box">
+                    <strong>✅ Subject created!</strong>
+                    <p>Name: ${subject.name}</p>
+                    <p>Class Level: ${subject.classLevel}</p>
+                    <p>Stream: ${subject.stream}</p>
+                </div>
+                <pre>${JSON.stringify(subject, null, 2)}</pre>
+            `;
+        }
+
+        function createTestStudent() {
+            const student = {
+                id: Date.now(),
+                name: "Test Student",
+                email: "test@student.com",
+                phone: "+234 800 000 0000",
+                role: "student",
+                classLevel: "SS2",
+                stream: "Science",
+                studentCode: "BW" + Math.random().toString(36).substr(2, 6).toUpperCase(),
+                plan: "bootcamp",
+                status: "active",
+                locked: false,
+                joinDate: new Date().toISOString().split('T')[0],
+                bootcampStartDate: new Date().toISOString().split('T')[0],
+                planHistory: [{
+                    from: null,
+                    to: 'bootcamp',
+                    changedAt: new Date().toISOString(),
+                    changedBy: 'system'
+                }],
+                createdAt: new Date().toISOString()
+            };
+
+            let users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            users.push(student);
+            localStorage.setItem('brainwave_users', JSON.stringify(users));
+            localStorage.setItem('brainwave_current_student_id', student.id);
+
+            document.getElementById('studentResult').innerHTML = `
+                <div class="success-box">
+                    <strong>✅ Student created and logged in!</strong>
+                    <p>Name: ${student.name}</p>
+                    <p>Email: ${student.email}</p>
+                    <p>Class Level: ${student.classLevel}</p>
+                    <p>Stream: ${student.stream}</p>
+                    <p>Student Code: ${student.studentCode}</p>
+                </div>
+                <div class="info-box">
+                    <strong>🔐 Login Credentials:</strong>
+                    <p>Email: test@student.com</p>
+                    <p>Password: (any password works for testing)</p>
+                </div>
+            `;
+        }
+
+        function verifyFiltering() {
+            const studentId = localStorage.getItem('brainwave_current_student_id');
+            const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            const currentStudent = users.find(u => u.id == studentId);
+
+            if (!currentStudent) {
+                document.getElementById('verifyResult').innerHTML = `
+                    <div class="error-box">
+                        <strong>❌ No student logged in!</strong>
+                        <p>Click "Create Test Student" first</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const subjects = JSON.parse(localStorage.getItem('brainwave_subjects') || '[]');
+
+            const filtered = subjects.filter(subject => {
+                const classMatch = subject.classLevel === currentStudent.classLevel || 
+                                  subject.classLevel === 'All Levels';
+                const streamMatch = subject.stream === currentStudent.stream || 
+                                   subject.stream === 'All Streams' ||
+                                   subject.stream === 'General' || 
+                                   subject.stream === 'Multi-Stream';
+                return classMatch && streamMatch;
+            });
+
+            let html = `
+                <div class="result">
+                    <strong>Student: ${currentStudent.name}</strong>
+                    <p>Class Level: ${currentStudent.classLevel} | Stream: ${currentStudent.stream}</p>
+                </div>
+                <div class="result">
+                    <strong>Total Subjects in Storage: ${subjects.length}</strong>
+                    <strong>Filtered Subjects (Student will see): ${filtered.length}</strong>
+                </div>
+            `;
+
+            if (filtered.length > 0) {
+                html += `<div class="success-box"><strong>✅ SUCCESS!</strong> Student will see ${filtered.length} subject(s):</div>`;
+                filtered.forEach(s => {
+                    html += `
+                        <div class="result">
+                            <strong>${s.name}</strong>
+                            <p>Class: ${s.classLevel} | Stream: ${s.stream}</p>
+                        </div>
+                    `;
+                });
+            } else {
+                html += `<div class="error-box"><strong>❌ FAIL!</strong> No subjects match the student's profile</div>`;
+            }
+
+            document.getElementById('verifyResult').innerHTML = html;
+        }
+
+        function checkNewSubject() {
+            const subjects = JSON.parse(localStorage.getItem('brainwave_subjects') || '[]');
+            const geography = subjects.find(s => s.name === 'Geography');
+
+            if (geography) {
+                document.getElementById('newSubjectResult').innerHTML = `
+                    <div class="success-box">
+                        <strong>✅ Geography subject found!</strong>
+                        <p>The admin dashboard successfully saved the subject</p>
+                    </div>
+                    <pre>${JSON.stringify(geography, null, 2)}</pre>
+                `;
+            } else {
+                document.getElementById('newSubjectResult').innerHTML = `
+                    <div class="error-box">
+                        <strong>❌ Geography subject not found</strong>
+                        <p>Make sure you added it in the admin dashboard</p>
+                        <p>Total subjects in storage: ${subjects.length}</p>
+                    </div>
+                    ${subjects.length > 0 ? `<pre>${JSON.stringify(subjects, null, 2)}</pre>` : ''}
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

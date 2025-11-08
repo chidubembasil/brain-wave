@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login - BrainWave</title>
+    <link rel="stylesheet" href="style.css?v=20250102000500">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card admin-card">
+            <div class="login-header">
+                <div class="auth-logo" style="display: flex; flex-direction: column; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="logo-img">
+                        <rect x="0" y="0" width="60" height="60" rx="12" ry="12" fill="#fbbf24"/>
+                        <text x="30" y="42" font-family="Arial, sans-serif" font-size="36" font-weight="bold" text-anchor="middle" fill="#1e3a8a">B</text>
+                    </svg>
+                    <h1 style="margin: 0; font-size: 1.75rem; color: #1e3a8a;">BrainWave Admin</h1>
+                </div>
+                <p style="text-align: center; color: #64748b; margin-bottom: 1rem;">Administrative Access Portal</p>
+                <div class="security-notice" style="background: #FEF3C7; padding: 0.75rem 1rem; border-radius: 8px; border-left: 4px solid #fbbf24; margin-bottom: 1.5rem;">
+                    <span style="color: #92400e; font-size: 0.875rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#92400e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 17L12 22L22 17" stroke="#92400e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="#92400e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Authorized Personnel Only
+                    </span>
+                </div>
+            </div>
+            
+            <form class="login-form" id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminEmail">Admin Email:</label>
+                    <input type="email" id="adminEmail" name="adminEmail" placeholder="Enter your admin email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminPassword">Password:</label>
+                    <input type="password" id="adminPassword" name="adminPassword" placeholder="Enter your admin password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    🔒 Secure Admin Login
+                </button>
+            </form>
+            
+            <div class="login-footer">
+                <p><a href="admin-signup.html">Don't have an account? Sign up</a></p>
+                <p><a href="login.html">← Back to Main Login</a></p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script type="module">
+        import { auth, signInWithEmailAndPassword, db, doc, getDoc } from './firebase-config.js';
+
+        // Handle admin login form submission
+        document.getElementById('adminLoginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            
+            // Basic validation
+            if (!email || !password) {
+                showError('Please fill in all required fields');
+                return;
+            }
+            
+            // Show loading state
+            showLoading();
+            
+            try {
+                // Sign in with Firebase Authentication
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                console.log('✅ Admin authenticated:', user.uid);
+                
+                // Check if email is verified
+                if (!user.emailVerified) {
+                    hideLoading();
+                    await auth.signOut();
+                    showError('Please verify your email address before logging in. Check your inbox for the verification link.');
+                    return;
+                }
+                
+                // Get admin data from Firestore
+                const adminDoc = await getDoc(doc(db, 'admins', user.uid));
+                
+                if (!adminDoc.exists()) {
+                    hideLoading();
+                    await auth.signOut();
+                    showError('Admin account not found. Please contact support.');
+                    return;
+                }
+                
+                const adminData = adminDoc.data();
+                
+                // Check if admin is active
+                if (adminData.status !== 'active') {
+                    hideLoading();
+                    await auth.signOut();
+                    showError('Your admin account has been deactivated. Contact support.');
+                    return;
+                }
+                
+                // Store admin session data
+                const adminSession = {
+                    uid: user.uid,
+                    id: user.email,
+                    name: adminData.name || `${adminData.firstName} ${adminData.lastName}`,
+                    email: user.email,
+                    role: 'admin',
+                    permissions: adminData.permissions,
+                    isLoggedIn: true,
+                    loginTime: new Date().toISOString(),
+                    sessionId: generateSessionId()
+                };
+                
+                // Store in both localStorage and sessionStorage
+                localStorage.setItem('currentUser', JSON.stringify(adminSession));
+                sessionStorage.setItem('adminData', JSON.stringify(adminSession));
+                
+                hideLoading();
+                
+                // Redirect to admin dashboard
+                showSuccess('Authentication successful. Redirecting...');
+                setTimeout(() => {
+                    window.location.href = 'admin-dashboard.html';
+                }, 1000);
+                
+            } catch (error) {
+                hideLoading();
+                console.error('Admin login error:', error);
+                
+                // Handle specific Firebase errors
+                if (error.code === 'auth/user-not-found') {
+                    showError('Invalid credentials. Access denied.');
+                } else if (error.code === 'auth/wrong-password') {
+                    showError('Invalid credentials. Access denied.');
+                } else if (error.code === 'auth/invalid-email') {
+                    showError('Invalid email address.');
+                } else if (error.code === 'auth/too-many-requests') {
+                    showError('Too many failed login attempts. Please try again later.');
+                } else {
+                    showError('Login failed: ' + error.message);
+                }
+            }
+        });
+        
+        // Generate session ID (simplified for demo)
+        function generateSessionId() {
+            return 'admin_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+        
+
+        
+        // Loading functions
+        function showLoading() {
+            const submitBtn = document.querySelector('.login-btn');
+            submitBtn.innerHTML = '⏳ Authenticating...';
+            submitBtn.disabled = true;
+        }
+        
+        function hideLoading() {
+            const submitBtn = document.querySelector('.login-btn');
+            submitBtn.innerHTML = '🔒 Secure Admin Login';
+            submitBtn.disabled = false;
+        }
+        
+        // Message functions
+        function showError(message) {
+            // Create or update error message
+            let errorDiv = document.querySelector('.error-message');
+            if (!errorDiv) {
+                errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                document.querySelector('.login-form').prepend(errorDiv);
+            }
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            
+            // Hide after 5 seconds
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        function showSuccess(message) {
+            let successDiv = document.querySelector('.success-message');
+            if (!successDiv) {
+                successDiv = document.createElement('div');
+                successDiv.className = 'success-message';
+                document.querySelector('.login-form').prepend(successDiv);
+            }
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+        }
+        
+
+        
+        // Security: Clear form on page unload
+        window.addEventListener('beforeunload', function() {
+            document.getElementById('adminLoginForm').reset();
+        });
+    </script>
+</body>
+</html>

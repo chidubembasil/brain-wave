@@ -1,0 +1,28 @@
+{
+  "name": "brainwave-trae",
+  "version": "0.1.0",
+  "description": "BrainWave - AI-Powered Educational Platform",
+  "main": "index.html",
+  "private": true,
+  "keywords": [
+    "education",
+    "ai",
+    "learning",
+    "platform",
+    "brainwave"
+  ],
+  "author": "BrainWave Team",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 8001",
+    "serve": "npx http-server -p 8000"
+  },
+  "devDependencies": {
+    "vite": "^6.3.6"
+  },
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainWave Server Launcher</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .launcher-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #fbbf24;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .server-info {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .server-url {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: inline-block;
+        }
+        
+        .instructions {
+            text-align: left;
+            margin: 20px 0;
+        }
+        
+        .instructions li {
+            margin: 10px 0;
+            padding-left: 10px;
+        }
+        
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .status.running {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid #10b981;
+        }
+        
+        .status.stopped {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+        }
+        
+        .btn {
+            background: #fbbf24;
+            color: #1e3a8a;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #f59e0b;
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            background: #6b7280;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="launcher-container">
+        <div class="logo">🧠 BrainWave</div>
+        <h1>Server Launcher</h1>
+        <p class="subtitle">Start your BrainWave educational platform</p>
+        
+        <div class="server-info">
+            <h3>Server URLs:</h3>
+            <div class="server-url">Desktop: http://localhost:8000/</div>
+            <div class="server-url">Mobile: http://105.113.62.32:8000/</div>
+        </div>
+        
+        <div id="serverStatus" class="status stopped">
+            ⚠️ Server Status: Not Running
+        </div>
+        
+        <div class="instructions">
+            <h3>Quick Start Instructions:</h3>
+            <ol>
+                <li>Double-click "start-brainwave-server.bat" to start server</li>
+                <li>Wait for "Server running" message</li>
+                <li>Open browser and go to http://localhost:8000/</li>
+                <li>For mobile: Use http://105.113.62.32:8000/</li>
+            </ol>
+        </div>
+        
+        <button class="btn" onclick="checkServerStatus()">Check Server Status</button>
+        <button class="btn" onclick="openDesktop()">Open Desktop Version</button>
+        <button class="btn" onclick="openMobile()">Open Mobile Version</button>
+        
+        <div style="margin-top: 30px; font-size: 0.9rem; opacity: 0.8;">
+            <p>💡 Tip: Keep the server running in the background while using BrainWave</p>
+        </div>
+    </div>
+
+    <script>
+        function checkServerStatus() {
+            const statusDiv = document.getElementById('serverStatus');
+            statusDiv.innerHTML = '🔄 Checking server status...';
+            statusDiv.className = 'status';
+            
+            // Try to fetch from localhost
+            fetch('http://localhost:8000/', { mode: 'no-cors' })
+                .then(() => {
+                    statusDiv.innerHTML = '✅ Server Status: Running';
+                    statusDiv.className = 'status running';
+                })
+                .catch(() => {
+                    statusDiv.innerHTML = '❌ Server Status: Not Running';
+                    statusDiv.className = 'status stopped';
+                });
+        }
+        
+        function openDesktop() {
+            window.open('http://localhost:8000/', '_blank');
+        }
+        
+        function openMobile() {
+            window.open('http://105.113.62.32:8000/', '_blank');
+        }
+        
+        // Check status on page load
+        window.onload = function() {
+            checkServerStatus();
+        };
+    </script>
+</body>
+</html>
+

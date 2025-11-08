@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Direct Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background: #3b82f6; color: white; }
+        tr:hover { background: #f5f5f5; }
+        .btn { background: #3b82f6; color: white; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin: 10px 5px; }
+        .btn:hover { background: #2563eb; }
+        h1 { color: #1e3a8a; }
+        .status { padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #dcfce7; color: #16a34a; }
+        .error { background: #fee2e2; color: #dc2626; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Direct Test - Reports Display</h1>
+    
+    <button class="btn" onclick="step1()">Step 1: Generate Data</button>
+    <button class="btn" onclick="step2()">Step 2: Test Display</button>
+    <button class="btn" onclick="step3()">Step 3: Open Dashboard</button>
+    
+    <div id="status"></div>
+    <div id="display"></div>
+
+    <script>
+        function log(msg, type = 'success') {
+            document.getElementById('status').innerHTML = `<div class="status ${type}">${msg}</div>`;
+        }
+
+        function step1() {
+            // Clear and generate data
+            localStorage.clear();
+            
+            const student = {
+                id: 12345,
+                name: 'John Doe',
+                email: 'john.doe@student.com',
+                gender: 'Male',
+                classLevel: 'SS2',
+                stream: 'Science',
+                studentCode: 'BWTEST123',
+                role: 'student',
+                plan: 'premium',
+                status: 'active'
+            };
+            
+            const reports = [
+                {
+                    id: 1,
+                    studentId: 12345,
+                    studentCode: 'BWTEST123',
+                    studentName: 'John Doe',
+                    subject: 'Mathematics',
+                    assessmentTitle: 'First Term Exam',
+                    type: 'quiz',
+                    score: 85,
+                    totalMarks: 100,
+                    date: new Date().toISOString(),
+                    passed: true
+                },
+                {
+                    id: 2,
+                    studentId: 12345,
+                    studentCode: 'BWTEST123',
+                    studentName: 'John Doe',
+                    subject: 'Physics',
+                    assessmentTitle: 'First Term Exam',
+                    type: 'quiz',
+                    score: 78,
+                    totalMarks: 100,
+                    date: new Date().toISOString(),
+                    passed: true
+                },
+                {
+                    id: 3,
+                    studentId: 12345,
+                    studentCode: 'BWTEST123',
+                    studentName: 'John Doe',
+                    subject: 'Chemistry',
+                    assessmentTitle: 'First Term Exam',
+                    type: 'quiz',
+                    score: 82,
+                    totalMarks: 100,
+                    date: new Date().toISOString(),
+                    passed: true
+                }
+            ];
+            
+            localStorage.setItem('brainwave_users', JSON.stringify([student]));
+            localStorage.setItem('brainwave_current_student_id', '12345');
+            localStorage.setItem('brainwave_reports', JSON.stringify(reports));
+            localStorage.setItem('brainwave_mock_data_generated', 'true');
+            
+            log(`✅ Data generated! Student: ${student.name}, Reports: ${reports.length}`, 'success');
+        }
+
+        function step2() {
+            // Test display directly here
+            const studentId = localStorage.getItem('brainwave_current_student_id');
+            const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            const currentStudent = users.find(u => u.id == studentId);
+            const reports = JSON.parse(localStorage.getItem('brainwave_reports') || '[]');
+            
+            if (!currentStudent) {
+                log('❌ ERROR: No student found!', 'error');
+                return;
+            }
+            
+            if (reports.length === 0) {
+                log('❌ ERROR: No reports found!', 'error');
+                return;
+            }
+            
+            // Get unique subjects
+            const subjects = [...new Set(reports.map(r => r.subject))];
+            
+            // Calculate average
+            const total = reports.reduce((sum, r) => sum + ((r.score / r.totalMarks) * 100), 0);
+            const average = Math.round(total / reports.length);
+            
+            // Get grade
+            let grade = 'F';
+            if (average >= 90) grade = 'A+';
+            else if (average >= 80) grade = 'A';
+            else if (average >= 70) grade = 'B';
+            else if (average >= 60) grade = 'C';
+            else if (average >= 50) grade = 'D';
+            else if (average >= 40) grade = 'E';
+            
+            // Build table HTML
+            let html = `
+                <h2>📊 Academic Performance Table</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Class</th>
+                            <th>Stream</th>
+                            ${subjects.map(s => `<th>${s}</th>`).join('')}
+                            <th>Average</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>${currentStudent.name}</strong></td>
+                            <td>${currentStudent.classLevel}</td>
+                            <td>${currentStudent.stream}</td>
+                            ${subjects.map(subject => {
+                                const report = reports.find(r => r.subject === subject);
+                                if (report) {
+                                    const pct = Math.round((report.score / report.totalMarks) * 100);
+                                    return `<td><strong>${pct}%</strong></td>`;
+                                }
+                                return '<td>-</td>';
+                            }).join('')}
+                            <td><strong>${average}%</strong></td>
+                            <td><strong>${grade}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h2>📋 Report Details</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Assessment</th>
+                            <th>Score</th>
+                            <th>Percentage</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${reports.map(r => `
+                            <tr>
+                                <td>${r.subject}</td>
+                                <td>${r.assessmentTitle}</td>
+                                <td>${r.score}/${r.totalMarks}</td>
+                                <td><strong>${Math.round((r.score / r.totalMarks) * 100)}%</strong></td>
+                                <td>${r.passed ? '✅ Passed' : '❌ Failed'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            
+            document.getElementById('display').innerHTML = html;
+            log(`✅ SUCCESS! Displaying ${reports.length} reports for ${currentStudent.name}`, 'success');
+        }
+
+        function step3() {
+            window.location.href = 'student-dashboard.html';
+        }
+    </script>
+</body>
+</html>

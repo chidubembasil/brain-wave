@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Student Subjects - BrainWave</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .section {
+            background: #f9fafb;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section h2 {
+            color: #374151;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .info-box {
+            background: white;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .error-box {
+            background: #fee2e2;
+            border-left: 4px solid #dc2626;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            color: #991b1b;
+        }
+
+        .success-box {
+            background: #dcfce7;
+            border-left: 4px solid #16a34a;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            color: #166534;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #d97706;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            color: #92400e;
+        }
+
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .badge-success {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .badge-error {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .badge-info {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin-right: 0.5rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background: #f3f4f6;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug Student Subjects</h1>
+        
+        <div class="section">
+            <h2>1. Current Student Info</h2>
+            <div id="studentInfo"></div>
+        </div>
+
+        <div class="section">
+            <h2>2. Subjects in localStorage</h2>
+            <div id="subjectsInfo"></div>
+        </div>
+
+        <div class="section">
+            <h2>3. Filtered Subjects (What Student Should See)</h2>
+            <div id="filteredInfo"></div>
+        </div>
+
+        <div class="section">
+            <h2>4. Filtering Logic Test</h2>
+            <div id="filterTest"></div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <button onclick="location.reload()">🔄 Refresh</button>
+            <button onclick="window.open('admin-dashboard.html', '_blank')">⚙️ Open Admin Dashboard</button>
+            <button onclick="window.open('student-dashboard.html', '_blank')">🎓 Open Student Dashboard</button>
+        </div>
+    </div>
+
+    <script>
+        // Get current student
+        const studentId = localStorage.getItem('brainwave_current_student_id');
+        const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+        const currentStudent = users.find(u => u.id == studentId);
+
+        // Display student info
+        const studentInfoDiv = document.getElementById('studentInfo');
+        if (!currentStudent) {
+            studentInfoDiv.innerHTML = `
+                <div class="error-box">
+                    <strong>❌ No student logged in!</strong>
+                    <p>Please log in first at <a href="student-login.html">student-login.html</a></p>
+                </div>
+            `;
+        } else {
+            studentInfoDiv.innerHTML = `
+                <div class="success-box">
+                    <strong>✅ Student Found:</strong>
+                    <p><strong>Name:</strong> ${currentStudent.name}</p>
+                    <p><strong>Email:</strong> ${currentStudent.email}</p>
+                    <p><strong>Class Level:</strong> <span class="badge badge-info">${currentStudent.classLevel || 'NOT SET'}</span></p>
+                    <p><strong>Stream:</strong> <span class="badge badge-info">${currentStudent.stream || 'NOT SET'}</span></p>
+                    <p><strong>Student Code:</strong> ${currentStudent.studentCode || 'NOT SET'}</p>
+                </div>
+                <pre>${JSON.stringify(currentStudent, null, 2)}</pre>
+            `;
+        }
+
+        // Display subjects
+        const subjects = JSON.parse(localStorage.getItem('brainwave_subjects') || '[]');
+        const subjectsInfoDiv = document.getElementById('subjectsInfo');
+
+        if (subjects.length === 0) {
+            subjectsInfoDiv.innerHTML = `
+                <div class="warning-box">
+                    <strong>⚠️ No subjects in localStorage!</strong>
+                    <p>Go to admin dashboard and add some subjects.</p>
+                </div>
+            `;
+        } else {
+            let html = `
+                <div class="success-box">
+                    <strong>✅ Found ${subjects.length} subjects in localStorage</strong>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Subject Name</th>
+                            <th>Class Level</th>
+                            <th>Stream</th>
+                            <th>Match?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            subjects.forEach(subject => {
+                let matches = false;
+                let reason = '';
+
+                if (currentStudent && currentStudent.classLevel && currentStudent.stream) {
+                    const classMatch = subject.classLevel === currentStudent.classLevel || 
+                                      subject.classLevel === 'All Levels';
+                    const streamMatch = subject.stream === currentStudent.stream || 
+                                       subject.stream === 'All Streams' ||
+                                       subject.stream === 'General' || 
+                                       subject.stream === 'Multi-Stream';
+                    
+                    matches = classMatch && streamMatch;
+                    
+                    if (!classMatch) {
+                        reason = `Class mismatch: ${subject.classLevel} ≠ ${currentStudent.classLevel}`;
+                    } else if (!streamMatch) {
+                        reason = `Stream mismatch: ${subject.stream} ≠ ${currentStudent.stream}`;
+                    } else {
+                        reason = 'Perfect match!';
+                    }
+                }
+
+                html += `
+                    <tr>
+                        <td><strong>${subject.name}</strong></td>
+                        <td><span class="badge badge-info">${subject.classLevel}</span></td>
+                        <td><span class="badge badge-info">${subject.stream}</span></td>
+                        <td>
+                            ${matches ? 
+                                `<span class="badge badge-success">✅ YES</span>` : 
+                                `<span class="badge badge-error">❌ NO</span>`
+                            }
+                            <br><small style="color: #6b7280;">${reason}</small>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+                <pre>${JSON.stringify(subjects, null, 2)}</pre>
+            `;
+
+            subjectsInfoDiv.innerHTML = html;
+        }
+
+        // Display filtered subjects
+        const filteredInfoDiv = document.getElementById('filteredInfo');
+        
+        if (!currentStudent || !currentStudent.classLevel || !currentStudent.stream) {
+            filteredInfoDiv.innerHTML = `
+                <div class="error-box">
+                    <strong>❌ Cannot filter subjects!</strong>
+                    <p>Student must have classLevel and stream set.</p>
+                </div>
+            `;
+        } else {
+            const filtered = subjects.filter(subject => {
+                const classMatch = subject.classLevel === currentStudent.classLevel || 
+                                  subject.classLevel === 'All Levels';
+                const streamMatch = subject.stream === currentStudent.stream || 
+                                   subject.stream === 'All Streams' ||
+                                   subject.stream === 'General' || 
+                                   subject.stream === 'Multi-Stream';
+                return classMatch && streamMatch;
+            });
+
+            if (filtered.length === 0) {
+                filteredInfoDiv.innerHTML = `
+                    <div class="warning-box">
+                        <strong>⚠️ No subjects match the filter!</strong>
+                        <p>Student: ${currentStudent.classLevel} ${currentStudent.stream}</p>
+                        <p>Add subjects in admin dashboard that match this class level and stream.</p>
+                    </div>
+                `;
+            } else {
+                let html = `
+                    <div class="success-box">
+                        <strong>✅ ${filtered.length} subjects will be visible to this student</strong>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Subject Name</th>
+                                <th>Class Level</th>
+                                <th>Stream</th>
+                                <th>Why Visible?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                filtered.forEach(subject => {
+                    let reason = [];
+                    if (subject.classLevel === currentStudent.classLevel) {
+                        reason.push(`Class: ${subject.classLevel} = ${currentStudent.classLevel}`);
+                    } else if (subject.classLevel === 'All Levels') {
+                        reason.push('Class: All Levels');
+                    }
+
+                    if (subject.stream === currentStudent.stream) {
+                        reason.push(`Stream: ${subject.stream} = ${currentStudent.stream}`);
+                    } else if (['All Streams', 'General', 'Multi-Stream'].includes(subject.stream)) {
+                        reason.push(`Stream: ${subject.stream} (universal)`);
+                    }
+
+                    html += `
+                        <tr>
+                            <td><strong>${subject.name}</strong></td>
+                            <td><span class="badge badge-success">${subject.classLevel}</span></td>
+                            <td><span class="badge badge-success">${subject.stream}</span></td>
+                            <td><small style="color: #16a34a;">${reason.join(' + ')}</small></td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                        </tbody>
+                    </table>
+                `;
+
+                filteredInfoDiv.innerHTML = html;
+            }
+        }
+
+        // Filter test
+        const filterTestDiv = document.getElementById('filterTest');
+        if (currentStudent && currentStudent.classLevel && currentStudent.stream) {
+            filterTestDiv.innerHTML = `
+                <div class="info-box">
+                    <strong>Filter Logic for ${currentStudent.classLevel} ${currentStudent.stream}:</strong>
+                    <pre>
+subjects.filter(subject => {
+    const classMatch = 
+        subject.classLevel === "${currentStudent.classLevel}" || 
+        subject.classLevel === "All Levels";
+    
+    const streamMatch = 
+        subject.stream === "${currentStudent.stream}" || 
+        subject.stream === "All Streams" ||
+        subject.stream === "General" || 
+        subject.stream === "Multi-Stream";
+    
+    return classMatch && streamMatch;
+});
+                    </pre>
+                </div>
+            `;
+        }
+
+        // Auto-refresh every 3 seconds
+        setInterval(() => {
+            location.reload();
+        }, 3000);
+    </script>
+</body>
+</html>

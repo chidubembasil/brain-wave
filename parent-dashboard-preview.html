@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard Preview - BrainWave</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            --primary-color: #1e3a8a;
+            --primary-dark: #1e40af;
+            --secondary-color: #3b82f6;
+            --accent-color: #fbbf24;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+            
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--gray-900);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Hamburger Menu */
+        .hamburger-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: var(--primary-gradient);
+            color: var(--white);
+            transition: left 0.3s ease;
+            z-index: 1000;
+            box-shadow: var(--shadow-xl);
+            overflow-y: auto;
+        }
+
+        .hamburger-menu.open {
+            left: 0;
+        }
+
+        .menu-header {
+            padding: var(--spacing-xl);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .menu-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .menu-logo-box {
+            width: 50px;
+            height: 50px;
+            background: var(--white);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-logo h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .close-menu {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: transform 0.2s;
+        }
+
+        .close-menu:hover {
+            transform: rotate(90deg);
+        }
+
+        .menu-items {
+            padding: var(--spacing-lg);
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .menu-item i {
+            font-size: 1.2rem;
+            width: 24px;
+        }
+
+        .menu-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Top Header */
+        .top-header {
+            background: var(--white);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .hamburger-btn {
+            background: var(--primary-gradient);
+            border: none;
+            color: var(--white);
+            width: 45px;
+            height: 45px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hamburger-btn:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+
+        .tracking-info {
+            flex: 1;
+            margin: 0 var(--spacing-xl);
+        }
+
+        .tracking-header {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .child-name-display {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .class-level {
+            font-size: 1rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-expired {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-locked {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Child Switcher */
+        .child-switcher {
+            background: var(--white);
+            padding: var(--spacing-lg);
+            margin: var(--spacing-xl) auto;
+            max-width: 1200px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .switcher-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .switcher-header h3 {
+            color: var(--primary-color);
+            font-size: 1.125rem;
+        }
+
+        .add-child-btn {
+            background: var(--success-color);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            transition: all 0.2s;
+        }
+
+        .add-child-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .children-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .child-card {
+            background: var(--gray-50);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .child-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .child-card.active {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+
+        .child-card-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .child-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .child-card.active .child-avatar {
+            background: var(--white);
+            color: var(--primary-color);
+        }
+
+        .child-info h4 {
+            font-size: 1.125rem;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .child-info p {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .child-status-mini {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: var(--spacing-sm);
+        }
+
+        /* Dashboard Content */
+        .dashboard-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-xl);
+        }
+
+        .section-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .section-title i {
+            color: var(--accent-color);
+        }
+
+        /* Report Snapshots */
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .report-card {
+            background: var(--gray-50);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .report-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .report-title {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .report-date {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .report-stats {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-md);
+        }
+
+        .stat-item {
+            flex: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-top: var(--spacing-xs);
+        }
+
+        /* Detailed Reports Table */
+        .reports-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: var(--spacing-md);
+        }
+
+        .reports-table th,
+        .reports-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .reports-table th {
+            background: var(--gray-50);
+            font-weight: 600;
+            color: var(--gray-700);
+            text-align: left;
+        }
+
+        .reports-table tr:hover {
+            background: var(--gray-50);
+        }
+
+        .score-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .score-excellent {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .score-good {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .score-average {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .score-poor {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .data-table th {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 2px solid var(--gray-200);
+            font-weight: 600;
+            color: var(--gray-700);
+            background: var(--gray-50);
+        }
+
+        .data-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .data-table tr:hover {
+            background: var(--gray-50);
+        }
+
+        .download-btn {
+            background: var(--success-color);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .download-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .download-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-2xl);
+            color: var(--gray-500);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: var(--spacing-lg);
+            color: var(--gray-300);
+        }
+
+        .empty-state h3 {
+            color: var(--gray-700);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+
+            .tracking-info {
+                margin: var(--spacing-md) 0;
+                width: 100%;
+            }
+
+            .children-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .reports-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+    <div class="hamburger-menu" id="hamburgerMenu">
+        <div class="menu-header">
+            <div class="menu-logo">
+                <div class="menu-logo-box">B</div>
+                <h2>BrainWave</h2>
+            </div>
+            <button class="close-menu" onclick="closeMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="menu-items">
+            <a href="#" class="menu-item" onclick="showSection('overview')">
+                <i class="fas fa-home"></i>
+                <span>Dashboard Overview</span>
+            </a>
+            
+            <div class="menu-divider"></div>
+            
+            <a href="#" class="menu-item" onclick="showSection('link-child')">
+                <i class="fas fa-user-plus"></i>
+                <span>Link New Child</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('subscription')">
+                <i class="fas fa-credit-card"></i>
+                <span>Subscription</span>
+            </a>
+            
+            <div class="menu-divider"></div>
+            
+            <a href="#" class="menu-item" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Top Header -->
+    <div class="top-header">
+        <div class="header-content">
+            <button class="hamburger-btn" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="tracking-info">
+                <div class="tracking-header">Tracking:</div>
+                <div class="child-name-display">
+                    <span id="currentChildName">-</span>
+                    <span class="class-level" id="currentChildClass">-</span>
+                </div>
+            </div>
+            
+            <div id="statusBadge" class="status-badge status-active">ACTIVE</div>
+        </div>
+    </div>
+
+    <!-- Welcome Section -->
+    <div style="max-width: 1200px; margin: 2rem auto; padding: 0 var(--spacing-xl);">
+        <div style="background: var(--primary-gradient); color: white; padding: 2rem; border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);">
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <div style="width: 70px; height: 70px; border-radius: 50%; background: white; color: var(--primary-color); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.75rem; box-shadow: var(--shadow-md);">
+                    <span id="parentInitials">MA</span>
+                </div>
+                <div style="flex: 1;">
+                    <h1 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem;">
+                        Welcome back, <span id="parentName">Mrs. Adebayo</span>! 👋
+                    </h1>
+                    <p style="font-size: 1rem; opacity: 0.9;">
+                        Track your children's academic progress and manage their subscriptions all in one place.
+                    </p>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 0.875rem; opacity: 0.9; margin-bottom: 0.25rem;">Today's Date</div>
+                    <div style="font-size: 1.125rem; font-weight: 600;" id="currentDate"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Child Switcher -->
+    <div class="child-switcher">
+        <div class="switcher-header">
+            <h3><i class="fas fa-users"></i> Your Children</h3>
+            <button class="add-child-btn" onclick="showSection('link-child')">
+                <i class="fas fa-plus"></i>
+                Add Child
+            </button>
+        </div>
+        <div class="children-grid" id="childrenGrid">
+            <!-- Children cards will be populated here -->
+        </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+        <!-- Detailed Reports Section -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-file-alt"></i>
+                    Detailed Academic Report
+                </h2>
+                <button class="download-btn" onclick="downloadReport()">
+                    <i class="fas fa-download"></i>
+                    Download Report
+                </button>
+            </div>
+            
+            <div style="overflow-x: auto;" id="detailedReportContainer">
+                <!-- Detailed report table will be populated here -->
+            </div>
+        </div>
+
+        <!-- Achievements Section -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-trophy"></i>
+                    Achievements
+                </h2>
+            </div>
+            
+            <div id="achievementsTableContainer">
+                <!-- Achievements table will be populated here -->
+            </div>
+        </div>
+
+        <!-- Badges Section -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-award"></i>
+                    Badges
+                </h2>
+            </div>
+            
+            <div id="badgesTableContainer">
+                <!-- Badges table will be populated here -->
+            </div>
+        </div>
+
+        <!-- Leaderboard Section -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-medal"></i>
+                    Leaderboard Position
+                </h2>
+            </div>
+            
+            <div id="leaderboardTableContainer">
+                <!-- Leaderboard table will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Link Child Section (Hidden by default) -->
+    <div class="dashboard-content" id="linkChildSection" style="display: none;">
+        <div class="section-card">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-user-plus"></i>
+                    Link New Child
+                </h2>
+            </div>
+            
+            <div style="max-width: 600px; margin: 0 auto;">
+                <p style="color: var(--gray-600); margin-bottom: 2rem; text-align: center;">
+                    Enter your child's unique student code to link their account to your parent dashboard.
+                </p>
+                
+                <form id="linkChildForm" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--gray-700);">
+                            Student Code
+                        </label>
+                        <input 
+                            type="text" 
+                            id="studentCodeInput" 
+                            placeholder="Enter student code (e.g., BW123ABC)" 
+                            style="width: 100%; padding: 0.75rem; border: 2px solid var(--gray-300); border-radius: var(--radius-md); font-size: 1rem;"
+                            required
+                        />
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--gray-700);">
+                            Relationship
+                        </label>
+                        <select 
+                            id="relationshipSelect" 
+                            style="width: 100%; padding: 0.75rem; border: 2px solid var(--gray-300); border-radius: var(--radius-md); font-size: 1rem;"
+                            required
+                        >
+                            <option value="">Select relationship</option>
+                            <option value="mother">Mother</option>
+                            <option value="father">Father</option>
+                            <option value="guardian">Guardian</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <button 
+                        type="submit" 
+                        class="download-btn" 
+                        style="width: 100%; padding: 1rem; font-size: 1rem;"
+                    >
+                        <i class="fas fa-link"></i>
+                        Link Child Account
+                    </button>
+                </form>
+                
+                <div style="margin-top: 2rem; padding: 1.5rem; background: var(--gray-50); border-radius: var(--radius-md); border-left: 4px solid var(--info-color);">
+                    <h4 style="color: var(--gray-900); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-info-circle" style="color: var(--info-color);"></i>
+                        How to find Student Code?
+                    </h4>
+                    <ul style="color: var(--gray-600); margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Ask your child to check their student dashboard</li>
+                        <li>The code is displayed in the top-right corner</li>
+                        <li>Format: BW followed by 6 characters (e.g., BWABC123)</li>
+                        <li>Contact school admin if code is not available</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscription Section (Hidden by default) -->
+    <div class="dashboard-content" id="subscriptionSection" style="display: none;">
+        <div class="section-card">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-credit-card"></i>
+                    Subscription Management
+                </h2>
+            </div>
+            
+            <div id="subscriptionContainer">
+                <!-- Subscription details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentParent = null;
+        let currentChild = null;
+        let children = [];
+
+        // Initialize dashboard with mock data
+        window.addEventListener('DOMContentLoaded', function() {
+            // Check for real parent login first
+            checkParentAuthentication();
+            generateMockParentData();
+            updateWelcomeSection();
+            loadChildren();
+            if (children.length > 0) {
+                switchToChild(children[0]);
+            }
+        });
+        
+        // Check parent authentication and expiry
+        function checkParentAuthentication() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            if (currentUser.email && currentUser.role === 'parent') {
+                // Check and auto-lock expired parent accounts
+                let users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+                const parentIndex = users.findIndex(u => u.email === currentUser.email && u.role === 'parent');
+                
+                if (parentIndex !== -1) {
+                    const parentUser = users[parentIndex];
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    if (parentUser.expiry || parentUser.expiryDate) {
+                        const expiryDate = new Date(parentUser.expiry || parentUser.expiryDate);
+                        expiryDate.setHours(0, 0, 0, 0);
+                        
+                        // If expiry date has passed, automatically lock the account
+                        if (expiryDate < today && !parentUser.locked) {
+                            parentUser.locked = true;
+                            parentUser.accountLocked = true;
+                            parentUser.status = 'expired';
+                            parentUser.lockedReason = 'Subscription expired';
+                            parentUser.lockedAt = new Date().toISOString();
+                            
+                            // Update in storage
+                            users[parentIndex] = parentUser;
+                            localStorage.setItem('brainwave_users', JSON.stringify(users));
+                            localStorage.setItem('users', JSON.stringify(users));
+                            
+                            console.log(`🔒 Parent account auto-locked: ${parentUser.email} (Expired: ${parentUser.expiry || parentUser.expiryDate})`);
+                            
+                            alert('Your subscription has expired and your account has been locked. Please contact the administrator or renew your subscription.');
+                            window.location.href = 'login.html';
+                            return;
+                        }
+                    }
+                    
+                    // Check if account is locked
+                    if (parentUser.locked || parentUser.accountLocked) {
+                        const reason = parentUser.lockedReason || 'Your account has been locked';
+                        alert(`${reason}. Please contact the administrator.`);
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    
+                    // Update currentParent with full data
+                    currentParent = parentUser;
+                }
+            }
+        }
+
+        // Update welcome section
+        function updateWelcomeSection() {
+            // Update parent name
+            const parentNameEl = document.getElementById('parentName');
+            if (parentNameEl && currentParent) {
+                parentNameEl.textContent = currentParent.name;
+            }
+            
+            // Update parent initials
+            const parentInitialsEl = document.getElementById('parentInitials');
+            if (parentInitialsEl && currentParent) {
+                parentInitialsEl.textContent = getInitials(currentParent.name);
+            }
+            
+            // Update current date
+            const dateEl = document.getElementById('currentDate');
+            if (dateEl) {
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                dateEl.textContent = new Date().toLocaleDateString('en-US', options);
+            }
+        }
+
+        // Generate mock parent and children data
+        function generateMockParentData() {
+            const now = new Date();
+            
+            // Create mock parent
+            currentParent = {
+                id: 'parent_001',
+                name: 'Mrs. Adebayo',
+                email: 'parent@example.com',
+                role: 'parent'
+            };
+            
+            // Create mock children with reports
+            children = [
+                {
+                    id: 'student_001',
+                    name: 'Chioma Adebayo',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    gender: 'Female',
+                    status: 'active',
+                    accountLocked: false,
+                    plan: 'premium',
+                    parentId: 'parent_001',
+                    reports: [
+                        { subject: 'Mathematics', score: 85, totalMarks: 100, date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString() },
+                        { subject: 'Physics', score: 78, totalMarks: 100, date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString() },
+                        { subject: 'Chemistry', score: 92, totalMarks: 100, date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString() },
+                        { subject: 'Biology', score: 88, totalMarks: 100, date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString() },
+                        { subject: 'English', score: 76, totalMarks: 100, date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString() }
+                    ],
+                    attendance: { present: 18, absent: 2, total: 20 },
+                    assessments: { completed: 12, pending: 3 }
+                },
+                {
+                    id: 'student_002',
+                    name: 'Tunde Adebayo',
+                    classLevel: 'JSS3',
+                    stream: 'General',
+                    gender: 'Male',
+                    status: 'active',
+                    accountLocked: false,
+                    plan: 'bootcamp',
+                    bootcampStartDate: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+                    parentId: 'parent_001',
+                    reports: [
+                        { subject: 'Mathematics', score: 72, totalMarks: 100, date: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString() },
+                        { subject: 'English', score: 68, totalMarks: 100, date: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString() },
+                        { subject: 'Science', score: 75, totalMarks: 100, date: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString() },
+                        { subject: 'Social Studies', score: 80, totalMarks: 100, date: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString() }
+                    ],
+                    attendance: { present: 15, absent: 5, total: 20 },
+                    assessments: { completed: 8, pending: 5 }
+                },
+                {
+                    id: 'student_003',
+                    name: 'Blessing Adebayo',
+                    classLevel: 'SS1',
+                    stream: 'Humanities',
+                    gender: 'Female',
+                    status: 'active',
+                    accountLocked: false,
+                    plan: 'premium',
+                    parentId: 'parent_001',
+                    reports: [
+                        { subject: 'Literature', score: 90, totalMarks: 100, date: new Date(now.getTime() - 4 * 24 * 60 * 60 * 1000).toISOString() },
+                        { subject: 'Government', score: 85, totalMarks: 100, date: new Date(now.getTime() - 4 * 24 * 60 * 60 * 1000).toISOString() },
+                        { subject: 'Economics', score: 78, totalMarks: 100, date: new Date(now.getTime() - 4 * 24 * 60 * 60 * 1000).toISOString() },
+                        { subject: 'English', score: 88, totalMarks: 100, date: new Date(now.getTime() - 4 * 24 * 60 * 60 * 1000).toISOString() },
+                        { subject: 'Mathematics', score: 70, totalMarks: 100, date: new Date(now.getTime() - 4 * 24 * 60 * 60 * 1000).toISOString() }
+                    ],
+                    attendance: { present: 19, absent: 1, total: 20 },
+                    assessments: { completed: 15, pending: 2 }
+                }
+            ];
+        }
+
+        // Load children
+        function loadChildren() {
+            renderChildrenGrid();
+        }
+
+        // Render children grid
+        function renderChildrenGrid() {
+            const grid = document.getElementById('childrenGrid');
+            grid.innerHTML = '';
+            
+            children.forEach((child, index) => {
+                const status = getChildStatus(child);
+                const initials = child.name.split(' ').map(n => n[0]).join('').substring(0, 2);
+                
+                const card = document.createElement('div');
+                card.className = `child-card ${index === 0 ? 'active' : ''}`;
+                card.onclick = () => switchToChild(child);
+                
+                card.innerHTML = `
+                    <div class="child-card-header">
+                        <div class="child-avatar">${initials}</div>
+                        <div class="child-info">
+                            <h4>${child.name}</h4>
+                            <p>${child.classLevel} - ${child.stream}</p>
+                        </div>
+                    </div>
+                    <div class="child-status-mini ${status.class}">${status.text}</div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Switch to child
+        function switchToChild(child) {
+            currentChild = child;
+            
+            // Update header
+            document.getElementById('currentChildName').textContent = child.name;
+            document.getElementById('currentChildClass').textContent = `(${child.classLevel} - ${child.stream})`;
+            
+            // Update status badge
+            const status = getChildStatus(child);
+            const badge = document.getElementById('statusBadge');
+            badge.textContent = status.text;
+            badge.className = `status-badge ${status.class}`;
+            
+            // Update active card
+            document.querySelectorAll('.child-card').forEach((card, index) => {
+                card.classList.toggle('active', children[index].id === child.id);
+            });
+            
+            // Load child data
+            loadChildData(child);
+        }
+
+        // Get child status
+        function getChildStatus(child) {
+            if (child.accountLocked) {
+                return { text: 'LOCKED', class: 'status-locked' };
+            }
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            // Check payment status first (set by admin via subscription management)
+            if (child.paymentStatus === 'paid' || child.isPaid === true) {
+                // Paid members are always active unless account is locked
+                return { text: 'ACTIVE - PAID', class: 'status-active' };
+            }
+            
+            // Check if on bootcamp (free trial)
+            if (child.paymentStatus === 'bootcamp' || child.status === 'bootcamp' || child.plan === 'bootcamp') {
+                if (child.bootcampStartDate) {
+                    const startDate = new Date(child.bootcampStartDate);
+                    startDate.setHours(0, 0, 0, 0);
+                    const daysPassed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+                    
+                    if (daysPassed >= 7) {
+                        return { text: 'EXPIRED', class: 'status-expired' };
+                    }
+                    return { text: 'ACTIVE - BOOTCAMP', class: 'status-active' };
+                }
+                return { text: 'ACTIVE - BOOTCAMP', class: 'status-active' };
+            }
+            
+            // Check expiry date for time-based subscriptions
+            if (child.expiryDate || child.expiry) {
+                const expiryDate = new Date(child.expiryDate || child.expiry);
+                expiryDate.setHours(0, 0, 0, 0);
+                
+                if (expiryDate < today) {
+                    return { text: 'EXPIRED', class: 'status-expired' };
+                }
+                return { text: 'ACTIVE', class: 'status-active' };
+            }
+            
+            // Default to active if no specific status found
+            return { text: 'ACTIVE', class: 'status-active' };
+        }
+
+        // Load child data
+        function loadChildData(child) {
+            loadDetailedReport(child);
+            loadAchievements(child);
+            loadBadges(child);
+            loadLeaderboard(child);
+        }
+
+        // Load detailed report
+        function loadDetailedReport(child) {
+            const container = document.getElementById('detailedReportContainer');
+            
+            const subjects = child.reports.map(r => r.subject);
+            const avgScore = calculateAverage(child.reports);
+            const grade = getGrade(avgScore);
+            
+            container.innerHTML = `
+                <table class="reports-table">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left;">Student Name</th>
+                            <th style="text-align: center;">Class</th>
+                            <th style="text-align: center;">Stream</th>
+                            ${subjects.map(subject => `<th style="text-align: center;">${subject}</th>`).join('')}
+                            <th style="text-align: center;">Average</th>
+                            <th style="text-align: center;">Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: 600;">${child.name}</td>
+                            <td style="text-align: center;">${child.classLevel}</td>
+                            <td style="text-align: center;">${child.stream}</td>
+                            ${child.reports.map(report => {
+                                const percentage = Math.round((report.score / report.totalMarks) * 100);
+                                return `<td style="text-align: center;">
+                                    <span class="score-badge ${getScoreClass(percentage)}">
+                                        ${percentage}%
+                                    </span>
+                                </td>`;
+                            }).join('')}
+                            <td style="text-align: center;">
+                                <span class="score-badge ${getScoreClass(avgScore)}">
+                                    ${avgScore}%
+                                </span>
+                            </td>
+                            <td style="text-align: center; font-weight: 600; color: ${getGradeColor(avgScore)}">
+                                ${grade}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+        }
+
+        // Load achievements
+        function loadAchievements(child) {
+            const container = document.getElementById('achievementsTableContainer');
+            if (!container) return;
+            
+            const avgScore = calculateAverage(child.reports);
+            const attendancePercent = Math.round((child.attendance.present / child.attendance.total) * 100);
+            
+            // Determine badges based on performance
+            const performanceBadge = avgScore >= 90 ? 
+                { text: 'Excellent', icon: 'star', color: '#10b981' } :
+                avgScore >= 80 ? 
+                { text: 'Very Good', icon: 'thumbs-up', color: '#3b82f6' } :
+                avgScore >= 70 ? 
+                { text: 'Good', icon: 'check', color: '#3b82f6' } :
+                { text: 'Fair', icon: 'minus', color: '#f59e0b' };
+            
+            const attendanceBadge = attendancePercent >= 95 ? 
+                { text: 'Excellent', icon: 'user-check', color: '#10b981' } :
+                attendancePercent >= 85 ? 
+                { text: 'Very Good', icon: 'user-check', color: '#3b82f6' } :
+                attendancePercent >= 75 ? 
+                { text: 'Good', icon: 'user-check', color: '#3b82f6' } :
+                { text: 'Fair', icon: 'user-clock', color: '#f59e0b' };
+            
+            // Find best subject
+            let bestSubject = 'N/A';
+            let bestScore = 0;
+            child.reports.forEach(report => {
+                const percentage = (report.score / report.totalMarks) * 100;
+                if (percentage > bestScore) {
+                    bestScore = percentage;
+                    bestSubject = report.subject;
+                }
+            });
+            
+            const subjectExcellence = {
+                text: `${bestSubject} Star`,
+                icon: 'flask',
+                color: '#10b981'
+            };
+            
+            const totalBadges = 5;
+            
+            container.innerHTML = `
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Student Name</th>
+                                <th style="text-align: center;">Class</th>
+                                <th style="text-align: center;">Performance Badge</th>
+                                <th style="text-align: center;">Attendance Badge</th>
+                                <th style="text-align: center;">Subject Excellence</th>
+                                <th style="text-align: center;">Total Badges</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-gradient); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem;">
+                                            ${getInitials(child.name)}
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 600; color: var(--gray-900);">${child.name}</div>
+                                            <div style="font-size: 0.75rem; color: var(--gray-500);">${child.classLevel} ${child.stream}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="text-align: center; font-weight: 600; color: var(--gray-700);">${child.classLevel}</td>
+                                <td style="text-align: center;">
+                                    <span style="background: ${performanceBadge.color}; color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">
+                                        <i class="fas fa-${performanceBadge.icon}"></i> ${performanceBadge.text}
+                                    </span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <span style="background: ${attendanceBadge.color}; color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">
+                                        <i class="fas fa-${attendanceBadge.icon}"></i> ${attendanceBadge.text}
+                                    </span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <span style="background: ${subjectExcellence.color}; color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">
+                                        <i class="fas fa-${subjectExcellence.icon}"></i> ${subjectExcellence.text}
+                                    </span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <div style="display: flex; align-items: center; justify-content: center; gap: 0.25rem;">
+                                        <i class="fas fa-award" style="color: #fbbf24; font-size: 1.125rem;"></i>
+                                        <span style="font-weight: 700; color: var(--gray-900); font-size: 1.125rem;">${totalBadges}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // Load badges
+        function loadBadges(child) {
+            const container = document.getElementById('badgesTableContainer');
+            if (!container) return;
+            
+            const avgScore = calculateAverage(child.reports);
+            const attendancePercent = Math.round((child.attendance.present / child.attendance.total) * 100);
+            
+            // Same data as achievements
+            const performanceBadge = avgScore >= 90 ? 
+                { text: 'Excellent', icon: 'star', color: '#10b981' } :
+                avgScore >= 80 ? 
+                { text: 'Very Good', icon: 'thumbs-up', color: '#3b82f6' } :
+                avgScore >= 70 ? 
+                { text: 'Good', icon: 'check', color: '#3b82f6' } :
+                { text: 'Fair', icon: 'minus', color: '#f59e0b' };
+            
+            const attendanceBadge = attendancePercent >= 95 ? 
+                { text: 'Excellent', icon: 'user-check', color: '#10b981' } :
+                attendancePercent >= 85 ? 
+                { text: 'Very Good', icon: 'user-check', color: '#3b82f6' } :
+                attendancePercent >= 75 ? 
+                { text: 'Good', icon: 'user-check', color: '#3b82f6' } :
+                { text: 'Fair', icon: 'user-clock', color: '#f59e0b' };
+            
+            let bestSubject = 'N/A';
+            let bestScore = 0;
+            child.reports.forEach(report => {
+                const percentage = (report.score / report.totalMarks) * 100;
+                if (percentage > bestScore) {
+                    bestScore = percentage;
+                    bestSubject = report.subject;
+                }
+            });
+            
+            const subjectExcellence = {
+                text: `${bestSubject} Star`,
+                icon: 'flask',
+                color: '#10b981'
+            };
+            
+            const totalBadges = 5;
+            
+            container.innerHTML = `
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Student Name</th>
+                                <th style="text-align: center;">Class</th>
+                                <th style="text-align: center;">Performance Badge</th>
+                                <th style="text-align: center;">Attendance Badge</th>
+                                <th style="text-align: center;">Subject Excellence</th>
+                                <th style="text-align: center;">Total Badges</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-gradient); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem;">
+                                            ${getInitials(child.name)}
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 600; color: var(--gray-900);">${child.name}</div>
+                                            <div style="font-size: 0.75rem; color: var(--gray-500);">${child.classLevel} ${child.stream}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="text-align: center; font-weight: 600; color: var(--gray-700);">${child.classLevel}</td>
+                                <td style="text-align: center;">
+                                    <span style="background: ${performanceBadge.color}; color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">
+                                        <i class="fas fa-${performanceBadge.icon}"></i> ${performanceBadge.text}
+                                    </span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <span style="background: ${attendanceBadge.color}; color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">
+                                        <i class="fas fa-${attendanceBadge.icon}"></i> ${attendanceBadge.text}
+                                    </span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <span style="background: ${subjectExcellence.color}; color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">
+                                        <i class="fas fa-${subjectExcellence.icon}"></i> ${subjectExcellence.text}
+                                    </span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <div style="display: flex; align-items: center; justify-content: center; gap: 0.25rem;">
+                                        <i class="fas fa-award" style="color: #fbbf24; font-size: 1.125rem;"></i>
+                                        <span style="font-weight: 700; color: var(--gray-900); font-size: 1.125rem;">${totalBadges}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // Load leaderboard
+        function loadLeaderboard(child) {
+            const container = document.getElementById('leaderboardTableContainer');
+            if (!container) return;
+            
+            const avgScore = calculateAverage(child.reports);
+            const attendancePercent = Math.round((child.attendance.present / child.attendance.total) * 100);
+            
+            // Calculate rank based on average score
+            const rank = avgScore >= 90 ? 1 : avgScore >= 85 ? 3 : avgScore >= 80 ? 5 : avgScore >= 75 ? 8 : 12;
+            
+            // Determine badge based on rank
+            let badgeText, badgeIcon, badgeColor;
+            if (rank === 1) {
+                badgeText = 'Gold Medal';
+                badgeIcon = 'medal';
+                badgeColor = '#fbbf24';
+            } else if (rank <= 3) {
+                badgeText = 'Silver Medal';
+                badgeIcon = 'medal';
+                badgeColor = '#9ca3af';
+            } else if (rank <= 5) {
+                badgeText = 'Bronze Medal';
+                badgeIcon = 'medal';
+                badgeColor = '#d97706';
+            } else {
+                badgeText = 'Participant';
+                badgeIcon = 'award';
+                badgeColor = '#6b7280';
+            }
+            
+            container.innerHTML = `
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center; width: 60px;">Rank</th>
+                                <th style="text-align: left;">Student Name</th>
+                                <th style="text-align: center;">Class</th>
+                                <th style="text-align: center;">Stream</th>
+                                <th style="text-align: center;">Average Score</th>
+                                <th style="text-align: center;">Attendance</th>
+                                <th style="text-align: center;">Badge</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: center;">
+                                    <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                        <span style="font-weight: 700; font-size: 1.125rem; color: var(--gray-700);">
+                                            #${rank}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-gradient); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem;">
+                                            ${getInitials(child.name)}
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 600; color: var(--gray-900);">
+                                                ${child.name}
+                                            </div>
+                                            <div style="font-size: 0.75rem; color: var(--gray-500);">
+                                                ${child.classLevel} ${child.stream}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="text-align: center; font-weight: 600; color: var(--gray-700);">${child.classLevel}</td>
+                                <td style="text-align: center;">
+                                    <span style="background: var(--gray-100); padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; color: var(--gray-700);">
+                                        ${child.stream}
+                                    </span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <span class="score-badge ${getScoreClass(avgScore)}">
+                                        ${avgScore}%
+                                    </span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <span style="background: ${attendancePercent >= 90 ? '#dcfce7' : attendancePercent >= 75 ? '#dbeafe' : '#fef3c7'}; color: ${attendancePercent >= 90 ? '#16a34a' : attendancePercent >= 75 ? '#2563eb' : '#d97706'}; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">
+                                        ${attendancePercent}%
+                                    </span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <span style="background: ${badgeColor}; color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">
+                                        <i class="fas fa-${badgeIcon}"></i> ${badgeText}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // Helper function for initials
+        function getInitials(name) {
+            const parts = name.split(' ');
+            if (parts.length >= 2) {
+                return (parts[0][0] + parts[1][0]).toUpperCase();
+            }
+            return name.substring(0, 2).toUpperCase();
+        }
+
+        // Helper functions
+        function calculateAverage(reports) {
+            if (reports.length === 0) return 0;
+            const total = reports.reduce((sum, report) => {
+                return sum + ((report.score / report.totalMarks) * 100);
+            }, 0);
+            return Math.round(total / reports.length);
+        }
+
+        function calculateRank(avgScore) {
+            if (avgScore >= 90) return '1st';
+            if (avgScore >= 85) return '3rd';
+            if (avgScore >= 80) return '5th';
+            if (avgScore >= 75) return '8th';
+            if (avgScore >= 70) return '12th';
+            return '15th';
+        }
+
+        function getScoreClass(percentage) {
+            if (percentage >= 80) return 'score-excellent';
+            if (percentage >= 60) return 'score-good';
+            if (percentage >= 40) return 'score-average';
+            return 'score-poor';
+        }
+
+        function getGrade(percentage) {
+            if (percentage >= 90) return 'A+';
+            if (percentage >= 80) return 'A';
+            if (percentage >= 70) return 'B';
+            if (percentage >= 60) return 'C';
+            if (percentage >= 50) return 'D';
+            if (percentage >= 40) return 'E';
+            return 'F';
+        }
+
+        function getGradeColor(percentage) {
+            if (percentage >= 80) return '#16a34a';
+            if (percentage >= 60) return '#2563eb';
+            if (percentage >= 40) return '#d97706';
+            return '#dc2626';
+        }
+
+        // Menu functions
+        function toggleMenu() {
+            const menu = document.getElementById('hamburgerMenu');
+            const overlay = document.getElementById('menuOverlay');
+            menu.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            document.getElementById('hamburgerMenu').classList.remove('open');
+            document.getElementById('menuOverlay').classList.remove('active');
+        }
+
+        function showSection(section) {
+            console.log('Showing section:', section);
+            closeMenu();
+            
+            // Hide all sections
+            document.querySelectorAll('.dashboard-content').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Show requested section
+            if (section === 'overview') {
+                document.getElementById('overviewSection').parentElement.style.display = 'block';
+            } else if (section === 'link-child') {
+                document.getElementById('linkChildSection').style.display = 'block';
+            } else if (section === 'subscription') {
+                document.getElementById('subscriptionSection').style.display = 'block';
+                loadSubscriptionDetails();
+            }
+        }
+
+        // Download report function
+        function downloadReport() {
+            if (!currentChild) {
+                alert('Please select a child first');
+                return;
+            }
+            
+            const avgScore = calculateAverage(currentChild.reports);
+            const grade = getGrade(avgScore);
+            
+            alert(`📥 Downloading Report for ${currentChild.name}\n\n` +
+                  `📊 Academic Performance:\n` +
+                  `   • Average Score: ${avgScore}%\n` +
+                  `   • Grade: ${grade}\n` +
+                  `   • Class: ${currentChild.classLevel}\n` +
+                  `   • Stream: ${currentChild.stream}\n\n` +
+                  `📚 Subjects: ${currentChild.reports.length}\n` +
+                  `✅ Assessments Completed: ${currentChild.assessments.completed}\n` +
+                  `📅 Attendance: ${currentChild.attendance.present}/${currentChild.attendance.total}\n\n` +
+                  `📄 Report generated on: ${new Date().toLocaleDateString()}\n\n` +
+                  `This would download a PDF with complete academic details.`);
+        }
+
+        // Link child form handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const linkForm = document.getElementById('linkChildForm');
+            if (linkForm) {
+                linkForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const studentCode = document.getElementById('studentCodeInput').value.trim().toUpperCase();
+                    const relationship = document.getElementById('relationshipSelect').value;
+                    
+                    if (!studentCode || !relationship) {
+                        alert('Please fill in all fields');
+                        return;
+                    }
+                    
+                    // Simulate linking process
+                    alert(`✅ Successfully linked child with code: ${studentCode}\n\nRelationship: ${relationship.charAt(0).toUpperCase() + relationship.slice(1)}\n\nThe child's account will now appear in your dashboard.`);
+                    
+                    // Reset form
+                    linkForm.reset();
+                    
+                    // Return to overview
+                    showSection('overview');
+                });
+            }
+        });
+
+        // Load subscription details
+        function loadSubscriptionDetails() {
+            const container = document.getElementById('subscriptionContainer');
+            if (!container) return;
+            
+            // Get all children's subscription info
+            const subscriptionHTML = children.map(child => {
+                const status = getChildStatus(child);
+                const plan = child.plan || 'free';
+                const planType = child.planType || 'individual';
+                const expiryDate = child.expiryDate ? new Date(child.expiryDate).toLocaleDateString() : 'N/A';
+                
+                let planColor = '#6b7280';
+                if (plan === 'family' || planType === 'family') planColor = '#fbbf24';
+                if (plan === 'individual' || planType === 'individual') planColor = '#3b82f6';
+                
+                return `
+                    <div style="background: var(--gray-50); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; border: 2px solid var(--gray-200);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary-gradient); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.25rem;">
+                                    ${getInitials(child.name)}
+                                </div>
+                                <div>
+                                    <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.25rem;">${child.name}</h3>
+                                    <p style="color: var(--gray-600); font-size: 0.875rem;">${child.classLevel} - ${child.stream}</p>
+                                </div>
+                            </div>
+                            <div class="status-badge ${status.class}">${status.text}</div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                            <div>
+                                <div style="font-size: 0.75rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Current Plan</div>
+                                <div style="font-weight: 700; font-size: 1.125rem; color: ${planColor};">${plan.charAt(0).toUpperCase() + plan.slice(1)}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.75rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Plan Type</div>
+                                <div style="font-weight: 700; font-size: 1.125rem; color: ${planColor};">${planType.charAt(0).toUpperCase() + planType.slice(1)}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.75rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Expiry Date</div>
+                                <div style="font-weight: 600; font-size: 1rem; color: var(--gray-700);">${expiryDate}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.75rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Account Status</div>
+                                <div style="font-weight: 600; font-size: 1rem; color: var(--gray-700);">${child.accountLocked ? 'Locked' : 'Active'}</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--gray-300); display: flex; gap: 0.75rem;">
+                            <button onclick="upgradePlan('${child.id}', '${child.name}', '${plan}')" style="flex: 1; padding: 0.75rem; background: var(--primary-gradient); color: white; border: none; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                                <i class="fas fa-arrow-up"></i> Upgrade Plan
+                            </button>
+                            <button onclick="renewSubscription('${child.id}', '${child.name}', '${plan}')" style="flex: 1; padding: 0.75rem; background: var(--success-color); color: white; border: none; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                                <i class="fas fa-sync"></i> Renew
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = subscriptionHTML || '<p style="text-align: center; color: var(--gray-500); padding: 2rem;">No children linked yet.</p>';
+        }
+
+        // Upgrade plan function
+        function upgradePlan(childId, childName, currentPlan) {
+            // Store payment details in sessionStorage
+            const paymentData = {
+                type: 'upgrade',
+                childId: childId,
+                childName: childName,
+                currentPlan: currentPlan,
+                parentName: currentParent.name,
+                parentEmail: currentParent.email,
+                timestamp: new Date().toISOString()
+            };
+            
+            sessionStorage.setItem('brainwave_payment_data', JSON.stringify(paymentData));
+            
+            // Redirect to payment gateway
+            window.location.href = 'payment-gateway.html';
+        }
+
+        // Renew subscription function
+        function renewSubscription(childId, childName, currentPlan) {
+            // Store payment details in sessionStorage
+            const paymentData = {
+                type: 'renew',
+                childId: childId,
+                childName: childName,
+                currentPlan: currentPlan,
+                parentName: currentParent.name,
+                parentEmail: currentParent.email,
+                timestamp: new Date().toISOString()
+            };
+            
+            sessionStorage.setItem('brainwave_payment_data', JSON.stringify(paymentData));
+            
+            // Redirect to payment gateway
+            window.location.href = 'payment-gateway.html';
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                alert('Logged out successfully!');
+            }
+        }
+    </script>
+</body>
+</html>

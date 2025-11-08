@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Student Dashboard - BrainWave</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .info-box {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .info-box h3 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            color: #4b5563;
+        }
+
+        .info-box li {
+            margin-bottom: 8px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .status.show {
+            display: block;
+        }
+
+        .status.success {
+            background: #dcfce7;
+            color: #16a34a;
+            border-left: 4px solid #16a34a;
+        }
+
+        .status.error {
+            background: #fee2e2;
+            color: #dc2626;
+            border-left: 4px solid #dc2626;
+        }
+
+        .credentials {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .credentials h3 {
+            color: #92400e;
+            margin-bottom: 10px;
+        }
+
+        .credentials p {
+            color: #78350f;
+            margin: 5px 0;
+            font-family: monospace;
+            font-size: 0.95rem;
+        }
+
+        .credentials strong {
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Student Dashboard Test</h1>
+        <p class="subtitle">Generate dummy data and test the student dashboard</p>
+
+        <div class="info-box">
+            <h3>📊 What will be generated:</h3>
+            <ul>
+                <li><strong>1 Sample Student</strong> (John Doe)</li>
+                <li><strong>7 Subjects</strong> (Math, Physics, Chemistry, Biology, etc.)</li>
+                <li><strong>2 Live Classes</strong> (1 live, 1 scheduled)</li>
+                <li><strong>3 Quizzes/Assignments</strong></li>
+                <li><strong>2 Mock Exams</strong></li>
+                <li><strong>4 eBooks</strong></li>
+                <li><strong>5 Video Tutorials</strong></li>
+                <li><strong>4 Student Reports</strong></li>
+                <li><strong>4 Announcements</strong></li>
+                <li><strong>Community Links</strong></li>
+            </ul>
+        </div>
+
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="generateAndLogin()">
+                🚀 Generate Data & Login
+            </button>
+            <button class="btn btn-secondary" onclick="clearData()">
+                🗑️ Clear All Data
+            </button>
+        </div>
+
+        <div id="status" class="status"></div>
+
+        <div class="credentials" id="credentials" style="display: none;">
+            <h3>🔑 Login Credentials:</h3>
+            <p><strong>Email:</strong> john.doe@student.com</p>
+            <p><strong>Password:</strong> (Any password will work)</p>
+            <p><strong>Student Code:</strong> <span id="studentCode">Will be generated</span></p>
+        </div>
+    </div>
+
+    <script>
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type} show`;
+            
+            setTimeout(() => {
+                status.classList.remove('show');
+            }, 5000);
+        }
+
+        function generateAndLogin() {
+            console.log('🎲 Generating mock data...');
+            
+            // Clear any existing flag
+            localStorage.removeItem('brainwave_mock_data_generated');
+            
+            // Generate mock data
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const futureDate = new Date(now);
+            futureDate.setDate(futureDate.getDate() + 7);
+            
+            // 1. Create sample student
+            const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+            const existingStudent = users.find(u => u.email === 'john.doe@student.com');
+            
+            let sampleStudent;
+            if (existingStudent) {
+                sampleStudent = existingStudent;
+            } else {
+                sampleStudent = {
+                    id: Date.now(),
+                    name: 'John Doe',
+                    email: 'john.doe@student.com',
+                    phone: '+234 800 000 0000',
+                    role: 'student',
+                    gender: 'Male',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    studentCode: 'BW' + Math.random().toString(36).substr(2, 6).toUpperCase(),
+                    plan: 'premium',
+                    status: 'active',
+                    locked: false,
+                    joinDate: new Date().toISOString().split('T')[0],
+                    bootcampStartDate: new Date().toISOString(),
+                    planHistory: [],
+                    createdAt: new Date().toISOString()
+                };
+                
+                users.push(sampleStudent);
+                localStorage.setItem('brainwave_users', JSON.stringify(users));
+            }
+            
+            // Set as current student
+            localStorage.setItem('brainwave_current_student_id', sampleStudent.id);
+            
+            // 2. Create subjects
+            const subjects = [
+                { id: 1, name: 'Mathematics', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 2, name: 'Physics', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 3, name: 'Chemistry', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 4, name: 'Biology', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 5, name: 'English Language', stream: 'General', classLevel: 'All Levels', createdAt: now.toISOString() },
+                { id: 6, name: 'Further Mathematics', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() },
+                { id: 7, name: 'Computer Science', stream: 'Science', classLevel: 'SS2', createdAt: now.toISOString() }
+            ];
+            localStorage.setItem('brainwave_subjects', JSON.stringify(subjects));
+            
+            // 3. Create live classes
+            const liveClasses = [
+                {
+                    id: 1,
+                    subject: 'Mathematics',
+                    teacher: 'Dr. Sarah Johnson',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    date: now.toISOString(),
+                    time: '10:00 AM',
+                    status: 'live',
+                    link: 'https://meet.google.com/sample-link-1',
+                    createdAt: now.toISOString()
+                },
+                {
+                    id: 2,
+                    subject: 'Physics',
+                    teacher: 'Prof. Michael Chen',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    date: tomorrow.toISOString(),
+                    time: '2:00 PM',
+                    status: 'scheduled',
+                    link: 'https://meet.google.com/sample-link-2',
+                    createdAt: now.toISOString()
+                }
+            ];
+            localStorage.setItem('brainwave_live_classes', JSON.stringify(liveClasses));
+            
+            // 4. Create quizzes
+            const quizzes = [
+                {
+                    id: 1,
+                    type: 'quiz',
+                    title: 'Quadratic Equations Quiz',
+                    subject: 'Mathematics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    dueDate: futureDate.toISOString(),
+                    duration: '30',
+                    totalMarks: 50,
+                    createdAt: now.toISOString()
+                },
+                {
+                    id: 2,
+                    type: 'assignment',
+                    title: 'Newton\'s Laws Assignment',
+                    subject: 'Physics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    dueDate: futureDate.toISOString(),
+                    duration: '45',
+                    totalMarks: 100,
+                    createdAt: now.toISOString()
+                },
+                {
+                    id: 3,
+                    type: 'quiz',
+                    title: 'Chemical Bonding Quiz',
+                    subject: 'Chemistry',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    dueDate: futureDate.toISOString(),
+                    duration: '25',
+                    totalMarks: 40,
+                    createdAt: now.toISOString()
+                }
+            ];
+            localStorage.setItem('brainwave_quizs', JSON.stringify(quizzes));
+            
+            // 5. Create mock exams
+            const mockExams = [
+                {
+                    id: 1,
+                    type: 'mock',
+                    title: 'WAEC Mathematics Mock Exam',
+                    subject: 'Mathematics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    dueDate: futureDate.toISOString(),
+                    duration: '120',
+                    totalMarks: 100,
+                    createdAt: now.toISOString()
+                },
+                {
+                    id: 2,
+                    type: 'mock',
+                    title: 'JAMB Physics Practice Test',
+                    subject: 'Physics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    dueDate: futureDate.toISOString(),
+                    duration: '90',
+                    totalMarks: 100,
+                    createdAt: now.toISOString()
+                }
+            ];
+            localStorage.setItem('brainwave_mocks', JSON.stringify(mockExams));
+            
+            // 6. Create books
+            const books = [
+                {
+                    id: 1,
+                    title: 'Advanced Mathematics for SS2',
+                    subject: 'Mathematics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    description: 'Comprehensive mathematics textbook covering all SS2 topics including algebra, geometry, and trigonometry.',
+                    link: 'https://drive.google.com/file/sample-math-book',
+                    thumbnail: 'https://via.placeholder.com/300x400/3b82f6/ffffff?text=Math+Book',
+                    createdAt: now.toISOString()
+                },
+                {
+                    id: 2,
+                    title: 'Physics Fundamentals',
+                    subject: 'Physics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    description: 'Essential physics concepts with practical examples and experiments for SS2 students.',
+                    link: 'https://drive.google.com/file/sample-physics-book',
+                    thumbnail: 'https://via.placeholder.com/300x400/10b981/ffffff?text=Physics+Book',
+                    createdAt: now.toISOString()
+                },
+                {
+                    id: 3,
+                    title: 'Chemistry Made Easy',
+                    subject: 'Chemistry',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    description: 'Simplified chemistry textbook with diagrams and real-world applications.',
+                    link: 'https://drive.google.com/file/sample-chemistry-book',
+                    thumbnail: 'https://via.placeholder.com/300x400/f59e0b/ffffff?text=Chemistry+Book',
+                    createdAt: now.toISOString()
+                },
+                {
+                    id: 4,
+                    title: 'Biology Essentials',
+                    subject: 'Biology',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    description: 'Complete biology guide covering cell biology, genetics, and human anatomy.',
+                    link: 'https://drive.google.com/file/sample-biology-book',
+                    thumbnail: 'https://via.placeholder.com/300x400/16a34a/ffffff?text=Biology+Book',
+                    createdAt: now.toISOString()
+                }
+            ];
+            localStorage.setItem('brainwave_books', JSON.stringify(books));
+            
+            // 7. Create videos
+            const videos = [
+                {
+                    id: 1,
+                    title: 'Introduction to Calculus',
+                    subject: 'Mathematics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    description: 'Learn the basics of differentiation and integration with step-by-step examples.',
+                    link: 'https://www.youtube.com/watch?v=WUvTyaaNkzM',
+                    createdAt: now.toISOString()
+                },
+                {
+                    id: 2,
+                    title: 'Understanding Newton\'s Laws',
+                    subject: 'Physics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    description: 'Comprehensive explanation of Newton\'s three laws of motion with real-world examples.',
+                    link: 'https://www.youtube.com/watch?v=kKKM8Y-u7ds',
+                    createdAt: now.toISOString()
+                },
+                {
+                    id: 3,
+                    title: 'Chemical Reactions Explained',
+                    subject: 'Chemistry',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    description: 'Visual guide to different types of chemical reactions and how to balance equations.',
+                    link: 'https://www.youtube.com/watch?v=7ERzPFCE7B0',
+                    createdAt: now.toISOString()
+                },
+                {
+                    id: 4,
+                    title: 'Cell Structure and Function',
+                    subject: 'Biology',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    description: 'Detailed exploration of cell organelles and their functions in living organisms.',
+                    link: 'https://www.youtube.com/watch?v=URUJD5NEXC8',
+                    createdAt: now.toISOString()
+                },
+                {
+                    id: 5,
+                    title: 'Trigonometry Basics',
+                    subject: 'Mathematics',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    description: 'Master sine, cosine, and tangent with practical problem-solving techniques.',
+                    link: 'https://www.youtube.com/watch?v=PUB0TaZ7bhA',
+                    createdAt: now.toISOString()
+                }
+            ];
+            localStorage.setItem('brainwave_videos', JSON.stringify(videos));
+            
+            // 8. Create reports (matching admin spreadsheet format)
+            const reports = [
+                {
+                    id: 1,
+                    studentCode: sampleStudent.studentCode,
+                    studentName: sampleStudent.name,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Mathematics',
+                    type: 'quiz',
+                    score: 85,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 2,
+                    studentCode: sampleStudent.studentCode,
+                    studentName: sampleStudent.name,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Physics',
+                    type: 'quiz',
+                    score: 78,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 3,
+                    studentCode: sampleStudent.studentCode,
+                    studentName: sampleStudent.name,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Chemistry',
+                    type: 'quiz',
+                    score: 82,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 4,
+                    studentCode: sampleStudent.studentCode,
+                    studentName: sampleStudent.name,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'Biology',
+                    type: 'quiz',
+                    score: 88,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 5,
+                    studentCode: sampleStudent.studentCode,
+                    studentName: sampleStudent.name,
+                    assessmentTitle: 'First Term Exam',
+                    subject: 'English Language',
+                    type: 'quiz',
+                    score: 76,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 6,
+                    studentCode: sampleStudent.studentCode,
+                    studentName: sampleStudent.name,
+                    assessmentTitle: 'Mid-Term Assignment',
+                    subject: 'Mathematics',
+                    type: 'assignment',
+                    score: 42,
+                    totalMarks: 50,
+                    date: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                },
+                {
+                    id: 7,
+                    studentCode: sampleStudent.studentCode,
+                    studentName: sampleStudent.name,
+                    assessmentTitle: 'WAEC Mock Exam',
+                    subject: 'Mathematics',
+                    type: 'mock',
+                    score: 68,
+                    totalMarks: 100,
+                    date: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                    passed: true
+                }
+            ];
+            localStorage.setItem('brainwave_reports', JSON.stringify(reports));
+            
+            // 9. Create announcements
+            const announcements = [
+                {
+                    id: 1,
+                    title: 'Welcome to BrainWave!',
+                    message: 'We are excited to have you join our learning platform. Explore all the features and start your journey to academic excellence!',
+                    classLevel: 'All Levels',
+                    createdAt: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 2,
+                    title: 'New Mock Exams Available',
+                    message: 'Practice makes perfect! New WAEC and JAMB mock exams have been added to help you prepare for your upcoming exams.',
+                    classLevel: 'SS2',
+                    createdAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 3,
+                    title: 'Live Class Schedule Update',
+                    message: 'Check out the updated live class schedule. Don\'t miss our interactive sessions with experienced teachers!',
+                    classLevel: 'SS2',
+                    createdAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 4,
+                    title: 'Study Tips for Success',
+                    message: 'Remember to review your notes daily, practice past questions, and join study groups. Consistency is key to success!',
+                    classLevel: 'All Levels',
+                    createdAt: now.toISOString()
+                }
+            ];
+            localStorage.setItem('brainwave_announcements', JSON.stringify(announcements));
+            
+            // 10. Create community links
+            const communityLinks = {
+                whatsappEnabled: true,
+                whatsappLink: 'https://chat.whatsapp.com/sample-group-link',
+                telegramEnabled: true,
+                telegramLink: 'https://t.me/brainwave_students'
+            };
+            localStorage.setItem('brainwave_community_links', JSON.stringify(communityLinks));
+            
+            // 11. Create achievements
+            const achievements = [
+                {
+                    id: 1,
+                    title: 'First Steps',
+                    description: 'Completed your first quiz successfully!',
+                    icon: 'fas fa-star',
+                    color: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+                    unlockedAt: new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 2,
+                    title: 'Perfect Score',
+                    description: 'Scored 100% on a quiz',
+                    icon: 'fas fa-trophy',
+                    color: 'linear-gradient(135deg, #10b981, #059669)',
+                    unlockedAt: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 3,
+                    title: 'Study Streak',
+                    description: 'Maintained a 7-day study streak',
+                    icon: 'fas fa-fire',
+                    color: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                    unlockedAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 4,
+                    title: 'Video Master',
+                    description: 'Watched 10 educational videos',
+                    icon: 'fas fa-video',
+                    color: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
+                    unlockedAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: 5,
+                    title: 'Top Performer',
+                    description: 'Ranked in top 10 of your class',
+                    icon: 'fas fa-crown',
+                    color: 'linear-gradient(135deg, #fbbf24, #d97706)',
+                    unlockedAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString()
+                }
+            ];
+            localStorage.setItem('brainwave_achievements', JSON.stringify(achievements));
+            
+            // 12. Create badges
+            const badges = [
+                {
+                    id: 1,
+                    name: 'Math Genius',
+                    description: 'Complete 20 math quizzes',
+                    icon: 'fas fa-calculator',
+                    color: '#3b82f6',
+                    unlocked: true,
+                    progress: 100
+                },
+                {
+                    id: 2,
+                    name: 'Science Explorer',
+                    description: 'Complete all science subjects',
+                    icon: 'fas fa-flask',
+                    color: '#10b981',
+                    unlocked: true,
+                    progress: 100
+                },
+                {
+                    id: 3,
+                    name: 'Quick Learner',
+                    description: 'Complete 5 quizzes in one day',
+                    icon: 'fas fa-bolt',
+                    color: '#fbbf24',
+                    unlocked: true,
+                    progress: 100
+                },
+                {
+                    id: 4,
+                    name: 'Bookworm',
+                    description: 'Read 15 eBooks',
+                    icon: 'fas fa-book-open',
+                    color: '#8b5cf6',
+                    unlocked: false,
+                    progress: 73
+                },
+                {
+                    id: 5,
+                    name: 'Assignment Pro',
+                    description: 'Submit 25 assignments',
+                    icon: 'fas fa-file-alt',
+                    color: '#f59e0b',
+                    unlocked: false,
+                    progress: 56
+                },
+                {
+                    id: 6,
+                    name: 'Mock Master',
+                    description: 'Complete 10 mock exams',
+                    icon: 'fas fa-graduation-cap',
+                    color: '#ef4444',
+                    unlocked: false,
+                    progress: 40
+                }
+            ];
+            localStorage.setItem('brainwave_badges', JSON.stringify(badges));
+            
+            // 13. Create leaderboard
+            const leaderboard = [
+                {
+                    id: sampleStudent.id,
+                    name: sampleStudent.name,
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2450,
+                    badges: 3,
+                    avgScore: 82
+                },
+                {
+                    id: 2,
+                    name: 'Sarah Williams',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2680,
+                    badges: 5,
+                    avgScore: 88
+                },
+                {
+                    id: 3,
+                    name: 'Michael Chen',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2520,
+                    badges: 4,
+                    avgScore: 85
+                },
+                {
+                    id: 4,
+                    name: 'Amara Okafor',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2390,
+                    badges: 3,
+                    avgScore: 81
+                },
+                {
+                    id: 5,
+                    name: 'David Johnson',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2310,
+                    badges: 4,
+                    avgScore: 79
+                },
+                {
+                    id: 6,
+                    name: 'Fatima Ahmed',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2180,
+                    badges: 2,
+                    avgScore: 77
+                },
+                {
+                    id: 7,
+                    name: 'James Brown',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 2050,
+                    badges: 3,
+                    avgScore: 75
+                },
+                {
+                    id: 8,
+                    name: 'Chioma Nwosu',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 1920,
+                    badges: 2,
+                    avgScore: 72
+                },
+                {
+                    id: 9,
+                    name: 'Emmanuel Adeyemi',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 1850,
+                    badges: 2,
+                    avgScore: 70
+                },
+                {
+                    id: 10,
+                    name: 'Grace Okoro',
+                    classLevel: 'SS2',
+                    stream: 'Science',
+                    points: 1780,
+                    badges: 1,
+                    avgScore: 68
+                }
+            ];
+            localStorage.setItem('brainwave_leaderboard', JSON.stringify(leaderboard));
+            
+            // Mark as generated
+            localStorage.setItem('brainwave_mock_data_generated', 'true');
+            
+            // Show credentials
+            document.getElementById('studentCode').textContent = sampleStudent.studentCode;
+            document.getElementById('credentials').style.display = 'block';
+            
+            showStatus('✅ Mock data generated successfully! Redirecting to dashboard...', 'success');
+            
+            console.log('🎉 Mock data generation complete!');
+            console.log('Including: Achievements, Badges, and Leaderboard');
+            
+            // Redirect to dashboard after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'student-dashboard.html';
+            }, 2000);
+        }
+
+        function clearData() {
+            if (confirm('Are you sure you want to clear all mock data?')) {
+                localStorage.removeItem('brainwave_subjects');
+                localStorage.removeItem('brainwave_live_classes');
+                localStorage.removeItem('brainwave_quizs');
+                localStorage.removeItem('brainwave_mocks');
+                localStorage.removeItem('brainwave_books');
+                localStorage.removeItem('brainwave_videos');
+                localStorage.removeItem('brainwave_reports');
+                localStorage.removeItem('brainwave_announcements');
+                localStorage.removeItem('brainwave_community_links');
+                localStorage.removeItem('brainwave_achievements');
+                localStorage.removeItem('brainwave_badges');
+                localStorage.removeItem('brainwave_leaderboard');
+                localStorage.removeItem('brainwave_mock_data_generated');
+                localStorage.removeItem('brainwave_current_student_id');
+                
+                document.getElementById('credentials').style.display = 'none';
+                showStatus('🗑️ All mock data cleared successfully!', 'success');
+                
+                console.log('✅ Mock data cleared');
+            }
+        }
+
+        // Check if data already exists
+        window.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('brainwave_mock_data_generated')) {
+                const users = JSON.parse(localStorage.getItem('brainwave_users') || '[]');
+                const student = users.find(u => u.email === 'john.doe@student.com');
+                if (student) {
+                    document.getElementById('studentCode').textContent = student.studentCode;
+                    document.getElementById('credentials').style.display = 'block';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
